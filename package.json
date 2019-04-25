@@ -1,7 +1,7 @@
 {
-  "name": "civil-identity",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@joincivil/civil-sdk",
+  "version": "1.0.0",
+  "private": false,
   "dependencies": {
     "@babel/core": "7.2.2",
     "@commitlint/cli": "^7.5.2",
@@ -62,7 +62,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "commit": "commit"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -74,6 +75,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@commitlint/prompt-cli": "^7.5.0",
     "@types/jest": "24.0.11",
     "@types/js-cookie": "^2.2.1",
     "@types/node": "11.11.4",
