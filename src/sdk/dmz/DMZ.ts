@@ -32,11 +32,11 @@ export class DMZ {
   public send(message: SDKMessage): Promise<void> {
     if (!this.iframe) {
       console.log("not ready to send");
+      return Promise.reject("not ready to send - iframe not available yet");
     }
     return new Promise((resolve, reject) => {
       this.iframe!.postMessage(message, this.sdkOrigin);
       this.listen("REPLY_" + message.type, response => {
-        console.log(message.type + " callback", response);
         resolve(response);
       });
     });

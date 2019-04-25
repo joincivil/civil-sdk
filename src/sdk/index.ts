@@ -2,10 +2,11 @@ import { DMZ } from "./dmz/DMZ";
 import { Lockbox } from "./lockbox/Lockbox";
 import { Registry } from "./registry/Registry";
 import { Telemetry } from "./telemetry/Telemetry";
-const SDK_ORIGIN = "https://localhost.civil.dev:3000";
+const SDK_ORIGIN = "http://localhost:3000";
 
 console.log("hello from civil sdk!");
 
+const ts = new Date().getTime();
 const dmz = new DMZ(SDK_ORIGIN);
 
 export class Civil {
@@ -25,5 +26,7 @@ export class Civil {
 
 window.onload = () => {
   dmz.initialize();
+  const ts2 = new Date().getTime();
+  console.log(`Civil SDK initialized in ${ts2 - ts}ms`);
 };
 (window as any).Civil = Civil;

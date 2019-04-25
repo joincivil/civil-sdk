@@ -20,7 +20,7 @@ export class Lockbox {
   }
   public async createKey(keyName: string) {
     return this.dmz.send({
-      type: SDKMessageTypes.LOCKBOX_GET_KEY,
+      type: SDKMessageTypes.LOCKBOX_CREATE_KEY,
       data: {
         keyName
       }

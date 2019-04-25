@@ -4,12 +4,24 @@ import { LockboxService } from "./services/civil-node/LockboxService";
 import { CivilPersistence } from "./services/civil-node/CivilPersistence";
 import { CivilWebsocket } from "./services/communication/CivilWebsocket";
 
-const PARENT = ["https://example-site.dev", "https://test1.local:3001/"];
 const CIVIL_WEBSOCKET_URL = "ws://localhost:8080/ws";
 const CIVIL_REST_URL = "http://localhost:8080";
 
-console.log("initializing", document.referrer, document.location.href);
 const handler = new WindowMessageHandler(document.referrer);
+
+let parentDomain: string;
+let parentUrl =
+  window.location != window.parent.location
+    ? document.referrer
+    : document.location.href;
+if (parentUrl) {
+  const match = parentUrl.match(/(.*):\/\/(.[^/]+)/);
+  if (match) {
+    parentDomain = match[0];
+  }
+}
+console.log("Initializing iframe from parentUrl: ", parentUrl);
+
 handler.initialize(async () => {
   const persistence = new CivilPersistence(CIVIL_REST_URL);
   const lockbox = new LockboxService(persistence);
@@ -27,7 +39,8 @@ if (window.addEventListener) {
 }
 
 function handleMessage(message: any) {
-  if (message.origin + "/" === document.referrer) {
+  if (message.origin === parentDomain) {
+    console.log("handler.receive", message.data);
     handler.receive(message.data);
   }
 }
