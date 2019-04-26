@@ -14,20 +14,40 @@ export class DMZ {
   }
 
   public initialize() {
-    const iframe = document.getElementById("civil-sdk");
-    if (!iframe) {
-      throw new Error("could not find civil-sdk element ID");
-    }
-    const contentWindow = (iframe as HTMLIFrameElement).contentWindow;
-    this.iframe = contentWindow!;
+    const body = document.getElementsByTagName("BODY")[0];
+    const iframe = document.createElement("iframe");
+    iframe.src = "http://localhost:3000/iframe.html";
+    iframe.setAttribute("style", "display: none");
+    iframe.onload = () => {
+      const contentWindow = (iframe as HTMLIFrameElement).contentWindow;
+      this.iframe = contentWindow!;
+    };
+
+    iframe.onerror = () => {
+      // pretty sure this will never fire do to cross site origin restrictions
+      console.error("FAILED TO LOAD CIVIL IFRAME!");
+    };
 
     if (window.addEventListener) {
+      const subs = this.subscribers;
+      const sdkOrigin = this.sdkOrigin;
+      window.addEventListener("message", function waitForAlive(message: any) {
+        if (
+          message.origin === sdkOrigin &&
+          message.data.type &&
+          message.data.type === "ALIVE"
+        ) {
+          subs.READY.map(cb => cb());
+          window.addEventListener("message", waitForAlive);
+        }
+      });
+
       window.addEventListener("message", this.handleMessage.bind(this));
     } else {
       (window as any).attachEvent("onmessage", this.handleMessage.bind(this));
     }
 
-    this.subscribers.READY.map(cb => cb());
+    body.appendChild(iframe);
   }
   public send(message: SDKMessage): Promise<void> {
     if (!this.iframe) {
@@ -35,9 +55,11 @@ export class DMZ {
       return Promise.reject("not ready to send - iframe not available yet");
     }
     return new Promise((resolve, reject) => {
+      console.log(`SEND ${message.type}`);
       this.iframe!.postMessage(message, this.sdkOrigin);
       this.listen("REPLY_" + message.type, response => {
         resolve(response);
+        console.log(`REPONSE ${message.type}`, response);
       });
     });
   }
@@ -56,8 +78,6 @@ export class DMZ {
 
   private handleMessage(message: any) {
     if (message.origin === this.sdkOrigin) {
-      console.log("message from sdk", message.origin, message.data);
-
       this.subscribers[message.data.type] &&
         this.subscribers[message.data.type].forEach(cb => cb(message.data));
       this.subscribers[message.data.type] = [];

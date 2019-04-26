@@ -28,11 +28,6 @@ export const CivilProvider: React.FunctionComponent = ({ children }) => {
   return (
     <>
       <CivilContext.Provider value={context}>{children}</CivilContext.Provider>
-      <iframe
-        id="civil-sdk"
-        style={{ display: "none" }}
-        src="http://localhost:3000/iframe.html"
-      />
     </>
   );
 };

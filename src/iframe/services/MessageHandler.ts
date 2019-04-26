@@ -26,7 +26,6 @@ export abstract class MessageHandler {
   abstract reply(type: SDKMessageTypes, data: any): void;
 
   public async receive(message: SDKMessage) {
-    console.log("got message", message);
     if (!this.ready) {
       this.waitingMessages.push(message);
       return;
@@ -97,12 +96,10 @@ export abstract class MessageHandler {
   ): Promise<responses.DeviceActivationResponse> {
     const { keyManager } = this.depenencies!;
     const onJoinRequest = async (request: PartnerRequest) => {
-      console.log("got on join request", request);
       alert(JSON.stringify(request));
       return true;
     };
     const onKeyRequest = async (request: any) => {
-      console.log("got on key request", request);
       alert(JSON.stringify(request));
       return true;
     };
@@ -123,9 +120,9 @@ export class WindowMessageHandler extends MessageHandler {
   public constructor(parentURL: string) {
     super();
     this.parentURL = parentURL;
+    parent.postMessage({ type: "ALIVE", data: {} }, this.parentURL);
   }
   public reply(type: SDKMessageTypes, data: any): void {
-    console.log("sending reply", type, data);
     parent.postMessage({ type: "REPLY_" + type, data }, this.parentURL);
   }
 }

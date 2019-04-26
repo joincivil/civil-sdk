@@ -4,8 +4,6 @@ import { Registry } from "./registry/Registry";
 import { Telemetry } from "./telemetry/Telemetry";
 const SDK_ORIGIN = "http://localhost:3000";
 
-console.log("hello from civil sdk!");
-
 const ts = new Date().getTime();
 const dmz = new DMZ(SDK_ORIGIN);
 

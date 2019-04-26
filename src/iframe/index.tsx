@@ -40,7 +40,6 @@ if (window.addEventListener) {
 
 function handleMessage(message: any) {
   if (message.origin === parentDomain) {
-    console.log("handler.receive", message.data);
     handler.receive(message.data);
   }
 }

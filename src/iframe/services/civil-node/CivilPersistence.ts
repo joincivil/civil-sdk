@@ -1,4 +1,3 @@
-import ky from "ky";
 import { Persistence } from "./Persistence";
 import { EncryptedData } from "../crypto/crypto";
 
@@ -33,21 +32,22 @@ export class CivilPersistence implements Persistence {
     signature: string,
     objectID: string
   ): Promise<EncryptedData> {
-    const result = await ky
-      .post(`${this.url}/lockbox/retrieve`, {
-        headers: { "Content-Type": "application/json" },
-        json: {
-          publicKey,
-          signature,
-          objectID
-        }
+    const result = await fetch(`${this.url}/lockbox/retrieve`, {
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+      body: JSON.stringify({
+        publicKey,
+        signature,
+        objectID
       })
-      .json();
+    });
 
-    if (result === null) {
-      throw new Error("unexpected response");
+    if (result.status === 404) {
+      throw new Error("key not found");
     }
-    return (result as any) as EncryptedData;
+
+    const json = await result.json();
+    return (json as any) as EncryptedData;
   }
   public async delete(
     publicKey: string,
