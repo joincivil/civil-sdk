@@ -6,7 +6,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -15,11 +14,19 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve"
+    "outDir": "build/static/js/",
+    "declaration": true,
+    "declarationDir": "build/static/js/",
+    "jsx": "react",
+    "typeRoots": ["node_modules/@types"],
   },
   "include": [
-    "src"
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "exclude": [
+    "./src/setupTests.ts",
+    "./src/**/*.test.ts",
+    "./src/**/*.test.tsx"
   ]
 }
