@@ -8,7 +8,10 @@
     "@babel/core": "7.2.2",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
-    "@joincivil/components": "^1.7.5",
+    "@joincivil/artifacts": "file:./Civil/packages/artifacts/",
+    "@joincivil/components": "file:./Civil/packages/components",
+    "@joincivil/typescript-types": "file:./Civil/packages/typescript-types/",
+    "@joincivil/utils": "file:./Civil/packages/utils/",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
@@ -60,9 +63,11 @@
     "webpack": "4.28.3",
     "webpack-dev-server": "3.1.14",
     "webpack-manifest-plugin": "2.0.4",
-    "workbox-webpack-plugin": "3.6.3"
+    "workbox-webpack-plugin": "3.6.3",
+    "yarn": "^1.16.0"
   },
   "scripts": {
+    "preinstall": "! command -v yarn && npm install yarn; [ ! -d Civil ] && git clone https://github.com/joincivil/Civil.git; cd Civil; git pull; yarn install; yarn build; cd ..;",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
@@ -84,6 +89,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/plugin-transform-member-expression-literals": "^7.2.0",
     "@commitlint/prompt-cli": "^7.5.0",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-links": "^5.0.10",
