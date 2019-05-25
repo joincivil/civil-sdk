@@ -1,7 +1,9 @@
 {
   "name": "@joincivil/civil-sdk",
-  "version": "1.0.0",
+  "version": "1.0.0-test",
   "private": false,
+  "main": "build/static/js/index.js",
+  "types": "build/static/js/index.d.ts",
   "dependencies": {
     "@babel/core": "7.2.2",
     "@commitlint/cli": "^7.5.2",
@@ -49,6 +51,7 @@
     "react-dom": "^16.8.4",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
+    "source-map-explorer": "^1.8.0",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.2",
     "url-loader": "1.1.2",
@@ -59,9 +62,13 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "scripts": {
+    "preinstall": "! command -v yarn && npm install yarn; [ ! -d Civil ] && git clone https://github.com/joincivil/Civil.git; cd Civil; git pull; yarn install; yarn build; cd ..",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "package:build": "tsc",
+    "package:watch": "tsc -w",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "release": "semantic-release",
     "commit": "commit",
     "storybook": "start-storybook -p 6006",
