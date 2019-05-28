@@ -2,11 +2,18 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Boost } from "./Boost";
+import { ApolloProvider } from "react-apollo";
+import { getApolloClient } from "@joincivil/utils";
+import { BoostFeed } from "./BoostFeed";
+
+const apolloClient = getApolloClient();
 
 function init(): void {
   ReactDOM.render(
-    <Boost />,
+    // `apolloClient as any` because of bug with types e.g. https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166
+    <ApolloProvider client={apolloClient as any}>
+      <BoostFeed />
+    </ApolloProvider>,
     document.getElementById("civil-boost"),
   );
 }
