@@ -2,10 +2,16 @@
   "name": "@joincivil/civil-sdk",
   "version": "1.0.0",
   "private": false,
+  "main": "build/static/js/index.js",
+  "types": "build/static/js/index.d.ts",
   "dependencies": {
     "@babel/core": "7.2.2",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
+    "@joincivil/artifacts": "file:./Civil/packages/artifacts/",
+    "@joincivil/components": "file:./Civil/packages/components",
+    "@joincivil/typescript-types": "file:./Civil/packages/typescript-types/",
+    "@joincivil/utils": "file:./Civil/packages/utils/",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
@@ -49,6 +55,7 @@
     "react-dom": "^16.8.4",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
+    "source-map-explorer": "^1.8.0",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.2",
     "url-loader": "1.1.2",
@@ -56,12 +63,17 @@
     "webpack": "4.28.3",
     "webpack-dev-server": "3.1.14",
     "webpack-manifest-plugin": "2.0.4",
-    "workbox-webpack-plugin": "3.6.3"
+    "workbox-webpack-plugin": "3.6.3",
+    "yarn": "^1.16.0"
   },
   "scripts": {
+    "preinstall": "! command -v yarn && npm install yarn; [ ! -d Civil ] && git clone https://github.com/joincivil/Civil.git; cd Civil; git pull; yarn install; yarn build; cd ..;",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "package:build": "tsc",
+    "package:watch": "tsc -w",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "release": "semantic-release",
     "commit": "commit",
     "storybook": "start-storybook -p 6006",
@@ -77,6 +89,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/plugin-transform-member-expression-literals": "^7.2.0",
     "@commitlint/prompt-cli": "^7.5.0",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-links": "^5.0.10",

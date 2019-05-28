@@ -64,6 +64,23 @@ module.exports = function(webpackEnv) {
   // Get environment variables to inject into our app.
   const env = getClientEnvironment(publicUrl);
 
+  const htmlWebpackPluginConfig = isEnvProduction
+    ? {
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          keepClosingSlash: true,
+          minifyJS: true,
+          minifyCSS: true,
+          minifyURLs: true
+        }
+      }
+    : undefined;
+
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
@@ -135,7 +152,13 @@ module.exports = function(webpackEnv) {
             require.resolve("react-dev-utils/webpackHotDevClient"),
             paths.appIndexJs
           ]
-        : paths.appIndexJs
+        : paths.appIndexJs,
+      boost: isEnvDevelopment
+        ? [
+            require.resolve("react-dev-utils/webpackHotDevClient"),
+            paths.boostLoaderJs
+          ]
+        : paths.boostLoaderJs,
     },
     // entry: [
     //   // Include an alternative client for WebpackDevServer. A client's job is to
@@ -489,24 +512,21 @@ module.exports = function(webpackEnv) {
           {
             inject: true,
             template: paths.appHtml,
-            excludeChunks: ["sdk"]
+            chunks: ["iframe"]
           },
-          isEnvProduction
-            ? {
-                minify: {
-                  removeComments: true,
-                  collapseWhitespace: true,
-                  removeRedundantAttributes: true,
-                  useShortDoctype: true,
-                  removeEmptyAttributes: true,
-                  removeStyleLinkTypeAttributes: true,
-                  keepClosingSlash: true,
-                  minifyJS: true,
-                  minifyCSS: true,
-                  minifyURLs: true
-                }
-              }
-            : undefined
+          htmlWebpackPluginConfig,
+        )
+      ),
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {},
+          {
+            inject: true,
+            template: paths.boostTestHtml,
+            filename: "boost-test.html",
+            chunks: ["boost"],
+          },
+          htmlWebpackPluginConfig,
         )
       ),
       // Inlines the webpack runtime script. This script is too small to warrant

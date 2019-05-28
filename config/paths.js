@@ -74,6 +74,8 @@ module.exports = {
   appHtml: resolveApp("public/index.html"),
   appIndexJs: resolveModule(resolveApp, "src/iframe/index"),
   sdkIndexJs: resolveModule(resolveApp, "src/sdk/index"),
+  boostLoaderJs: resolveModule(resolveApp, "src/react/boosts/loader"),
+  boostTestHtml: resolveApp("public/boost-test.html"),
   appPackageJson: resolveApp("package.json"),
   appSrc: resolveApp("src"),
   appTsConfig: resolveApp("tsconfig.json"),
