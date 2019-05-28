@@ -1,6 +1,9 @@
 import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, Button, buttonSizes } from "@joincivil/components";
+import { colors, fonts, mediaQueries, Button, buttonSizes } from "@joincivil/components";
+import { Query } from "react-apollo";
+import { boostFeedQuery } from "./queries";
+import { BoostProgress } from "./BoostProgress"
 
 const BoostWrapper = styled.div`
   border: 1px solid ${colors.accent.CIVIL_GRAY_4};
@@ -12,6 +15,10 @@ const BoostWrapper = styled.div`
   button {
     margin: 0 0 30px;
   }
+
+  ${mediaQueries.MOBILE} {
+    padding: 20px;
+  }
 `;
 
 const BoostImg = styled.div`
@@ -22,6 +29,10 @@ const BoostImg = styled.div`
 
   img {
     width: 100%;
+
+    ${mediaQueries.MOBILE} {
+      display: none;
+    }
   }
 `;
 
@@ -49,45 +60,6 @@ const BoostNewsroom = styled.div`
   line-height: 26px;
   font-weight: 200;
   margin-right: 20px;
-`;
-
-const BoostProgressWrapper = styled.div`
-  margin-bottom: 20px;
-  padding-top: 20px;
-  position: relative;
-`;
-
-const BoostProgressAmount = styled.div`
-  color: ${colors.accent.CIVIL_GRAY_2};
-  font-size: 14px;
-  font-weight: 600;
-  left: 0;
-  margin-bottom: 20px;
-  position: absolute;
-  top: 0;
-`;
-
-const BoostProgressTime = styled.div`
-  color: ${colors.accent.CIVIL_GRAY_2};
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  position: absolute;
-  right: 0;
-  text-align: right;
-  top: 0;
-`;
-
-const BoostProgressBar = styled.div`
-  background-color: ${colors.accent.CIVIL_GRAY_4};
-  height: 10px;
-  width: 100%;
-`;
-
-const BoostProgress = styled.div`
-  background-color: ${colors.accent.CIVIL_GRAY_2};
-  height: 10px;
-  width: 10%;
 `;
 
 const BoostDescription = styled.div`
@@ -122,77 +94,96 @@ const Table = styled.table`
   }
 `;
 
-export interface Items {
-  item: string;
-  cost: string;
-}
-
 export interface BoostProps {
   open: boolean;
-  image?: string;
-  title?: string;
-  newsroom?: string;
-  why?: string;
-  what?: string;
-  about?: string;
-  itemList: Items[];
 }
+
+// Temporary data till boost endpoints are up
+const boost = {
+  boostUrl: "/boosts/xxxx",
+  image: "https://cdn.mos.cms.futurecdn.net/ewcvC8bNBec6oMG9zufgVg.jpg",
+  title:
+    "Send us to Mars",
+  newsroom: "Block Club Chicago",
+  newsroomUrl: "https://blockclubchicago.org/",
+  newsroomRegistryUrl: "https://registry.civil.co/listing/0x23daa7fba48cd68a2b86a77a1e707a6aae41c4ea",
+  raisedAmount: 150000,
+  goalAmount: 1021500,
+  daysLeft: 15,
+  why:
+    "Japan and the U.S. will launch a mission to Mars “very soon,” President Trump said. “It's very exciting. And from a military standpoint, there is nothing more important right now than space,”",
+  what:
+    "Suspendisse rutrum elementum odio sit amet sodales. Praesent convallis urna at congue bibendum. Morbi vel auctor ipsum, in fermentum risus. Suspendisse nisl massa, viverra sed faucibus vel, fermentum quis tellus. Mauris nec egestas diam. Nulla facilisi.",
+  about:
+    "Block Club Chicago is a nonprofit news organization dedicated to delivering reliable, nonpartisan and essential coverage of Chicago’s diverse neighborhoods and Mars.",
+  items: [
+    { item: "Huge Rocket", cost: "$1000000" },
+    { item: "Astronaut training", cost: "$20000" },
+    { item: "Freeze dried ice cream", cost: "$1500" },
+  ],
+};
 
 export const Boost: React.FunctionComponent<BoostProps> = props => {
   return (
-    <BoostWrapper>
-      <BoostImg>
-        <img src={props.image} />
-      </BoostImg>
-      <BoostTitle>{props.title}</BoostTitle>
-      <BoostNewsroomInfo>
-        <BoostNewsroom>{props.newsroom}</BoostNewsroom>
-        <a href="" target="_blank">
-          Website
-        </a>
-        <a href="" target="_blank">
-          Registry
-        </a>
-      </BoostNewsroomInfo>
-      <BoostProgressWrapper>
-        <BoostProgressAmount>x of x raised</BoostProgressAmount>
-        <BoostProgressTime>x days to go</BoostProgressTime>
-        <BoostProgressBar>
-          <BoostProgress />
-        </BoostProgressBar>
-      </BoostProgressWrapper>
-      {props.open && (
-        <>
-          <Button size={buttonSizes.MEDIUM}>Support</Button>
-          <BoostDescription>
-            <h3>Why we need this</h3>
-            <p>{props.why}</p>
-          </BoostDescription>
-          <BoostDescription>
-            <h3>What the outcome will be</h3>
-            <p>{props.what}</p>
-          </BoostDescription>
-          <BoostDescription>
-            <h3>About the newsroom</h3>
-            <p>{props.about}</p>
-          </BoostDescription>
-          <BoostDescription>
-            <h3>Where your support goes</h3>
-            <Table>
-              <tr>
-                <th>Item</th>
-                <th>Cost</th>
-              </tr>
-              {props.itemList.map((item, i) => (
-                <tr>
-                  <td>{item.item}</td>
-                  <td>{item.cost}</td>
-                </tr>
-              ))}
-            </Table>
-          </BoostDescription>
-        </>
-      )}
-    </BoostWrapper>
+    <Query query={boostFeedQuery}>
+      {({ loading, error, data }) => {
+        if (loading) {
+          return "Loading...";
+        } else if (error) {
+          return "Error: " + JSON.stringify(error);
+        }
+
+        return (
+          <BoostWrapper>
+            <BoostImg>
+              <img src={boost.image} />
+            </BoostImg>
+            <BoostTitle>{boost.title}</BoostTitle>
+            <BoostNewsroomInfo>
+              <BoostNewsroom>{boost.newsroom}</BoostNewsroom>
+              <a href={boost.newsroomUrl} target="_blank">
+                Website
+              </a>
+              <a href={boost.newsroomRegistryUrl} target="_blank">
+                Registry
+              </a>
+            </BoostNewsroomInfo>
+            <BoostProgress goalAmount={boost.goalAmount} raisedAmount={boost.raisedAmount} daysLeft={boost.daysLeft} />
+            {props.open && (
+              <>
+                <Button size={buttonSizes.MEDIUM}>Support</Button>
+                <BoostDescription>
+                  <h3>Why we need this</h3>
+                  <p>{boost.why}</p>
+                </BoostDescription>
+                <BoostDescription>
+                  <h3>What the outcome will be</h3>
+                  <p>{boost.what}</p>
+                </BoostDescription>
+                <BoostDescription>
+                  <h3>About the newsroom</h3>
+                  <p>{boost.about}</p>
+                </BoostDescription>
+                <BoostDescription>
+                  <h3>Where your support goes</h3>
+                  <Table>
+                    <tr>
+                      <th>Item</th>
+                      <th>Cost</th>
+                    </tr>
+                    {boost.items.map((item, i) => (
+                      <tr>
+                        <td>{item.item}</td>
+                        <td>{item.cost}</td>
+                      </tr>
+                    ))}
+                  </Table>
+                </BoostDescription>
+              </>
+            )}
+          </BoostWrapper>
+        );
+      }}
+    </Query>
   );
 };
