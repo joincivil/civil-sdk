@@ -8,9 +8,7 @@
     "@babel/core": "7.2.2",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
-    "@joincivil/artifacts": "file:./Civil/packages/artifacts/",
     "@joincivil/components": "file:./Civil/packages/components",
-    "@joincivil/typescript-types": "file:./Civil/packages/typescript-types/",
     "@joincivil/utils": "file:./Civil/packages/utils/",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",
@@ -67,6 +65,13 @@
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3",
     "yarn": "^1.16.0"
+  },
+  "resolutions": {
+    "@joincivil/artifacts": "file:./Civil/packages/artifacts/",
+    "@joincivil/core": "file:./Civil/packages/core/",
+    "@joincivil/ethapi": "file:./Civil/packages/ethapi/",
+    "@joincivil/typescript-types": "file:./Civil/packages/typescript-types/",
+    "@joincivil/utils": "file:./Civil/packages/utils/"
   },
   "scripts": {
     "preinstall": "! command -v yarn && npm install yarn; [ ! -d Civil ] && git clone https://github.com/joincivil/Civil.git; cd Civil; git pull; yarn install; yarn build; cd ..;",
