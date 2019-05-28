@@ -71,6 +71,7 @@
   "scripts": {
     "preinstall": "! command -v yarn && npm install yarn; [ ! -d Civil ] && git clone https://github.com/joincivil/Civil.git; cd Civil; git pull; yarn install; yarn build; cd ..;",
     "start": "node scripts/start.js",
+    "start:boost": "OPEN_PATH=boost-test.html node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "package:build": "tsc",
