@@ -96,11 +96,12 @@ const Table = styled.table`
 
 export interface BoostProps {
   open: boolean;
+  key: number;
 }
 
 // Temporary data till boost endpoints are up
 const boost = {
-  boostUrl: "/boosts/xxxx",
+  boostId: "1234",
   image: "https://cdn.mos.cms.futurecdn.net/ewcvC8bNBec6oMG9zufgVg.jpg",
   title:
     "Send us to Mars",
@@ -167,16 +168,20 @@ export const Boost: React.FunctionComponent<BoostProps> = props => {
                 <BoostDescription>
                   <h3>Where your support goes</h3>
                   <Table>
-                    <tr>
-                      <th>Item</th>
-                      <th>Cost</th>
-                    </tr>
-                    {boost.items.map((item, i) => (
+                    <thead>
                       <tr>
-                        <td>{item.item}</td>
-                        <td>{item.cost}</td>
+                        <th>Item</th>
+                        <th>Cost</th>
                       </tr>
-                    ))}
+                    </thead>
+                    <tbody>
+                      {boost.items.map((item: any, i: number) => (
+                        <tr key={i}>
+                          <td>{item.item}</td>
+                          <td>{item.cost}</td>
+                        </tr>
+                      ))}
+                    </tbody>
                   </Table>
                 </BoostDescription>
               </>
