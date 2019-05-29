@@ -96,7 +96,7 @@ const Table = styled.table`
 
 export interface BoostProps {
   open: boolean;
-  key: number;
+  key?: number;
 }
 
 // Temporary data till boost endpoints are up

@@ -43,6 +43,7 @@ const BoostProgressTime = styled.div`
 const BoostProgressBar = styled.div`
   background-color: ${colors.accent.CIVIL_GRAY_4};
   height: 10px;
+  overflow: hidden;
   width: 100%;
 `;
 
