@@ -2,7 +2,7 @@ import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
 import { colors, fonts, mediaQueries, Button, buttonSizes } from "@joincivil/components";
 import { Query } from "react-apollo";
-import { boostFeedQuery } from "./queries";
+import { boostQuery } from "./queries";
 import { BoostProgress } from "./BoostProgress"
 
 const BoostWrapper = styled.div`
@@ -95,6 +95,7 @@ const Table = styled.table`
 `;
 
 export interface BoostProps {
+  boostId?: string;
   open: boolean;
   key?: number;
 }
@@ -125,8 +126,11 @@ const boost = {
 };
 
 export const Boost: React.FunctionComponent<BoostProps> = props => {
+  // TODO(sruddy) temporary id from test mutation/query https://graphqlbin.com/v2/lRZ3TP >> use prop
+  const id = "07bcdd89-ff29-46f5-b00a-36949cb02368";
+
   return (
-    <Query query={boostFeedQuery}>
+    <Query query={boostQuery} variables={{ id }}>
       {({ loading, error, data }) => {
         if (loading) {
           return "Loading...";
@@ -139,7 +143,7 @@ export const Boost: React.FunctionComponent<BoostProps> = props => {
             <BoostImg>
               <img src={boost.image} />
             </BoostImg>
-            <BoostTitle>{boost.title}</BoostTitle>
+            <BoostTitle>{data.postsGet.title}</BoostTitle>
             <BoostNewsroomInfo>
               <BoostNewsroom>{boost.newsroom}</BoostNewsroom>
               <a href={boost.newsroomUrl} target="_blank">
@@ -149,21 +153,21 @@ export const Boost: React.FunctionComponent<BoostProps> = props => {
                 Registry
               </a>
             </BoostNewsroomInfo>
-            <BoostProgress goalAmount={boost.goalAmount} raisedAmount={boost.raisedAmount} daysLeft={boost.daysLeft} />
+            <BoostProgress goalAmount={data.postsGet.goalAmount} raisedAmount={boost.raisedAmount} daysLeft={boost.daysLeft} />
             {props.open && (
               <>
                 <Button size={buttonSizes.MEDIUM}>Support</Button>
                 <BoostDescription>
                   <h3>Why we need this</h3>
-                  <p>{boost.why}</p>
+                  <p>{data.postsGet.why}</p>
                 </BoostDescription>
                 <BoostDescription>
                   <h3>What the outcome will be</h3>
-                  <p>{boost.what}</p>
+                  <p>{data.postsGet.what}</p>
                 </BoostDescription>
                 <BoostDescription>
                   <h3>About the newsroom</h3>
-                  <p>{boost.about}</p>
+                  <p>{data.postsGet.about}</p>
                 </BoostDescription>
                 <BoostDescription>
                   <h3>Where your support goes</h3>
@@ -175,7 +179,7 @@ export const Boost: React.FunctionComponent<BoostProps> = props => {
                       </tr>
                     </thead>
                     <tbody>
-                      {boost.items.map((item: any, i: number) => (
+                      {data.postsGet.items.map((item: any, i: number) => (
                         <tr key={i}>
                           <td>{item.item}</td>
                           <td>{item.cost}</td>
