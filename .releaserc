@@ -32,6 +32,7 @@
       {
         "assets": [{ "path": "build/static/js/sdk.js", "label": "sdk.js" }]
       }
-    ]
+    ],
+    "@semantic-release/npm"
   ]
 }
