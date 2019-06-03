@@ -19,6 +19,7 @@ export const boostQuery = gql`
         why
         what
         about
+        dateEnd
         items {
           item
           cost
@@ -38,6 +39,7 @@ export const boostMutation = gql`
       why
       what
       about
+      dateEnd
       items {
         item
         cost

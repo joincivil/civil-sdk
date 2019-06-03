@@ -124,6 +124,9 @@
     "semantic-release": "^15.13.3",
     "typescript": "3.3.4000"
   },
+  "peerDependencies": {
+    "styled-components": ">= 3"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
