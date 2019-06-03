@@ -95,7 +95,7 @@ const Table = styled.table`
 `;
 
 export interface BoostProps {
-  boostId?: string;
+  boostId: string;
   open: boolean;
   key?: number;
 }
@@ -126,7 +126,8 @@ const boost = {
 };
 
 export const Boost: React.FunctionComponent<BoostProps> = props => {
-  // TODO(sruddy) temporary id from test mutation/query https://graphqlbin.com/v2/lRZ3TP >> use prop
+  // TODO(sruddy) temporary id from test mutation/query https://graphqlbin.com/v2/lRZ3TP
+  // const id = props.boostId;
   const id = "07bcdd89-ff29-46f5-b00a-36949cb02368";
 
   return (
