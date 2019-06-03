@@ -39,5 +39,5 @@ storiesOf("Boosts", module)
       mocks,
     }),
   )
-  .add("Boost List Card", () => <Boost open={false} />)
-  .add("Boost Description Card", () => <Boost open={true} />);
+  .add("Boost List Card", () => <Boost open={false} boostId={""} />)
+  .add("Boost Description Card", () => <Boost open={true} boostId={""} />);
