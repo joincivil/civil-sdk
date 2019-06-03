@@ -81,6 +81,7 @@
     "test": "node scripts/test.js",
     "package:build": "tsc",
     "package:watch": "tsc -w",
+    "prepublish": "yarn package:build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "release": "semantic-release",
     "commit": "commit",
@@ -99,6 +100,7 @@
   "devDependencies": {
     "@babel/plugin-transform-member-expression-literals": "^7.2.0",
     "@commitlint/prompt-cli": "^7.5.0",
+    "@semantic-release/npm": "^5.1.7",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-links": "^5.0.10",
     "@storybook/addons": "^5.0.10",
