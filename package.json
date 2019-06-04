@@ -1,6 +1,6 @@
 {
   "name": "@joincivil/civil-sdk",
-  "version": "1.4.0",
+  "version": "1.0.0",
   "private": false,
   "main": "build/static/js/index.js",
   "types": "build/static/js/index.d.ts",
