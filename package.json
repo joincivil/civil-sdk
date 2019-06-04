@@ -1,6 +1,6 @@
 {
   "name": "@joincivil/civil-sdk",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "private": false,
   "main": "build/static/js/index.js",
   "types": "build/static/js/index.d.ts",
@@ -81,7 +81,7 @@
     "test": "node scripts/test.js",
     "package:build": "tsc",
     "package:watch": "tsc -w",
-    "prepublish": "yarn package:build",
+    "prepublishOnly": "yarn package:build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "release": "semantic-release",
     "commit": "commit",
@@ -177,6 +177,9 @@
     "presets": [
       "react-app"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "husky": {
     "hooks": {
