@@ -14,8 +14,7 @@ export const BoostFeed: React.FunctionComponent = () => {
             return "Error: " + JSON.stringify(error);
           }
 
-          // @TODO temporary mapping until boost endpoints are up
-          return data.listings.map((boost: any, i: number) => <Boost key={i} boostId={""} open={false} />);
+          return data.posts.map((boost: any, i: number) => <Boost key={i} boostId={boost.id} open={false} />);
         }}
       </Query>
     </>
