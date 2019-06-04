@@ -136,7 +136,7 @@ export interface BoostProps {
   open: boolean;
 }
 
-// TODO(sruddy) how are we getting newsroom data
+// TODO(sruddy) get newsroom data from address
 const boost = {
   image: "https://cdn.mos.cms.futurecdn.net/ewcvC8bNBec6oMG9zufgVg.jpg",
   newsroom: "Block Club Chicago",

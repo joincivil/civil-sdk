@@ -9,10 +9,6 @@ export const boostFeedQuery = gql`
   }
 `;
 
-/* 
-  id from test mutation/query https://graphqlbin.com/v2/lRZ3TP
-  { "id": "07bcdd89-ff29-46f5-b00a-36949cb02368" }
-*/
 export const boostQuery = gql`
   query Boost($id: String!) {
     postsGet(id: $id) {
