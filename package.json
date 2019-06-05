@@ -8,8 +8,6 @@
     "@babel/core": "7.2.2",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
-    "@joincivil/components": "file:./Civil/packages/components",
-    "@joincivil/utils": "file:./Civil/packages/utils/",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
@@ -68,13 +66,15 @@
   },
   "resolutions": {
     "@joincivil/artifacts": "file:./Civil/packages/artifacts/",
+    "@joincivil/components": "file:./Civil/packages/components/",
     "@joincivil/core": "file:./Civil/packages/core/",
     "@joincivil/ethapi": "file:./Civil/packages/ethapi/",
     "@joincivil/typescript-types": "file:./Civil/packages/typescript-types/",
     "@joincivil/utils": "file:./Civil/packages/utils/"
   },
   "scripts": {
-    "preinstall": "! command -v yarn && npm install yarn; [ ! -d Civil ] && git clone https://github.com/joincivil/Civil.git; cd Civil; git pull; yarn install; yarn build; cd ..;",
+    "preinstall": "bash scripts/preinstall.sh",
+    "prepare": "bash scripts/prepare.sh",
     "start": "node scripts/start.js",
     "start:boost": "OPEN_PATH=boost-test.html node scripts/start.js",
     "build": "node scripts/build.js",
@@ -100,6 +100,8 @@
   "devDependencies": {
     "@babel/plugin-transform-member-expression-literals": "^7.2.0",
     "@commitlint/prompt-cli": "^7.5.0",
+    "@joincivil/components": "latest",
+    "@joincivil/utils": "latest",
     "@semantic-release/npm": "^5.1.7",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-links": "^5.0.10",
