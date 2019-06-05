@@ -148,8 +148,8 @@ const boost = {
 
 export const Boost: React.FunctionComponent<BoostProps> = props => {
   // TODO(sruddy) temporary id from test mutation/query https://graphqlbin.com/v2/lRZ3TP
-  const id = "87d0fe80-505f-4c1c-8a09-db7e20cb1045";
-  // const id = props.boostId;
+  // const id = "87d0fe80-505f-4c1c-8a09-db7e20cb1045";
+  const id = props.boostId;
 
   return (
     <Query query={boostQuery} variables={{ id }}>
