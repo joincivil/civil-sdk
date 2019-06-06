@@ -17,8 +17,8 @@ export const BoostPayOptions: React.FunctionComponent<BoostPayOptionsProps> = pr
         label=""
         // onChange={}
       >
-        <BoostPayEth />
-        <BoostPayCard />
+        <BoostPayEth name={"boost payments"} value={"eth"} />
+        <BoostPayCard name={"boost payments"} value={"card"} />
       </RadioInput>
     </>
   );

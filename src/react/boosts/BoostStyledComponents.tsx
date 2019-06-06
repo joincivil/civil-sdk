@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, mediaQueries, Button } from "@joincivil/components";
+import { colors, fonts, mediaQueries, Button, CloseBtn } from "@joincivil/components";
 
 export const BoostPayOption = styled.div`
   box-sizing: border-box;
@@ -60,4 +60,15 @@ export const LearnMore = styled.div`
 export const BoostFlex = styled.div`
   display: flex;
   justify-content: space-between;
+}`
+
+export const BoostModal = styled.div`
+  padding: 10px 30px 20px 30px;
+  position: relative;
+  width: 500px;
+
+  ${CloseBtn} {
+    right: 5px;
+    top: 5px;
+  }
 }`

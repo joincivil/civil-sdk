@@ -2,10 +2,15 @@ import * as React from "react";
 import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
 import { BoostPayOption, BoostPayCardDetails } from "../BoostStyledComponents";
 
-export const BoostPayCard: React.FunctionComponent = props => {
+export interface BoostPayEthProps {
+  name: string;
+  value: string;
+}
+
+export const BoostPayCard: React.FunctionComponent<BoostPayEthProps> = props => {
   return (
     <BoostPayOption>
-      <BoostPayRadioBtn name={"boost payments"} value={"card"}>Pay using card</BoostPayRadioBtn>
+      <BoostPayRadioBtn name={props.name} value={props.value}>Pay using card</BoostPayRadioBtn>
       <BoostPayCardDetails>
         <p>Coming Soon <a href="" target="_blank">Why only ETH?</a></p>
       </BoostPayCardDetails>
