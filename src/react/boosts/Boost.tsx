@@ -4,6 +4,7 @@ import { colors, fonts, mediaQueries, Button, buttonSizes } from "@joincivil/com
 import { Query } from "react-apollo";
 import { boostQuery } from "./queries";
 import { BoostProgress } from "./BoostProgress"
+import { FlexColumn } from "./BoostStyledComponents";
 
 const BoostWrapper = styled.div`
   border: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_4)};
@@ -116,11 +117,6 @@ const Table = styled.table`
   td {
     padding: 8px 15px 8px 0;
   }
-`;
-
-const FlexColumn = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const BoostProgressCol = styled.div`

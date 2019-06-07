@@ -72,3 +72,15 @@ export const BoostModal = styled.div`
     top: 5px;
   }
 }`
+
+export const BoostPayFormTitle = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+`
+
+export const FlexColumn = styled.div`
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+`;
