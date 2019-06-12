@@ -183,7 +183,7 @@ export const BoostFlex = styled.div`
   justify-content: space-between;
 }`
 
-export const BoostModal = styled.div`
+export const BoostModalContents = styled.div`
   padding: 10px 30px 20px 30px;
   position: relative;
   width: 500px;

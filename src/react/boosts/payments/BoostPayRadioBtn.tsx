@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, mediaQueries, SecondaryButton } from "@joincivil/components";
+import { colors, fonts, mediaQueries, SecondaryButton, ButtonProps } from "@joincivil/components";
 
 const RadioBtnCircle = styled.div`
   background-color: ${colors.basic.WHITE};
@@ -51,6 +51,11 @@ const BoostPayRadioWrapper = styled.div`
       background-color: transparent;
       color: ${colors.accent.CIVIL_BLUE};
     }
+
+    &:disabled {
+      color: ${colors.accent.CIVIL_GRAY_2};
+      cursor: auto;
+    }
   }
 `;
 
@@ -59,11 +64,12 @@ export interface BoostPayRadioBtnProps {
   value: any;
   name?: string;
   disabled?: boolean;
+  defaultChecked?: boolean;
 }
 
 export const BoostPayRadioBtn: React.FunctionComponent<BoostPayRadioBtnProps> = props => {
   let input: any;
-  const { onChange, children, value, name } = props;
+  const { onChange, children, value, name, disabled, defaultChecked } = props;
   const clickHandler = () => {
     input.checked = true;
     if (onChange) {
@@ -73,8 +79,8 @@ export const BoostPayRadioBtn: React.FunctionComponent<BoostPayRadioBtnProps> = 
 
   return (
     <BoostPayRadioWrapper>
-      <input type="radio" value={value} onChange={onChange} name={name} ref={ref => (input = ref)} />
-      <SecondaryButton onClick={clickHandler} disabled={props.disabled || false}>
+      <input type="radio" value={value} onChange={onChange} defaultChecked={defaultChecked} name={name} ref={ref => (input = ref)} />
+      <SecondaryButton onClick={clickHandler} disabled={disabled || false}>
         <RadioBtnCircle />
         {children}
       </SecondaryButton>

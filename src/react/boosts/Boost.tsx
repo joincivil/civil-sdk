@@ -2,6 +2,7 @@ import * as React from "react";
 import { Query } from "react-apollo";
 import { boostQuery } from "./queries";
 import { BoostCard } from "./BoostCard";
+import { BoostPayments } from "./payments/BoostPayments";
 
 export interface BoostProps {
   boostId: string;
@@ -41,6 +42,17 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
             return "Error: " + JSON.stringify(error);
           }
 
+          if (this.state.payment) {
+            return (
+              <BoostPayments
+                boostId={id}
+                title={data.postsGet.title}
+                amount={20}
+                newsroom={"Block Club Chicago"}
+              />
+            );
+          }
+
           return (
             <BoostCard
               open={this.props.open}
@@ -52,10 +64,15 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
               what={data.postsGet.what}
               about={data.postsGet.about}
               items={data.postsGet.items}
+              handlePayments={this.startPayment}
             />
           );
         }}
       </Query>
     );
+  };
+
+  private startPayment = () => {
+    this.setState({ payment: true });
   };
 };

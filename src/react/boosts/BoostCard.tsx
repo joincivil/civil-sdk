@@ -29,6 +29,7 @@ export interface BoostCardProps {
   what: string;
   about: string;
   items: Items[];
+  handlePayments(): void;
 }
 
 // TODO(sruddy) get newsroom data from address
@@ -66,7 +67,7 @@ export const BoostCard: React.FunctionComponent<BoostCardProps> = props => {
         <BoostProgressCol open={props.open}>
           <BoostProgress open={props.open} goalAmount={props.goalAmount} paymentsTotal={props.paymentsTotal} daysLeft={boost.daysLeft} />
         </BoostProgressCol>
-        {props.open && (<Button size={buttonSizes.MEDIUM}>Support</Button>)}
+        {props.open && (<Button size={buttonSizes.MEDIUM} onClick={props.handlePayments}>Support</Button>)}
       </FlexColumn>
       {props.open && (
         <>

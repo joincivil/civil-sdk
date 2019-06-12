@@ -14,7 +14,6 @@ function init(): void {
     // `apolloClient as any` because of bug with types e.g. https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166
     <ApolloProvider client={apolloClient as any}>
       <Boost boostId={"87d0fe80-505f-4c1c-8a09-db7e20cb1045"} open={true} />
-      <BoostPayments />
     </ApolloProvider>,
     document.getElementById("civil-boost"),
   );

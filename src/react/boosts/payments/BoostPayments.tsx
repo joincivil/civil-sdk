@@ -37,15 +37,6 @@ const BoostNewsroom = styled.div`
   font-weight: 200;
 `;
 
-const BoostInstructions = styled.p`
-  color: ${colors.accent.CIVIL_GRAY_0};
-  font-family: ${fonts.SANS_SERIF};
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 22px;
-  margin-bottom: 20px;
-`;
-
 const BoostAmount = styled.p`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-family: ${fonts.SANS_SERIF};
@@ -56,9 +47,10 @@ const BoostAmount = styled.p`
 `;
 
 export interface BoostPaymentsProps {
-  title?: string;
-  newsroom?: string;
-  amount?: string;
+  boostId: string;
+  title: string;
+  newsroom: string;
+  amount: number;
 }
 
 export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props => {
@@ -69,9 +61,8 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
           <BoostNewsroom>{props.newsroom}</BoostNewsroom>
-          <BoostAmount>{props.amount}</BoostAmount>
+          <BoostAmount>{"$" + props.amount}</BoostAmount>
         </BoostDetails>
-        <BoostInstructions>Select how you would like to support this Boost</BoostInstructions>
       </BoostHeaderWrap>
       <BoostPayOptions />
     </>
