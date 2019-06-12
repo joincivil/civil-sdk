@@ -138,7 +138,6 @@ const boost = {
   newsroom: "Block Club Chicago",
   newsroomUrl: "https://blockclubchicago.org/",
   newsroomRegistryUrl: "https://registry.civil.co/listing/0x23daa7fba48cd68a2b86a77a1e707a6aae41c4ea",
-  raisedAmount: 10,
   daysLeft: 15,
 };
 
@@ -179,7 +178,7 @@ export const Boost: React.FunctionComponent<BoostProps> = props => {
             </BoostNewsroomInfo>
             <FlexColumn>
               <BoostProgressCol open={props.open}>
-                <BoostProgress open={props.open} goalAmount={data.postsGet.goalAmount} raisedAmount={boost.raisedAmount} daysLeft={boost.daysLeft} />
+                <BoostProgress open={props.open} goalAmount={data.postsGet.goalAmount} paymentsTotal={data.postsGet.paymentsTotal} daysLeft={boost.daysLeft} />
               </BoostProgressCol>
               {props.open && (<Button size={buttonSizes.MEDIUM}>Support</Button>)}
             </FlexColumn>

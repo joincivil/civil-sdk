@@ -58,6 +58,7 @@ export interface BoostPayRadioBtnProps {
   onChange?: any;
   value: any;
   name?: string;
+  disabled?: boolean;
 }
 
 export const BoostPayRadioBtn: React.FunctionComponent<BoostPayRadioBtnProps> = props => {
@@ -73,7 +74,7 @@ export const BoostPayRadioBtn: React.FunctionComponent<BoostPayRadioBtnProps> = 
   return (
     <BoostPayRadioWrapper>
       <input type="radio" value={value} onChange={onChange} name={name} ref={ref => (input = ref)} />
-      <SecondaryButton onClick={clickHandler}>
+      <SecondaryButton onClick={clickHandler} disabled={props.disabled || false}>
         <RadioBtnCircle />
         {children}
       </SecondaryButton>

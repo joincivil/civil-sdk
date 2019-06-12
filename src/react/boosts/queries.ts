@@ -14,7 +14,9 @@ export const boostQuery = gql`
     postsGet(id: $id) {
       channelID
       ... on PostBoost {
+        currencyCode
         goalAmount
+        paymentsTotal(currencyCode: "USD")
         title
         why
         what
