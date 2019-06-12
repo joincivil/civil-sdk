@@ -2,12 +2,12 @@ import * as React from "react";
 import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
 import { BoostPayOption, BoostPayCardDetails } from "../BoostStyledComponents";
 
-export interface BoostPayEthProps {
+export interface BoostPayStripeProps {
   name: string;
   value: string;
 }
 
-export const BoostPayCard: React.FunctionComponent<BoostPayEthProps> = props => {
+export const BoostPayStripe: React.FunctionComponent<BoostPayStripeProps> = props => {
   return (
     <BoostPayOption>
       <BoostPayRadioBtn name={props.name} value={props.value} disabled={true}>Pay using card</BoostPayRadioBtn>

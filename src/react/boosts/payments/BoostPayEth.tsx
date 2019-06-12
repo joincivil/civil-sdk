@@ -78,7 +78,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
         </FullScreenModal>
       </>
     );
-  }
+  };
 
   private openWhyEthModal = () => {
     this.setState({ isWhyEthModalOpen: true });

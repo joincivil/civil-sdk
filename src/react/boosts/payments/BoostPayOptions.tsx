@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RadioInput } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
-import { BoostPayCard } from "./BoostPayCard";
+import { BoostPayStripe } from "./BoostPayStripe";
 
 export interface BoostPayOptionsProps {
   onChange?: any;
@@ -18,7 +18,7 @@ export const BoostPayOptions: React.FunctionComponent<BoostPayOptionsProps> = pr
         // onChange={}
       >
         <BoostPayEth name={"boost payments"} value={"eth"} />
-        <BoostPayCard name={"boost payments"} value={"card"} />
+        <BoostPayStripe name={"boost payments"} value={"card"} />
       </RadioInput>
     </>
   );
