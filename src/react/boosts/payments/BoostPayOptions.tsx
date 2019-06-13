@@ -3,7 +3,8 @@ import { RadioInput } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
 import { BoostPayStripe } from "./BoostPayStripe";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts } from "@joincivil/components";
+import { colors, fonts, Button } from "@joincivil/components";
+import { BoostFlexCenter } from "../BoostStyledComponents";
 
 export enum PAYMENT_TYPE {
   DEFAULT = "",
@@ -42,7 +43,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
         {
           this.state.paymentType === PAYMENT_TYPE.DEFAULT
           ? <BoostInstructions>Select how you would like to support this Boost</BoostInstructions>
-          : <BoostInstructions>Edit Payment</BoostInstructions>
+          : <BoostInstructions><BoostFlexCenter>Payment <Button onClick={this.handleEdit}>Edit</Button></BoostFlexCenter></BoostInstructions>
         }
         <RadioInput name={"BoostPayments"} label={""}>
           {this.getPaymentTypes()}
@@ -73,5 +74,9 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
 
   private handleEthNext = () => {
     this.setState({ paymentType: PAYMENT_TYPE.ETH });
+  };
+
+  private handleEdit = () => {
+    this.setState({ paymentType: PAYMENT_TYPE.DEFAULT });
   };
 }

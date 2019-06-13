@@ -1,9 +1,8 @@
 import * as React from "react";
-import styled from "styled-components";
-import { colors, fonts, mediaQueries, Button, buttonSizes } from "@joincivil/components";
+import { Button, buttonSizes } from "@joincivil/components";
 import { BoostProgress } from "./BoostProgress"
 import {
-  FlexColumn,
+  BoostFlexStart,
   BoostWrapper,
   BoostImg,
   BoostTitle,
@@ -16,7 +15,7 @@ import {
 
 export interface Items {
   item: string;
-  cost: string;
+  cost: number;
 }
 
 export interface BoostCardProps {
@@ -63,12 +62,12 @@ export const BoostCard: React.FunctionComponent<BoostCardProps> = props => {
           </>
         )}
       </BoostNewsroomInfo>
-      <FlexColumn>
+      <BoostFlexStart>
         <BoostProgressCol open={props.open}>
           <BoostProgress open={props.open} goalAmount={props.goalAmount} paymentsTotal={props.paymentsTotal} daysLeft={boost.daysLeft} />
         </BoostProgressCol>
         {props.open && (<Button size={buttonSizes.MEDIUM} onClick={props.handlePayments}>Support</Button>)}
-      </FlexColumn>
+      </BoostFlexStart>
       {props.open && (
         <>
           <BoostDescription>

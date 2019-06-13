@@ -1,6 +1,7 @@
 import * as React from "react";
-import styled, { StyledComponentClass } from "styled-components";
+import styled from "styled-components";
 import { colors } from "@joincivil/components";
+import { BoostFlexStart, BoostFlexEnd } from "./BoostStyledComponents";
 
 export interface BoostProgressWidthProps {
   paymentsTotal: number;
@@ -33,23 +34,12 @@ const BoostProgressPercent = styled.div`
   width: ${(props: BoostProgressWidthProps) => (props.paymentsTotal / props.goalAmount * 100).toString()}%;
 `;
 
-const ProgressFlex = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
 const ProgressFlexLeft = styled.div`
   width: 75%;
 `;
 
 const ProgressFlexRight = styled.div`
   margin-bottom: 8px;
-`;
-
-const FlexColumn = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const MarginBottom = styled.div`
@@ -82,24 +72,24 @@ export const BoostProgress: React.FunctionComponent<BoostProgressProps> = props 
     <BoostProgressWrapper>
       {props.open ?
         <>
-          <FlexColumn>
+          <BoostFlexStart>
             <TextPrimary>{"$" + props.paymentsTotal} raised</TextPrimary>
             <AlignRight><TextPrimary><b>${props.goalAmount}</b> goal</TextPrimary></AlignRight>
-          </FlexColumn>
+          </BoostFlexStart>
           <BoostProgressBar>
             <BoostProgressPercent paymentsTotal={props.paymentsTotal} goalAmount={props.goalAmount} />
           </BoostProgressBar>
-          <FlexColumn>
+          <BoostFlexStart>
             <TextSecondary>{percentRaised}%</TextSecondary>
             <AlignRight><TextSecondary>{props.daysLeft} days left</TextSecondary></AlignRight>
-          </FlexColumn>
+          </BoostFlexStart>
         </>
         :
-        <ProgressFlex>
+        <BoostFlexEnd>
           <ProgressFlexLeft>
-            <FlexColumn>
+            <BoostFlexStart>
               <TextSecondary>{percentRaised}%</TextSecondary>
-            </FlexColumn>
+            </BoostFlexStart>
             <BoostProgressBar>
               <BoostProgressPercent paymentsTotal={props.paymentsTotal} goalAmount={props.goalAmount} />
             </BoostProgressBar>
@@ -113,7 +103,7 @@ export const BoostProgress: React.FunctionComponent<BoostProgressProps> = props 
             </MarginBottom>
             <TextSecondary>{"$" + amountToGoal} till funded</TextSecondary>
           </ProgressFlexRight>
-        </ProgressFlex>
+        </BoostFlexEnd>
       }
     </BoostProgressWrapper>
   );

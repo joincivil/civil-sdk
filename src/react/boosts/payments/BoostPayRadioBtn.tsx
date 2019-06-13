@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, mediaQueries, SecondaryButton, ButtonProps } from "@joincivil/components";
+import { colors, fonts, SecondaryButton } from "@joincivil/components";
 
 const RadioBtnCircle = styled.div`
   background-color: ${colors.basic.WHITE};

@@ -1,10 +1,9 @@
 import * as React from "react";
 import { storiesOf } from "@storybook/react";
 import { BoostPayments } from "./BoostPayments";
-import { BoostPayForm } from "./BoostPayForm";
 
-storiesOf("Boost Payment Flow", module)
-  .add("Boost Payments", () => {
+storiesOf("Boosts", module)
+  .add("Payments", () => {
     return (
       <>
         <BoostPayments
@@ -13,7 +12,6 @@ storiesOf("Boost Payment Flow", module)
           newsroom={"The Colorado Sun"}
           amount={20}
         />
-        <BoostPayForm />
       </>
     );
   });

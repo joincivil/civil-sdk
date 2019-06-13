@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
-import { BoostPayOption, BoostPayCardDetails, LearnMore, BoostFlex } from "../BoostStyledComponents";
+import { BoostPayOption, BoostPayCardDetails, LearnMore, BoostFlexCenter } from "../BoostStyledComponents";
 import { WhyEthModalText, WhatIsEthModalText } from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
 import { Button } from "@joincivil/components";
@@ -52,11 +52,11 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
             <a onClick={this.openWhyEthModal}>Why ETH?</a>
           </LearnMore>
           <h3>Boost Amount</h3>
-          <BoostFlex>
+          <BoostFlexCenter>
             {/*<UsdEthConverter />*/}
             [USD to ETH Converter]
             <Button onClick={this.props.handleNext}>Next</Button>
-          </BoostFlex>
+          </BoostFlexCenter>
         </BoostPayCardDetails>
 
         <BoostModal open={this.state.isWhyEthModalOpen} handleClose={this.handleClose}>
@@ -74,8 +74,8 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
       <BoostPayCardDetails>
         <p>You will be paying using a digital wallet such as <a href="" target="_blank">MetaMask</a></p>
         <h3>Boost Amount</h3>
-        <BoostFlex>
-        </BoostFlex>
+        <BoostFlexCenter>
+        </BoostFlexCenter>
       </BoostPayCardDetails>
     );
   };

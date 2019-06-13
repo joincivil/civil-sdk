@@ -13,8 +13,14 @@ export const BoostWrapper = styled.div`
   padding: 30px 30px 30px 110px;
   position: relative;
 
-  button {
-    margin: 0 0 30px;
+  ${Button} {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 19px;
+    padding: 10px 40px;
+    text-transform: none;
   }
 
   ${mediaQueries.MOBILE} {
@@ -40,6 +46,7 @@ export const BoostImg = styled.div`
 export const BoostTitle = styled.h2`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-size: 20px;
+  font-family: ${fonts.SANS_SERIF};
   line-height: 27px;
   font-weight: bold;
   margin: 0 0 8px;
@@ -66,6 +73,7 @@ export const BoostNewsroomInfo = styled.div`
 
 export const BoostNewsroom = styled.div`
   color: ${colors.accent.CIVIL_GRAY_0};
+  font-family: ${fonts.SANS_SERIF};
   font-size: 18px;
   line-height: 26px;
   font-weight: 200;
@@ -178,7 +186,26 @@ export const LearnMore = styled.div`
   }
 }`
 
-export const BoostFlex = styled.div`
+export const BoostPayFormTitle = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+`
+
+export const BoostFlexStart = styled.div`
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const BoostFlexCenter = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}`
+
+export const BoostFlexEnd = styled.div`
+  align-items: flex-end;
   display: flex;
   justify-content: space-between;
 }`
@@ -193,15 +220,3 @@ export const BoostModalContents = styled.div`
     top: 5px;
   }
 }`
-
-export const BoostPayFormTitle = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 22px;
-`
-
-export const FlexColumn = styled.div`
-  align-items: flex-start;
-  display: flex;
-  justify-content: space-between;
-`;
