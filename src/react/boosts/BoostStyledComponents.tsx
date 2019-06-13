@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, mediaQueries, Button, CloseBtn } from "@joincivil/components";
+import { colors, fonts, mediaQueries, Button, ButtonProps, CloseBtn  } from "@joincivil/components";
 
 export interface BoostStyleProps {
   open: boolean;
@@ -13,19 +13,19 @@ export const BoostWrapper = styled.div`
   padding: 30px 30px 30px 110px;
   position: relative;
 
-  ${Button} {
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 0;
-    line-height: 19px;
-    padding: 10px 40px;
-    text-transform: none;
-  }
-
   ${mediaQueries.MOBILE} {
     padding: 20px;
   }
+`;
+
+export const BoostButton: StyledComponentClass<ButtonProps, "button"> = styled(Button)`
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 19px;
+  padding: 10px 40px;
+  text-transform: none;
 `;
 
 export const BoostImg = styled.div`
@@ -142,16 +142,6 @@ export const BoostPayOption = styled.div`
   padding: 20px;
   position: relative;
   width: 100%;
-
-  ${Button} {
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 0;
-    line-height: 19px;
-    padding: 10px 40px;
-    text-transform: none;
-  }
 
   ${mediaQueries.MOBILE} {
     padding: 15px;

@@ -13,15 +13,6 @@ export interface BoostStates {
   payment: boolean;
 }
 
-// TODO(sruddy) get newsroom data from address
-const boost = {
-  image: "https://cdn.mos.cms.futurecdn.net/ewcvC8bNBec6oMG9zufgVg.jpg",
-  newsroom: "Block Club Chicago",
-  newsroomUrl: "https://blockclubchicago.org/",
-  newsroomRegistryUrl: "https://registry.civil.co/listing/0x23daa7fba48cd68a2b86a77a1e707a6aae41c4ea",
-  daysLeft: 15,
-};
-
 export class Boost extends React.Component<BoostProps, BoostStates> {
   public constructor(props: BoostProps) {
     super(props);

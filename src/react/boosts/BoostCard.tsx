@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Button, buttonSizes } from "@joincivil/components";
 import { BoostProgress } from "./BoostProgress"
 import {
+  BoostButton,
   BoostFlexStart,
   BoostWrapper,
   BoostImg,
@@ -66,7 +66,7 @@ export const BoostCard: React.FunctionComponent<BoostCardProps> = props => {
         <BoostProgressCol open={props.open}>
           <BoostProgress open={props.open} goalAmount={props.goalAmount} paymentsTotal={props.paymentsTotal} daysLeft={boost.daysLeft} />
         </BoostProgressCol>
-        {props.open && (<Button size={buttonSizes.MEDIUM} onClick={props.handlePayments}>Support</Button>)}
+        {props.open && (<BoostButton onClick={props.handlePayments}>Support</BoostButton>)}
       </BoostFlexStart>
       {props.open && (
         <>

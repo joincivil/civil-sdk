@@ -1,9 +1,8 @@
 import * as React from "react";
 import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
-import { BoostPayOption, BoostPayCardDetails, LearnMore, BoostFlexCenter } from "../BoostStyledComponents";
+import { BoostPayOption, BoostPayCardDetails, LearnMore, BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
 import { WhyEthModalText, WhatIsEthModalText } from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
-import { Button } from "@joincivil/components";
 import { BoostPayForm } from "./BoostPayForm";
 
 export interface BoostPayEthProps {
@@ -55,7 +54,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           <BoostFlexCenter>
             {/*<UsdEthConverter />*/}
             [USD to ETH Converter]
-            <Button onClick={this.props.handleNext}>Next</Button>
+            <BoostButton onClick={this.props.handleNext}>Next</BoostButton>
           </BoostFlexCenter>
         </BoostPayCardDetails>
 

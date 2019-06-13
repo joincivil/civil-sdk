@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TextInput, Checkbox, Button, buttonSizes } from "@joincivil/components";
-import { BoostPayFormTitle, BoostFlexStart } from "../BoostStyledComponents";
+import { TextInput, Checkbox } from "@joincivil/components";
+import { BoostPayFormTitle, BoostFlexStart, BoostButton } from "../BoostStyledComponents";
 import styled from "styled-components";
 import { colors, fonts } from "@joincivil/components";
 
@@ -72,7 +72,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
           <BoostFlexStart>
             <SubmitInstructions>Once your Boost is sent, we’ll be sending you a confirmation email if selected of your completed transaction.  All procceded of the Boost go directly to the newsroom. If a Boost goal is not met, the proceeds will still go to fund the selected newsroom.</SubmitInstructions>
             <div>
-              <Button size={buttonSizes.MEDIUM} type="submit" >Support this Boost</Button>
+              <BoostButton type="submit" >Support this Boost</BoostButton>
               <SubmitWarning>Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees charged by the Ethereum network. By sending a Boost, you agree to Civil’s Terms of Use and Privacy Policy. Depending on your selection, your email and comment may be visible to the newsroom.</SubmitWarning>
             </div>
           </BoostFlexStart>
