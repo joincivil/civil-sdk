@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, mediaQueries, Button, ButtonProps, CloseBtn  } from "@joincivil/components";
+import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton  } from "@joincivil/components";
 
 export interface BoostStyleProps {
   open: boolean;
@@ -204,9 +204,27 @@ export const BoostModalContents = styled.div`
   padding: 10px 30px 20px 30px;
   position: relative;
   width: 500px;
-
-  ${CloseBtn} {
-    right: 5px;
-    top: 5px;
-  }
 }`
+
+export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = styled(InvertedButton)`
+  border: none;
+  padding: 0;
+  height: 40px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 40px;
+
+  svg path {
+    transition: fill 0.2s ease;
+  }
+
+  &:focus,
+  &:hover {
+    background-color: transparent;
+
+    svg path {
+      fill: ${colors.accent.CIVIL_BLUE};
+    }
+  }
+`;

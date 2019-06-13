@@ -1,6 +1,6 @@
 import * as React from "react";
-import { BoostModalContents } from "./BoostStyledComponents";
-import { colors, FullScreenModal, CloseBtn, CloseXIcon } from "@joincivil/components";
+import { BoostModalContents, BoostModalCloseBtn } from "./BoostStyledComponents";
+import { colors, FullScreenModal, CloseXIcon } from "@joincivil/components";
 
 export interface BoostModalProps {
   open: boolean;
@@ -13,9 +13,9 @@ export const BoostModal: React.FunctionComponent<BoostModalProps> = props => {
     <>
       <FullScreenModal open={props.open}>
         <BoostModalContents>
-          <CloseBtn onClick={props.handleClose}>
+          <BoostModalCloseBtn onClick={props.handleClose}>
             <CloseXIcon color={colors.accent.CIVIL_GRAY_2} />
-          </CloseBtn>
+          </BoostModalCloseBtn>
           {props.children}
         </BoostModalContents>
       </FullScreenModal>
