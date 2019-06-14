@@ -3,7 +3,7 @@ import styled, { StyledComponentClass } from "styled-components";
 import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton  } from "@joincivil/components";
 
 export interface BoostStyleProps {
-  open: boolean;
+  open?: boolean;
 }
 
 export const BoostWrapper = styled.div`
@@ -15,6 +15,19 @@ export const BoostWrapper = styled.div`
 
   ${mediaQueries.MOBILE} {
     padding: 20px;
+  }
+`;
+
+export const BoostWrapperFullWidthHr = styled.hr`
+  background-color: ${colors.accent.CIVIL_GRAY_4};
+  border: none;
+  height: 1px;
+  margin: 28px 0 28px -110px;
+  width: calc(100% + 140px);
+
+  ${mediaQueries.MOBILE} {
+    margin-left: -20px;
+    width: calc(100% + 40px);
   }
 `;
 
@@ -32,10 +45,13 @@ export const BoostImg = styled.div`
   left: 30px;
   position: absolute;
   top: 30px;
-  width: 65px;
 
   img {
-    width: 100%;
+    height: 64px;
+    min-width: 64px;
+    min-height: 64px;
+    object-fit: contain;
+    width: 64px;
 
     ${mediaQueries.MOBILE} {
       display: none;
@@ -114,7 +130,7 @@ export const BoostDescriptionTable = styled.div`
     width: 100%;
 
     th {
-      font-size: 10px;
+      font-size: 12px;
       letter-spacing: 1px;
       padding: 8px 15px 8px 0;
       text-align: left;
@@ -149,7 +165,7 @@ export const BoostPayOption = styled.div`
 }`
 
 export const BoostPayCardDetails = styled.div`
-  margin-top: 5px; 
+  margin-top: 5px;
   padding-left: 35px;
 
   p {
@@ -175,6 +191,12 @@ export const LearnMore = styled.div`
     margin-left: 30px;
   }
 }`
+
+export const BoostFormTitle = styled.div`
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 22px;
+`
 
 export const BoostPayFormTitle = styled.div`
   font-size: 16px;
@@ -227,4 +249,8 @@ export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = s
       fill: ${colors.accent.CIVIL_BLUE};
     }
   }
+`;
+
+export const BoostSmallPrint = styled.div`
+  font-size: 12px;
 `;
