@@ -52,3 +52,13 @@ export const boostMutation = gql`
     }
   }
 `;
+
+export const boostPayEthMutation = gql`
+  mutation($postID: String!, $input: PaymentsCreateEtherPaymentInput!) {
+    paymentsCreateEtherPayment(postID: $postID, input: $input) {
+      reaction
+      comment
+      transactionID
+    }
+  }
+`;
