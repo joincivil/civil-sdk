@@ -12,7 +12,7 @@ export const BoostPayStripe: React.FunctionComponent<BoostPayStripeProps> = prop
     <BoostPayOption>
       <BoostPayRadioBtn value={props.value} defaultChecked={props.defaultChecked} disabled={true}>Pay using card</BoostPayRadioBtn>
       <BoostPayCardDetails>
-        <p>Coming Soon <a href="" target="_blank">Why only ETH?</a></p>
+        <p>Coming Soon <a href="#TODO" target="_blank">Why only ETH?</a></p>
       </BoostPayCardDetails>
     </BoostPayOption>
   );

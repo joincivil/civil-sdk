@@ -188,6 +188,7 @@ export const LearnMore = styled.div`
   padding: 15px;
 
   a {
+    cursor: pointer;
     margin-left: 30px;
   }
 }`

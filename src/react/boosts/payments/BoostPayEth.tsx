@@ -1,9 +1,16 @@
 import * as React from "react";
 import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
 import { BoostPayOption, BoostPayCardDetails, LearnMore, BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
-import { WhyEthModalText, WhatIsEthModalText } from "../BoostTextComponents";
+import { WhyEthModalText, WhatIsEthModalText, CanUseCVLText } from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
 import { BoostPayForm } from "./BoostPayForm";
+// import { UsdEthConverter } from "@joincivil/components";
+
+export enum MODEL_CONTENT {
+  WHY_ETH = "why eth",
+  WHAT_IS_ETH = "what is eth",
+  CAN_USE_CVL = "can I use cvl",
+}
 
 export interface BoostPayEthProps {
   paymentStarted?: boolean;
@@ -13,16 +20,16 @@ export interface BoostPayEthProps {
 }
 
 export interface BoostPayEthStates {
-  isWhyEthModalOpen: boolean;
-  isWhatEthModalOpen: boolean;
+  isModalOpen: boolean;
+  modalContent: string;
 }
 
 export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthStates> {
   public constructor(props: BoostPayEthProps) {
     super(props);
     this.state = {
-      isWhyEthModalOpen: false,
-      isWhatEthModalOpen: false,
+      isModalOpen: false,
+      modalContent: "",
     };
   }
 
@@ -43,12 +50,13 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     return (
       <>
         <BoostPayCardDetails>
-          <p>You will be paying using a digital wallet such as <a href="" target="_blank">MetaMask</a></p>
-          <p>Don't have one? <a href="" target="_blank">Get a Digital Wallet and ETH</a></p>
+          <p>You will be paying using a digital wallet such as <a href="#TODO" target="_blank">MetaMask</a></p>
+          <p>Don't have one? <a href="#TODO" target="_blank">Get a Digital Wallet and ETH</a></p>
           <LearnMore>
             Learn more
-            <a onClick={this.openWhatEthModal}>What is ETH?</a>
-            <a onClick={this.openWhyEthModal}>Why ETH?</a>
+            <a onClick={() => this.openModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
+            <a onClick={() => this.openModal(MODEL_CONTENT.WHY_ETH)}>Why ETH?</a>
+            <a onClick={() => this.openModal(MODEL_CONTENT.CAN_USE_CVL)}>Can I use CVL?</a>
           </LearnMore>
           <h3>Boost Amount</h3>
           <BoostFlexCenter>
@@ -58,11 +66,8 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           </BoostFlexCenter>
         </BoostPayCardDetails>
 
-        <BoostModal open={this.state.isWhyEthModalOpen} handleClose={this.handleClose}>
-          <WhyEthModalText />
-        </BoostModal>
-        <BoostModal open={this.state.isWhatEthModalOpen} handleClose={this.handleClose}>
-          <WhatIsEthModalText />
+        <BoostModal open={this.state.isModalOpen} handleClose={this.handleClose}>
+          {this.renderModal()}
         </BoostModal>
       </>
     );
@@ -71,7 +76,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
   private getPaymentForm = () => {
     return (
       <BoostPayCardDetails>
-        <p>You will be paying using a digital wallet such as <a href="" target="_blank">MetaMask</a></p>
+        <p>You will be paying using a digital wallet such as <a href="#TODO" target="_blank">MetaMask</a></p>
         <h3>Boost Amount</h3>
         <BoostFlexCenter>
         </BoostFlexCenter>
@@ -79,15 +84,24 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     );
   };
 
-  private openWhyEthModal = () => {
-    this.setState({ isWhyEthModalOpen: true });
+  private renderModal = () => {
+    switch (this.state.modalContent) {
+      case MODEL_CONTENT.WHY_ETH:
+        return <WhyEthModalText /> ;
+      case MODEL_CONTENT.WHAT_IS_ETH:
+        return <WhatIsEthModalText />;
+      case MODEL_CONTENT.CAN_USE_CVL:
+        return <CanUseCVLText />;
+      default:
+        return <></>; 
+    }
   };
 
-  private openWhatEthModal = () => {
-    this.setState({ isWhatEthModalOpen: true });
+  private openModal = (modelContent: string) => {
+    this.setState({ isModalOpen: true, modalContent: modelContent });
   };
 
   private handleClose = () => {
-    this.setState({ isWhyEthModalOpen: false, isWhatEthModalOpen: false });
+    this.setState({ isModalOpen: false });
   };
 }

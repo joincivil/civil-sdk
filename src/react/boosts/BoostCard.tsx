@@ -102,8 +102,7 @@ export const BoostCard: React.FunctionComponent<BoostCardProps> = props => {
           </BoostDescriptionTable>
           <BoostDescription>
             <h3>Questions about Boosts?</h3>
-            {/* TODO(sruddy) add FAQ URL */}
-            <p><a href="">Learn more in our FAQ</a></p>
+            <p><a href="#TODO">Learn more in our FAQ</a></p>
           </BoostDescription>
         </>
       )}

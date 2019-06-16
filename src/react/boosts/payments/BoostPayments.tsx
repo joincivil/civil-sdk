@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { colors, fonts } from "@joincivil/components";
 import { BoostPayOptions } from "./BoostPayOptions";
 import { BoostWrapper, BoostTitle, BoostNewsroom } from "../BoostStyledComponents";
+import { PaymentInfoText, PaymentFAQText } from "../BoostTextComponents";
 
 const BoostHeaderWrap = styled.div`
   margin: 0 0 0 20px;
@@ -30,6 +31,40 @@ const BoostAmount = styled.p`
   margin-bottom: 20px;
 `;
 
+const BoostPayFooter = styled.div`
+  border-top: 1px solid ${colors.accent.CIVIL_GRAY_3};
+  margin: 20px 15px;
+  padding: 20px;
+`;
+
+const BoostPayFooterSection = styled.div`
+  color: ${colors.accent.CIVIL_GRAY_0};
+  font-size: 14px;
+  line-height: 19px;
+  margin: 0 0 40px;
+
+  h3 {
+    font-size: 14px;
+    line-height: 19px;
+    font-weight: 600;
+    margin: 0 0 20px;
+  }
+
+  p {
+    margin: 0 0 20px;
+  }
+
+  a {
+    display: block;
+    margin: 0 0 15px;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
 export interface BoostPaymentsProps {
   boostId: string;
   title: string;
@@ -49,6 +84,14 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         </BoostDetails>
       </BoostHeaderWrap>
       <BoostPayOptions />
+      <BoostPayFooter>
+        <BoostPayFooterSection>
+          <PaymentInfoText />
+        </BoostPayFooterSection>
+        <BoostPayFooterSection>
+          <PaymentFAQText />
+        </BoostPayFooterSection>
+      </BoostPayFooter>
     </BoostWrapper>
   );
 }
