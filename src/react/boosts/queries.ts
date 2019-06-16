@@ -34,6 +34,19 @@ export const boostQuery = gql`
   }
 `;
 
+export const boostNewsroomQuery = gql`
+  query listing($addr: String!) {
+    listing(addr: $addr) {
+      name
+      url
+      contractAddress
+      charter {
+        uri
+      }
+    }
+  }
+`;
+
 export const boostMutation = gql`
   mutation($input: PostCreateBoostInput!) {
     postsCreateBoost(input: $input) {

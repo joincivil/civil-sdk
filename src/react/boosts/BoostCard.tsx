@@ -1,4 +1,6 @@
 import * as React from "react";
+import { Query } from "react-apollo";
+import { boostNewsroomQuery } from "./queries";
 import { BoostProgress } from "./BoostProgress"
 import {
   BoostButton,
@@ -19,6 +21,7 @@ export interface Items {
 }
 
 export interface BoostCardProps {
+  channelId: string;
   open: boolean;
   boostId: string;
   title: string;
@@ -44,28 +47,43 @@ export class BoostCard extends React.Component<BoostCardProps> {
 
   public render(): JSX.Element {
     const daysLeft = this.daysLeft(this.props.dateEnd);
+    const addr = this.props.channelId;
 
     return (
       <BoostWrapper open={this.props.open}>
-        <BoostImg>
-          <img src={boost.image} />
-        </BoostImg>
         <BoostTitle>
           {this.props.open ? <>{this.props.title}</> : <a href={"/boosts/" + this.props.boostId}>{this.props.title}</a>}
         </BoostTitle>
-        <BoostNewsroomInfo>
-          <BoostNewsroom>{boost.newsroom}</BoostNewsroom>
-          {this.props.open && (
-            <>
-              <a href={boost.newsroomUrl} target="_blank">
-                Visit Newsroom
-              </a>
-              <a href={boost.newsroomRegistryUrl} target="_blank">
-                Visit Civil Registry
-              </a>
-            </>
-          )}
-        </BoostNewsroomInfo>
+        <BoostImg>
+          <img src={boost.image} />
+        </BoostImg>
+
+        <Query query={boostNewsroomQuery} variables={{ addr }}>
+          {({ loading, error, data }) => {
+            if (loading) {
+              return "Loading...";
+            } else if (error) {
+              console.log(JSON.stringify(error));
+              return <></>;
+            }
+
+            return (
+            <BoostNewsroomInfo>
+              <BoostNewsroom>{data.listing.name}</BoostNewsroom>
+              {this.props.open && (
+                <>
+                  <a href={data.listing.url} target="_blank">
+                    Visit Newsroom
+                  </a>
+                  <a href={"/listing/" + data.listing.contractAddress} target="_blank">
+                    Visit Civil Registry
+                  </a>
+                </>
+              )}
+            </BoostNewsroomInfo>
+            );
+          }}
+        </Query>
         <BoostFlexStart>
           <BoostProgressCol open={this.props.open}>
             <BoostProgress open={this.props.open} goalAmount={this.props.goalAmount} paymentsTotal={this.props.paymentsTotal} daysLeft={daysLeft} />
