@@ -11,6 +11,7 @@ export interface BoostProps {
 
 export interface BoostStates {
   payment: boolean;
+  newsroomName: string;
 }
 
 export class Boost extends React.Component<BoostProps, BoostStates> {
@@ -18,6 +19,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     super(props);
     this.state = {
       payment: false,
+      newsroomName: "",
     };
   }
 
@@ -39,13 +41,14 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
                 boostId={id}
                 title={data.postsGet.title}
                 amount={20}
-                newsroom={"Block Club Chicago"}
+                newsroomName={this.state.newsroomName}
               />
             );
           }
 
           return (
             <BoostCard
+              channelId={data.postsGet.channelID}
               open={this.props.open}
               boostId={id}
               title={data.postsGet.title}
@@ -56,6 +59,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
               about={data.postsGet.about}
               items={data.postsGet.items}
               handlePayments={this.startPayment}
+              dateEnd={data.postsGet.dateEnd}
             />
           );
         }}
@@ -63,7 +67,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     );
   };
 
-  private startPayment = () => {
-    this.setState({ payment: true });
+  private startPayment = (newsroomName: string) => {
+    this.setState({ payment: true, newsroomName: newsroomName });
   };
 };

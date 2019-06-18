@@ -34,6 +34,19 @@ export const boostQuery = gql`
   }
 `;
 
+export const boostNewsroomQuery = gql`
+  query listing($addr: String!) {
+    listing(addr: $addr) {
+      name
+      url
+      contractAddress
+      charter {
+        uri
+      }
+    }
+  }
+`;
+
 export const boostMutation = gql`
   mutation($input: PostCreateBoostInput!) {
     postsCreateBoost(input: $input) {
@@ -49,6 +62,16 @@ export const boostMutation = gql`
         item
         cost
       }
+    }
+  }
+`;
+
+export const boostPayEthMutation = gql`
+  mutation($postID: String!, $input: PaymentsCreateEtherPaymentInput!) {
+    paymentsCreateEtherPayment(postID: $postID, input: $input) {
+      reaction
+      comment
+      transactionID
     }
   }
 `;

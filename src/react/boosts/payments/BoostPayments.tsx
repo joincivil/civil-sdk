@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { colors, fonts } from "@joincivil/components";
 import { BoostPayOptions } from "./BoostPayOptions";
-import { BoostWrapper, BoostTitle, BoostNewsroom } from "../BoostStyledComponents";
+import { BoostWrapper, BoostTitle, BoostNewsroom, BoostSmallPrint } from "../BoostStyledComponents";
 
 const BoostHeaderWrap = styled.div`
   margin: 0 0 0 20px;
@@ -33,7 +33,7 @@ const BoostAmount = styled.p`
 export interface BoostPaymentsProps {
   boostId: string;
   title: string;
-  newsroom: string;
+  newsroomName: string;
   amount: number;
 }
 
@@ -44,8 +44,9 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         <BoostHeader>Complete your Boost</BoostHeader>
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
-          <BoostNewsroom>{props.newsroom}</BoostNewsroom>
+          <BoostNewsroom>{props.newsroomName}</BoostNewsroom>
           <BoostAmount>{"$" + props.amount}</BoostAmount>
+          <BoostSmallPrint>This Boost will receive all proceeds raised even if it does not reach its goal.</BoostSmallPrint>
         </BoostDetails>
       </BoostHeaderWrap>
       <BoostPayOptions />
