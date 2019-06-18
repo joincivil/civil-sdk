@@ -44,7 +44,7 @@ storiesOf("Boosts", module)
         <BoostPayments
           boostId={"87d0fe80-505f-4c1c-8a09-db7e20cb1045"}
           title={"Help The Colorado Sun stage a panel discussion about the impact of the opioid crisis on Colorado"}
-          newsroom={"The Colorado Sun"}
+          newsroomName={"The Colorado Sun"}
           amount={20}
         />
       </>
