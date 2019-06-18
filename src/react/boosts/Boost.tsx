@@ -11,7 +11,7 @@ export interface BoostProps {
 
 export interface BoostStates {
   payment: boolean;
-  newsroom: string;
+  newsroomName: string;
 }
 
 export class Boost extends React.Component<BoostProps, BoostStates> {
@@ -19,7 +19,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     super(props);
     this.state = {
       payment: false,
-      newsroom: "",
+      newsroomName: "",
     };
   }
 
@@ -41,7 +41,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
                 boostId={id}
                 title={data.postsGet.title}
                 amount={20}
-                newsroom={this.state.newsroom}
+                newsroomName={this.state.newsroomName}
               />
             );
           }
@@ -67,7 +67,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     );
   };
 
-  private startPayment = (newsroom: string) => {
-    this.setState({ payment: true, newsroom: newsroom });
+  private startPayment = (newsroomName: string) => {
+    this.setState({ payment: true, newsroomName: newsroomName });
   };
 };

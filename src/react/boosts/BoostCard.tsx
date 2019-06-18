@@ -75,7 +75,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
                       <a href={data.listing.url} target="_blank">
                         Visit Newsroom
                       </a>
-                      <a href={"https://registry.civil.co/listing/listing/" + addr} target="_blank">
+                      <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
                         Visit Civil Registry
                       </a>
                     </>
@@ -144,6 +144,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
     if (daysLeftNum === 1) {
       daysLeft = "1 day left";
     } else if (daysLeftNum < 1) {
+      // TODO(sruddy) consult with design on more granular hours/mins
       daysLeft = "Ends today";
     } else {
       daysLeft = daysLeftNum + " days left";

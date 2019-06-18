@@ -4,8 +4,8 @@ import { ModalHeading, ModalContent } from "@joincivil/components";
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Why ETH?</ModalHeading>
-    <ModalContent>100% of your ETH will go right into the newsroom’s wallet. This way, the Newsroom get’s your full support.</ModalContent>
-    <ModalContent>You’ll to use Ethereum cryptocurrency (ETH) in a digital wallet like MetaMask in order to continue. Currently it’s not possible to use other cryptocurrencies, or in dollars or other fiat currencies.</ModalContent>
+    <ModalContent>100% of your ETH will go right into the newsroom’s wallet. This way, the Newsroom gets your full support.</ModalContent>
+    <ModalContent>You’ll have to use Ethereum cryptocurrency (ETH) in a digital wallet like MetaMask in order to continue. Currently it’s not possible to use other cryptocurrencies, dollars or other fiat currencies.</ModalContent>
     <ModalContent>There is a very small network transaction cost for sending Ethereum out of your wallet, usually it’s a matter of a few cents. This cost goes to the Ethereum miners who perform the computational work for your content to be included on the Ethereum blockchain.</ModalContent>
     <ModalContent><a href="#TODO">Learn more about how to get ETH and support Boosts on our FAQ.</a></ModalContent>
   </>
@@ -32,7 +32,7 @@ export const CanUseCVLText: React.FunctionComponent = props => (
 export const PaymentInfoText: React.FunctionComponent = props => (
   <>
     <h3>Payment Information</h3>
-    <p>All Boosts procceded will be funded using ETH. Civil does not collect any fees on Boosts and your support goes directly to the Newsroom.</p>
+    <p>All Boosts proceeded will be funded using ETH. Civil does not collect any fees on Boosts and your support goes directly to the Newsroom.</p>
   </>
 );
 
@@ -41,7 +41,7 @@ export const PaymentFAQText: React.FunctionComponent = props => (
     <h3>Frequently Asked Questions</h3>
     <a href="#TODO">How do I support a Boost?</a>
     <a href="#TODO">When is my payment charged?</a>
-    <a href="#TODO">Am I still charged even if the Boost does not hit it’s target date?</a>
+    <a href="#TODO">Am I still charged even if the Boost does not hit its target date?</a>
     <a href="#TODO">What information can others see about my payment?</a>
   </>
 );

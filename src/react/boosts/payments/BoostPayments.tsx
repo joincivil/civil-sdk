@@ -33,7 +33,7 @@ const BoostAmount = styled.p`
 export interface BoostPaymentsProps {
   boostId: string;
   title: string;
-  newsroom: string;
+  newsroomName: string;
   amount: number;
 }
 
@@ -44,7 +44,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         <BoostHeader>Complete your Boost</BoostHeader>
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
-          <BoostNewsroom>{props.newsroom}</BoostNewsroom>
+          <BoostNewsroom>{props.newsroomName}</BoostNewsroom>
           <BoostAmount>{"$" + props.amount}</BoostAmount>
         </BoostDetails>
       </BoostHeaderWrap>
