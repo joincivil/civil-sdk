@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextInput, Checkbox } from "@joincivil/components";
+// import { TextInput, Checkbox } from "@joincivil/components";
 import { BoostPayFormTitle, BoostFlexStart, BoostButton } from "../BoostStyledComponents";
 import styled from "styled-components";
 import { colors, fonts } from "@joincivil/components";
@@ -61,18 +61,18 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     return (
       <BoostPayFormWrapper>
         <form>
-          <BoostPayFormContain>
+          {/*<BoostPayFormContain>
             <BoostPayFormTitle>Your name (optional)</BoostPayFormTitle>
             <TextInput name="userName" />
             <BoostPayFormTitle>Include a comment (optional)</BoostPayFormTitle>
             <TextInput name="userComment" />
             <Checkbox onClick={this.onClick} checked={this.state.checked} id={""} />
             <CheckboxLabel>Email me about progress of this Boost</CheckboxLabel>
-          </BoostPayFormContain>
+          </BoostPayFormContain>*/}
           <BoostFlexStart>
             <SubmitInstructions>Once your Boost is sent, we’ll be sending you a confirmation email if selected of your completed transaction.  All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the proceeds will still go to fund the selected newsroom.</SubmitInstructions>
             <div>
-              <BoostButton type="submit" >Support this Boost</BoostButton>
+              <BoostButton>Support this Boost</BoostButton>
               <SubmitWarning>Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees charged by the Ethereum network. By sending a Boost, you agree to Civil’s Terms of Use and Privacy Policy. Depending on your selection, your email and comment may be visible to the newsroom.</SubmitWarning>
             </div>
           </BoostFlexStart>
@@ -81,7 +81,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     );
   }
 
-  private onClick = (): void => {
+  /*private onClick = (): void => {
     this.setState({ checked: !this.state.checked });
-  };
+  };*/
 }

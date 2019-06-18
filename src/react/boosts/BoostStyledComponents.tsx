@@ -255,3 +255,8 @@ export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = s
 export const BoostSmallPrint = styled.div`
   font-size: 12px;
 `;
+
+export const BoostEthConfirm = styled.span`
+  display: block;  
+  font-size: 13px;
+`;

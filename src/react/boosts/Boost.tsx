@@ -48,7 +48,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
 
           return (
             <BoostCard
-              channelId={data.postsGet.channelId}
+              channelId={data.postsGet.channelID}
               open={this.props.open}
               boostId={id}
               title={data.postsGet.title}

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
-import { BoostPayOption, BoostPayCardDetails, LearnMore, BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
+import { BoostPayOption, BoostPayCardDetails, LearnMore, BoostFlexCenter, BoostButton, BoostEthConfirm } from "../BoostStyledComponents";
 import { WhyEthModalText, WhatIsEthModalText, CanUseCVLText } from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
 import { BoostPayForm } from "./BoostPayForm";
-// import { UsdEthConverter } from "@joincivil/components";
+import { UsdEthConverter } from "@joincivil/components";
 
 export enum MODEL_CONTENT {
   WHY_ETH = "why eth",
@@ -16,12 +16,16 @@ export interface BoostPayEthProps {
   paymentStarted?: boolean;
   defaultChecked: boolean;
   value: string;
-  handleNext?(): void;
+  etherToSpend?: number;
+  usdToSpend?: number;
+  handleNext(etherToSpend: number, usdToSpend: number): void;
 }
 
 export interface BoostPayEthStates {
   isModalOpen: boolean;
   modalContent: string;
+  etherToSpend: number;
+  usdToSpend: number;
 }
 
 export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthStates> {
@@ -30,6 +34,8 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     this.state = {
       isModalOpen: false,
       modalContent: "",
+      etherToSpend: this.props.etherToSpend || 0, 
+      usdToSpend: this.props.usdToSpend || 0,
     };
   }
 
@@ -38,7 +44,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
       <>
         <BoostPayOption>
           <BoostPayRadioBtn value={this.props.value} defaultChecked={this.props.defaultChecked}>Pay with ETH</BoostPayRadioBtn>
-          {this.props.paymentStarted ? this.getPaymentForm() : this.getPaymentAmount()}
+          {this.props.paymentStarted ? this.getPaymentForm(this.state.etherToSpend, this.state.usdToSpend) : this.getPaymentAmount()}
         </BoostPayOption>
 
         {this.props.paymentStarted && <BoostPayForm />}
@@ -51,7 +57,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
       <>
         <BoostPayCardDetails>
           <p>You will be paying using a digital wallet such as <a href="#TODO" target="_blank">MetaMask</a></p>
-          <p>Don't have one? <a href="#TODO" target="_blank">Get a Digital Wallet and ETH</a></p>
+          <p>Don’t have one? <a href="#TODO" target="_blank">Get a cryptocurrency wallet and ETH</a></p>
           <LearnMore>
             Learn more
             <a onClick={() => this.openModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
@@ -60,9 +66,8 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           </LearnMore>
           <h3>Boost Amount</h3>
           <BoostFlexCenter>
-            {/*<UsdEthConverter />*/}
-            [USD to ETH Converter]
-            <BoostButton onClick={this.props.handleNext}>Next</BoostButton>
+            <UsdEthConverter onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)} />
+            <BoostButton onClick={() => this.props.handleNext(this.state.etherToSpend, this.state.usdToSpend)}>Next</BoostButton>
           </BoostFlexCenter>
         </BoostPayCardDetails>
 
@@ -73,13 +78,18 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     );
   };
 
-  private getPaymentForm = () => {
+  private setConvertedAmount(usdToSpend: number, etherToSpend: number): void {
+    const eth = parseFloat(etherToSpend.toFixed(6))
+    this.setState({ usdToSpend, etherToSpend: eth });
+  }
+
+  private getPaymentForm = (etherToSpend: number, usdToSpend: number) => {
     return (
       <BoostPayCardDetails>
         <p>You will be paying using a digital wallet such as <a href="#TODO" target="_blank">MetaMask</a></p>
         <h3>Boost Amount</h3>
-        <BoostFlexCenter>
-        </BoostFlexCenter>
+        <span>{etherToSpend + " ETH"} {"($" + usdToSpend + ")"}</span>
+        <BoostEthConfirm>&#x2714; You have enough ETH in your connected Wallet.</BoostEthConfirm>
       </BoostPayCardDetails>
     );
   };

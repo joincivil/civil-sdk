@@ -35,12 +35,9 @@ export interface BoostCardProps {
   handlePayments(newsroom: string): void;
 }
 
-// TODO(sruddy) get newsroom data from address
+// TODO(sruddy) get newsroom image
 const boost = {
   image: "https://cdn.mos.cms.futurecdn.net/ewcvC8bNBec6oMG9zufgVg.jpg",
-  newsroom: "Block Club Chicago",
-  newsroomUrl: "https://blockclubchicago.org/",
-  newsroomRegistryUrl: "https://registry.civil.co/listing/0x23daa7fba48cd68a2b86a77a1e707a6aae41c4ea",
 };
 
 export class BoostCard extends React.Component<BoostCardProps> {
@@ -48,6 +45,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
   public render(): JSX.Element {
     const daysLeft = this.daysLeft(this.props.dateEnd);
     const addr = this.props.channelId;
+    let newsroomName = "";
 
     return (
       <BoostWrapper open={this.props.open}>
@@ -61,34 +59,39 @@ export class BoostCard extends React.Component<BoostCardProps> {
         <Query query={boostNewsroomQuery} variables={{ addr }}>
           {({ loading, error, data }) => {
             if (loading) {
-              return "Loading...";
+              return <></>;
             } else if (error) {
               console.log(JSON.stringify(error));
               return <></>;
             }
 
-            return (
-            <BoostNewsroomInfo>
-              <BoostNewsroom>{data.listing.name}</BoostNewsroom>
-              {this.props.open && (
-                <>
-                  <a href={data.listing.url} target="_blank">
-                    Visit Newsroom
-                  </a>
-                  <a href={"/listing/" + data.listing.contractAddress} target="_blank">
-                    Visit Civil Registry
-                  </a>
-                </>
-              )}
-            </BoostNewsroomInfo>
-            );
+            if (data.listing !== null) {
+              newsroomName = data.listing.name;
+              return (
+                <BoostNewsroomInfo>
+                  <BoostNewsroom>{newsroomName}</BoostNewsroom>
+                  {this.props.open && (
+                    <>
+                      <a href={data.listing.url} target="_blank">
+                        Visit Newsroom
+                      </a>
+                      <a href={"https://registry.civil.co/listing/listing/" + addr} target="_blank">
+                        Visit Civil Registry
+                      </a>
+                    </>
+                  )}
+                </BoostNewsroomInfo>
+              );
+            }
+
+            return <></>;
           }}
         </Query>
         <BoostFlexStart>
           <BoostProgressCol open={this.props.open}>
             <BoostProgress open={this.props.open} goalAmount={this.props.goalAmount} paymentsTotal={this.props.paymentsTotal} daysLeft={daysLeft} />
           </BoostProgressCol>
-          {this.props.open && (<BoostButton onClick={() => this.props.handlePayments(boost.newsroom)}>Support</BoostButton>)}
+          {this.props.open && (<BoostButton onClick={() => this.props.handlePayments(newsroomName)}>Support</BoostButton>)}
         </BoostFlexStart>
         {this.props.open && (
           <>

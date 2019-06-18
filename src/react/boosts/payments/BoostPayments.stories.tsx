@@ -1,8 +1,43 @@
 import * as React from "react";
 import { storiesOf } from "@storybook/react";
+import apolloStorybookDecorator from "apollo-storybook-react";
 import { BoostPayments } from "./BoostPayments";
 
+const typeDefs = `
+  type Query {
+    storefrontEthPrice: Float
+    storefrontCvlPrice: Float
+    storefrontCvlQuoteUsd(usdToSpend: Float!): Float
+  }
+
+  schema {
+    query: Query
+  }
+`;
+
+const mocks = {
+  Query: () => {
+    return {
+      storefrontEthPrice: () => {
+        return 102.98;
+      },
+      storefrontCvlPrice: () => {
+        return 0.2;
+      },
+      storefrontCvlQuoteUsd: () => {
+        return 500.48635;
+      },
+    };
+  },
+};
+
 storiesOf("Boosts", module)
+  .addDecorator(
+    apolloStorybookDecorator({
+      typeDefs,
+      mocks,
+    }),
+  )
   .add("Payments", () => {
     return (
       <>
