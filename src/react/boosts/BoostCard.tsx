@@ -14,6 +14,7 @@ import {
   BoostProgressCol,
 } from "./BoostStyledComponents";
 import { BoostImg } from "./BoostImg";
+import { EthAddress } from "@joincivil/core";
 
 export interface Items {
   item: string;
@@ -32,7 +33,7 @@ export interface BoostCardProps {
   what: string;
   about: string;
   items: Items[];
-  handlePayments(newsroom: string): void;
+  handlePayments(newsroom: string, paymentAddr: EthAddress): void;
 }
 
 export class BoostCard extends React.Component<BoostCardProps> {
@@ -74,6 +75,62 @@ export class BoostCard extends React.Component<BoostCardProps> {
                       </>
                     )}
                   </BoostNewsroomInfo>
+
+                  <BoostFlexStart>
+                    <BoostProgressCol open={this.props.open}>
+                      <BoostProgress
+                        open={this.props.open}
+                        goalAmount={this.props.goalAmount}
+                        paymentsTotal={this.props.paymentsTotal}
+                        daysLeft={daysLeft}
+                      />
+                    </BoostProgressCol>
+                    {this.props.open && (
+                      <BoostButton onClick={() => this.props.handlePayments(newsroomName, data.listing.owner)}>
+                        Support
+                      </BoostButton>
+                    )}
+                  </BoostFlexStart>
+                  {this.props.open && (
+                    <>
+                      <BoostDescription>
+                        <p>{this.props.why}</p>
+                      </BoostDescription>
+                      <BoostDescription>
+                        <h3>What the outcome will be</h3>
+                        <p>{this.props.what}</p>
+                      </BoostDescription>
+                      <BoostDescription>
+                        <h3>About the newsroom</h3>
+                        <p>{this.props.about}</p>
+                      </BoostDescription>
+                      <BoostDescriptionTable>
+                        <h3>Where your support goes</h3>
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Item</th>
+                              <th>Cost</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.props.items.map((item: any, i: number) => (
+                              <tr key={i}>
+                                <td>{item.item}</td>
+                                <td>{"$" + item.cost}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </BoostDescriptionTable>
+                      <BoostDescription>
+                        <h3>Questions about Boosts?</h3>
+                        <p>
+                          <a href="#TODO">Learn more in our FAQ</a>
+                        </p>
+                      </BoostDescription>
+                    </>
+                  )}
                 </>
               );
             }
@@ -81,59 +138,6 @@ export class BoostCard extends React.Component<BoostCardProps> {
             return <></>;
           }}
         </Query>
-        <BoostFlexStart>
-          <BoostProgressCol open={this.props.open}>
-            <BoostProgress
-              open={this.props.open}
-              goalAmount={this.props.goalAmount}
-              paymentsTotal={this.props.paymentsTotal}
-              daysLeft={daysLeft}
-            />
-          </BoostProgressCol>
-          {this.props.open && (
-            <BoostButton onClick={() => this.props.handlePayments(newsroomName)}>Support</BoostButton>
-          )}
-        </BoostFlexStart>
-        {this.props.open && (
-          <>
-            <BoostDescription>
-              <p>{this.props.why}</p>
-            </BoostDescription>
-            <BoostDescription>
-              <h3>What the outcome will be</h3>
-              <p>{this.props.what}</p>
-            </BoostDescription>
-            <BoostDescription>
-              <h3>About the newsroom</h3>
-              <p>{this.props.about}</p>
-            </BoostDescription>
-            <BoostDescriptionTable>
-              <h3>Where your support goes</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>Cost</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.items.map((item: any, i: number) => (
-                    <tr key={i}>
-                      <td>{item.item}</td>
-                      <td>{"$" + item.cost}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </BoostDescriptionTable>
-            <BoostDescription>
-              <h3>Questions about Boosts?</h3>
-              <p>
-                <a href="#TODO">Learn more in our FAQ</a>
-              </p>
-            </BoostDescription>
-          </>
-        )}
       </BoostWrapper>
     );
   }
