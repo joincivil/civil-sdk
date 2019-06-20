@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { mediaQueries } from "@joincivil/components";
+import { mediaQueries, defaultNewsroomImgUrl } from "@joincivil/components";
 import * as IPFS from "ipfs-http-client";
 import { promisify } from "@joincivil/utils";
 
@@ -65,7 +65,15 @@ export class BoostImg extends React.Component<BoostImgProps, BoostImgState> {
     if (this.state.charter) {
       return (
         <BoostImgDiv>
-          <img src={this.state.charter.logoUrl} />
+          <img
+            src={
+              this.state.charter.logoUrl ||
+              ((defaultNewsroomImgUrl as any) as string)
+            }
+            onError={e => {
+              (e.target as any).src = defaultNewsroomImgUrl;
+            }}
+          />
         </BoostImgDiv>
       );
     } else {
