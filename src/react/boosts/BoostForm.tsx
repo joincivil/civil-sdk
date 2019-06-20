@@ -1,7 +1,8 @@
 import * as React from "react";
-import styled from "styled-components";
+import styled, { StyledComponentClass } from "styled-components";
 import {
   colors,
+  fonts,
   mediaQueries,
   Button,
   buttonSizes,
@@ -16,7 +17,6 @@ import { Mutation, MutationFunc } from "react-apollo";
 import { boostMutation } from "./queries";
 import { BoostData } from "./types";
 import {
-  BoostImg,
   BoostWrapper,
   BoostWrapperFullWidthHr,
   BoostFormTitle,
@@ -24,6 +24,7 @@ import {
   BoostPayFormTitle,
   BoostSmallPrint,
 } from "./BoostStyledComponents";
+import { BoostImgDiv } from "./BoostImg";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};
@@ -192,14 +193,14 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             return (
               <form onSubmit={async event => this.handleSubmit(event, createBoost)}>
                 <BoostWrapper>
-                  <BoostImg>
+                  <BoostImgDiv>
                     <img
                       src={this.props.newsroomLogoUrl || ((defaultNewsroomImgUrl as any) as string)}
                       onError={e => {
                         (e.target as any).src = defaultNewsroomImgUrl;
                       }}
                     />
-                  </BoostImg>
+                  </BoostImgDiv>
 
                   <NewsroomDetailRow>
                     <NewsroomDetailCell>
@@ -314,7 +315,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             <tr>
               <th>Item</th>
               <ItemCostHeaderCell>Cost</ItemCostHeaderCell>
-              <th></th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -379,7 +380,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                 </ItemsAmountNote>
                 <ItemsAmountNote>Civil does not collect any fees.</ItemsAmountNote>
               </ItemCostCell>
-              <td></td>
+              <td />
             </tr>
           </tfoot>
         </table>
