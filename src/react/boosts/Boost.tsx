@@ -19,7 +19,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     super(props);
     this.state = {
       payment: false,
-      newsroomName: "",
+      newsroomName: ""
     };
   }
 
@@ -46,6 +46,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
             );
           }
 
+          console.log("challelID: ", data.postsGet.channelID);
           return (
             <BoostCard
               channelId={data.postsGet.channelID}

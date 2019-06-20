@@ -40,24 +40,6 @@ export const BoostButton: StyledComponentClass<ButtonProps, "button"> = styled(B
   text-transform: none;
 `;
 
-export const BoostImg = styled.div`
-  left: 30px;
-  position: absolute;
-  top: 30px;
-
-  img {
-    height: 64px;
-    min-width: 64px;
-    min-height: 64px;
-    object-fit: contain;
-    width: 64px;
-
-    ${mediaQueries.MOBILE} {
-      display: none;
-    }
-  }
-`;
-
 export const BoostTitle = styled.h2`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-size: 20px;
