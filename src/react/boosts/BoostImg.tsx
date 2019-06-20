@@ -16,7 +16,7 @@ const ipfsAsync = {
   pin: promisify<[{ hash: string }]>(ipfs.pin.add),
 };
 
-export const BoostImgDiv = styled.div`
+const BoostImgDiv = styled.div`
   left: 30px;
   position: absolute;
   top: 30px;

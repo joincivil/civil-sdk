@@ -8606,7 +8606,7 @@ ipfs-block@~0.8.0:
     cids "~0.7.0"
     class-is "^1.1.0"
 
-ipfs-http-client@^29.1.1:
+ipfs-http-client@29.1.1, ipfs-http-client@^29.1.1:
   version "29.1.1"
   resolved "https://registry.yarnpkg.com/ipfs-http-client/-/ipfs-http-client-29.1.1.tgz#dae3319621869a5ae76c3ce16ef97658b15ba3e2"
   integrity sha512-aAjqZ9RwnpQECkMO058YjWG79U4w4wEKvHfVdXMhgkXDFkErxRpSqoCvwIVozbTU34NwEjWsZ9WoG0lr2FtgvA==
