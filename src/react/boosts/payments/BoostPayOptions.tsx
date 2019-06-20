@@ -5,6 +5,7 @@ import { BoostPayEth } from "./BoostPayEth";
 import styled from "styled-components";
 import { BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
 import { PaymentInfoText, PaymentFAQText } from "../BoostTextComponents";
+import { EthAddress } from "@joincivil/core";
 
 export enum PAYMENT_TYPE {
   DEFAULT = "",
@@ -16,6 +17,7 @@ export interface BoostPayOptionsProps {
   onChange?: any;
   value?: any;
   name?: string;
+  paymentAddr: EthAddress;
 }
 
 const BoostInstructions = styled.div`
@@ -117,6 +119,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             paymentStarted={true}
             etherToSpend={this.state.etherToSpend}
             usdToSpend={this.state.usdToSpend}
+            paymentAddr={this.props.paymentAddr}
           />
         );
         {
@@ -128,7 +131,12 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
       default:
         return (
           <>
-            <BoostPayEth value={PAYMENT_TYPE.ETH} handleNext={this.handleEthNext} defaultChecked={true} />
+            <BoostPayEth
+              value={PAYMENT_TYPE.ETH}
+              handleNext={this.handleEthNext}
+              defaultChecked={true}
+              paymentAddr={this.props.paymentAddr}
+            />
             {/* <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} /> */}
           </>
         );

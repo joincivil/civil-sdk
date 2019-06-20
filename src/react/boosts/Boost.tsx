@@ -42,6 +42,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
                 title={data.postsGet.title}
                 amount={20}
                 newsroomName={this.state.newsroomName}
+                paymentAddr={data.postsGet.channelID} // TODO: get correct paymentAddr NOT the newsroom smart contract addr
               />
             );
           }

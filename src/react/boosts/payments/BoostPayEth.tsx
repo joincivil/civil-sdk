@@ -12,6 +12,7 @@ import { WhyEthModalText, WhatIsEthModalText, CanUseCVLText } from "../BoostText
 import { BoostModal } from "../BoostModal";
 import { BoostPayForm } from "./BoostPayForm";
 import { UsdEthConverter } from "@joincivil/components";
+import { EthAddress } from "@joincivil/core";
 
 export enum MODEL_CONTENT {
   WHY_ETH = "why eth",
@@ -20,6 +21,7 @@ export enum MODEL_CONTENT {
 }
 
 export interface BoostPayEthProps {
+  paymentAddr: EthAddress;
   paymentStarted?: boolean;
   defaultChecked: boolean;
   value: string;
@@ -58,7 +60,9 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
             : this.getPaymentAmount()}
         </BoostPayOption>
 
-        {this.props.paymentStarted && <BoostPayForm />}
+        {this.props.paymentStarted && (
+          <BoostPayForm paymentAddr={this.props.paymentAddr} amount={this.state.etherToSpend} />
+        )}
       </>
     );
   }

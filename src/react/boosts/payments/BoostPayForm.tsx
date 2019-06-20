@@ -2,10 +2,13 @@ import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
 import { BoostFlexStart, BoostButton } from "../BoostStyledComponents";
 import styled from "styled-components";
-import { colors, fonts } from "@joincivil/components";
+import { colors, fonts, TransactionButton } from "@joincivil/components";
+import { Civil, EthAddress, TwoStepEthTransaction } from "@joincivil/core";
+import { detectProvider } from "@joincivil/ethapi";
 
 export interface BoostPayFormProps {
-  amount?: number;
+  paymentAddr: EthAddress;
+  amount: number;
 }
 
 export interface BoostPayFormState {
@@ -78,7 +81,9 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
               proceeds will still go to fund the selected newsroom.
             </SubmitInstructions>
             <div>
-              <BoostButton>Support this Boost</BoostButton>
+              <TransactionButton transactions={[{ transaction: this.sendPayment }]}>
+                Support this Boost
+              </TransactionButton>
               <SubmitWarning>
                 Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees
                 charged by the Ethereum network. By sending a Boost, you agree to Civil’s Terms of Use and Privacy
@@ -90,6 +95,19 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
       </BoostPayFormWrapper>
     );
   }
+
+  private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
+    const provider = detectProvider();
+    if (provider) {
+      const civil = new Civil({ web3Provider: provider });
+
+      const amount = civil.toBigNumber(this.props.amount);
+
+      return civil.simplePayment(this.props.paymentAddr, amount);
+    } else {
+      // TODO: pop dialog telling them to install metamask/web3
+    }
+  };
 
   /*private onClick = (): void => {
     this.setState({ checked: !this.state.checked });
