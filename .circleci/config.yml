@@ -28,6 +28,9 @@ jobs:
                 name: Building
                 command: yarn build
             - run:
+                name: Building package
+                command: yarn package:build
+            - run:
                 name: Release
                 command: yarn release
             - persist_to_workspace:
