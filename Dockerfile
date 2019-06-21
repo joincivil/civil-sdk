@@ -7,6 +7,7 @@ COPY package.json /app
 COPY yarn.lock /app
 RUN yarn install
 COPY . .
+RUN rm -f .npmrc
 
 # Build Everything
 RUN yarn build
