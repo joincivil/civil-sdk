@@ -19,7 +19,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     super(props);
     this.state = {
       payment: false,
-      newsroomName: "",
+      newsroomName: ""
     };
   }
 

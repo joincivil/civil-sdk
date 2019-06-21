@@ -6,7 +6,6 @@ import {
   BoostButton,
   BoostFlexStart,
   BoostWrapper,
-  BoostImg,
   BoostTitle,
   BoostNewsroomInfo,
   BoostNewsroom,
@@ -14,6 +13,7 @@ import {
   BoostDescriptionTable,
   BoostProgressCol,
 } from "./BoostStyledComponents";
+import { BoostImg } from "./BoostImg";
 
 export interface Items {
   item: string;
@@ -35,11 +35,6 @@ export interface BoostCardProps {
   handlePayments(newsroom: string): void;
 }
 
-// TODO(sruddy) get newsroom image
-const boost = {
-  image: "https://cdn.mos.cms.futurecdn.net/ewcvC8bNBec6oMG9zufgVg.jpg",
-};
-
 export class BoostCard extends React.Component<BoostCardProps> {
   public render(): JSX.Element {
     const daysLeft = this.daysLeft(this.props.dateEnd);
@@ -51,35 +46,35 @@ export class BoostCard extends React.Component<BoostCardProps> {
         <BoostTitle>
           {this.props.open ? <>{this.props.title}</> : <a href={"/boosts/" + this.props.boostId}>{this.props.title}</a>}
         </BoostTitle>
-        <BoostImg>
-          <img src={boost.image} />
-        </BoostImg>
 
         <Query query={boostNewsroomQuery} variables={{ addr }}>
           {({ loading, error, data }) => {
             if (loading) {
               return <></>;
-            } else if (error) {
+            } else if (error || !data.listing) {
               console.log(JSON.stringify(error));
-              return <></>;
+              return <>ERROR</>;
             }
 
-            if (data.listing !== null) {
+            if (data.listing) {
               newsroomName = data.listing.name;
               return (
-                <BoostNewsroomInfo>
-                  <BoostNewsroom>{newsroomName}</BoostNewsroom>
-                  {this.props.open && (
-                    <>
-                      <a href={data.listing.url} target="_blank">
-                        Visit Newsroom
-                      </a>
-                      <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
-                        Visit Civil Registry
-                      </a>
-                    </>
-                  )}
-                </BoostNewsroomInfo>
+                <>
+                  <BoostImg charterUri={data.listing.charter.uri} />
+                  <BoostNewsroomInfo>
+                    <BoostNewsroom>{newsroomName}</BoostNewsroom>
+                    {this.props.open && (
+                      <>
+                        <a href={data.listing.url} target="_blank">
+                          Visit Newsroom
+                        </a>
+                        <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
+                          Visit Civil Registry
+                        </a>
+                      </>
+                    )}
+                  </BoostNewsroomInfo>
+                </>
               );
             }
 
