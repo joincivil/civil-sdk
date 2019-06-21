@@ -1,6 +1,6 @@
 import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
-import { BoostFlexStart, BoostButton } from "../BoostStyledComponents";
+import { BoostFlexStart } from "../BoostStyledComponents";
 import styled from "styled-components";
 import { colors, fonts, TransactionButton } from "@joincivil/components";
 import { Civil, EthAddress, TwoStepEthTransaction } from "@joincivil/core";
