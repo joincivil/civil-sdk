@@ -1,4 +1,3 @@
-import { IncomingMessageType } from "./messageTypes";
 import { KeyManager } from "./keys/KeyManager";
 import * as responses from "./MessageHandlerTypes";
 import { PartnerRequest } from "./communication/PrivateChannel";
@@ -21,9 +20,9 @@ export abstract class MessageHandler {
     this.ready = true;
   }
 
-  abstract reply(type: SDKMessageTypes, data: any): void;
+  public abstract reply(type: SDKMessageTypes, data: any): void;
 
-  public async receive(message: SDKMessage) {
+  public async receive(message: SDKMessage): Promise<void> {
     if (!this.ready) {
       this.waitingMessages.push(message);
       return;
@@ -50,13 +49,13 @@ export abstract class MessageHandler {
     this.reply(message.type, response);
   }
 
-  private handleGetStatus() {
+  private handleGetStatus(): any {
     return { alive: true };
   }
 
   private async handleCreateKey(keyName: string): Promise<responses.CreateOrGetAccountResponse> {
     const { keyManager } = this.depenencies!;
-    let key = await keyManager.createPersistentKey(keyName);
+    const key = await keyManager.createPersistentKey(keyName);
     const response = { publicKey: key.getPublicKey() };
 
     return response;
@@ -64,7 +63,7 @@ export abstract class MessageHandler {
 
   private async handleGetKey(keyName: string): Promise<responses.CreateOrGetAccountResponse> {
     const { keyManager } = this.depenencies!;
-    let key = await keyManager.getPersistentKey(keyName);
+    const key = await keyManager.getPersistentKey(keyName);
     const response = { publicKey: key.getPublicKey() };
 
     return response;

@@ -4,20 +4,6 @@ import { Key } from "./Key";
 export const DEVICE_KEYNAME = "device";
 export const DEVICE_ID_COOKIE_NAME = `key|${DEVICE_KEYNAME}`;
 
-// export async function saveKeyToCookie(key: Key, keyName: string) {
-//   const json = await key.toJson();
-
-//   Cookies.set(`key|${keyName}`, json);
-// }
-
-// export async function loadKeyFromCookie(keyName: string): Promise<Key | null> {
-//   const json = Cookies.get(`key|${keyName}`);
-//   if (json) {
-//     return Key.fromJson(json);
-//   }
-//   return null;
-// }
-
 export async function getOrCreateDeviceKey(): Promise<Key> {
   let json = Cookies.get(`key|device`);
   if (json) {
@@ -30,6 +16,6 @@ export async function getOrCreateDeviceKey(): Promise<Key> {
   return deviceKey;
 }
 
-export function deleteDeviceCookie() {
+export function deleteDeviceCookie(): void {
   Cookies.remove(`key|device`);
 }

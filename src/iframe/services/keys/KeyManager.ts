@@ -6,14 +6,15 @@ import { RealtimeCommunication } from "../communication/RealtimeCommunication";
 import { PartnerRequest } from "../communication/PrivateChannel";
 
 export class KeyManager {
+  public static async initialize(lockbox: LockboxService, comms: RealtimeCommunication): Promise<KeyManager> {
+    const deviceKey = await KeyUtils.getOrCreateDeviceKey();
+    return new KeyManager(lockbox, comms, deviceKey);
+  }
+
   private lockbox: LockboxService;
   private comms: RealtimeCommunication;
   private deviceKey: Key;
   private loadedKeys: { [keyName: string]: Key } = {};
-  public static async initialize(lockbox: LockboxService, comms: RealtimeCommunication) {
-    const deviceKey = await KeyUtils.getOrCreateDeviceKey();
-    return new KeyManager(lockbox, comms, deviceKey);
-  }
   public constructor(lockbox: LockboxService, comms: RealtimeCommunication, deviceKey: Key) {
     this.lockbox = lockbox;
     this.comms = comms;

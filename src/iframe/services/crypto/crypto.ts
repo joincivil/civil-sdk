@@ -56,7 +56,7 @@ export async function generateAuthKey(): Promise<CryptoKeyPair> {
   return crypto.subtle.generateKey(authAlg, true, ["sign", "verify"]);
 }
 
-export async function generateECDHKey() {
+export async function generateECDHKey(): Promise<CryptoKeyPair> {
   return crypto.subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveKey"]);
 }
 
@@ -75,12 +75,12 @@ export async function publicKeyToString(keyPair: CryptoKeyPair): Promise<string>
   return arrayBufferToBase64(data);
 }
 
-export async function publicKeyFromString(pub: string, isECDH: boolean) {
+export async function publicKeyFromString(pub: string, isECDH: boolean): Promise<CryptoKey> {
   const arr = base64ToArrayBuffer(pub);
 
-  const alg = isECDH ? { name: "ECDH", namedCurve: "P-256", hash: { name: "SHA-256" } } : authAlg;
+  const pubAlg = isECDH ? { name: "ECDH", namedCurve: "P-256", hash: { name: "SHA-256" } } : authAlg;
   try {
-    const res = await crypto.subtle.importKey("spki", arr, alg, true, isECDH ? [] : ["verify"]);
+    const res = await crypto.subtle.importKey("spki", arr, pubAlg, true, isECDH ? [] : ["verify"]);
 
     return res;
   } catch (err) {
@@ -88,11 +88,11 @@ export async function publicKeyFromString(pub: string, isECDH: boolean) {
     throw err;
   }
 }
-export function base64ToArrayBuffer(base64: string) {
-  var binary_string = window.atob(base64);
-  var len = binary_string.length;
-  var bytes = new Uint8Array(len);
-  for (var i = 0; i < len; i++) {
+export function base64ToArrayBuffer(base64: string): ArrayBuffer {
+  const binary_string = window.atob(base64);
+  const len = binary_string.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
     bytes[i] = binary_string.charCodeAt(i);
   }
   return bytes.buffer;
