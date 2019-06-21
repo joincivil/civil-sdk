@@ -6,10 +6,10 @@
   "types": "build/static/js/index.d.ts",
   "dependencies": {
     "@babel/core": "7.2.2",
-    "@joincivil/components": "^1.8.0",
-    "@joincivil/utils": "^1.9.0",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
+    "@joincivil/components": "^1.8.0",
+    "@joincivil/utils": "^1.9.0",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
@@ -94,6 +94,7 @@
   "devDependencies": {
     "@babel/plugin-transform-member-expression-literals": "^7.2.0",
     "@commitlint/prompt-cli": "^7.5.0",
+    "@joincivil/tslint-rules": "^2.7.1",
     "@semantic-release/npm": "^5.1.7",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-links": "^5.0.10",
@@ -183,4 +184,3 @@
     }
   }
 }
-

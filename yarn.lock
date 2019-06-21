@@ -1401,6 +1401,11 @@
     rxjs "^5.5.6"
     web3 "^0.20.3"
 
+"@joincivil/tslint-rules@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@joincivil/tslint-rules/-/tslint-rules-2.7.1.tgz#786832e0cc4f914c5c1b9854ecf1e961a8d70827"
+  integrity sha512-yJcxmMvoKnqt47EdfsHaI3o7OEWkif/xb0uJqh2q4l32kgFnopmqzPkSGkIBLadFJ75TO7UmoTm2/fO7Eijrbg==
+
 "@joincivil/typescript-types@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@joincivil/typescript-types/-/typescript-types-1.4.0.tgz#7b28f2b0b43ae7b8bd621d7a7e2fce49b2145730"
