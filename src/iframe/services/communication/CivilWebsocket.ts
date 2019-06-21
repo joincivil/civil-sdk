@@ -1,12 +1,11 @@
 import { PrivateChannel, PartnerRequest } from "./PrivateChannel";
-import { SendTypes, OpenSecureChannelEvent, SendEvent } from "./SendTypes";
+import { SendTypes, SendEvent } from "./SendTypes";
 import { RealtimeCommunication } from "./RealtimeCommunication";
 import { ReceiveEvent } from "./ReceiveTypes";
 import { Key } from "../keys/Key";
 
 export class CivilWebsocket implements RealtimeCommunication {
   private url: string;
-  private ready = false;
   private connection?: WebSocket;
   private subscribers: Array<(event: ReceiveEvent) => void> = [];
 
@@ -15,22 +14,11 @@ export class CivilWebsocket implements RealtimeCommunication {
   public constructor(url: string) {
     this.url = url;
   }
-  private async initialize() {
-    return new Promise((resolve, reject) => {
-      this.connection = new WebSocket(this.url);
-
-      this.connection.onmessage = event => {
-        const data = JSON.parse(event.data);
-        this.subscribers.map(sub => sub(data));
-      };
-      this.connection.onopen = () => resolve();
-    });
-  }
   public async openSecurePrivateChannelRaw(
     channelName: string,
     key: Key,
     message: string,
-    userAgent: string
+    userAgent: string,
   ): Promise<PrivateChannel> {
     if (!this.connection) {
       await this.initialize();
@@ -41,7 +29,9 @@ export class CivilWebsocket implements RealtimeCommunication {
 
     const fn = (event: any) => {
       if (event.type === SendTypes.PRIVATE_CHANNEL_MESSAGE) {
-        chan.receiveEvent(event);
+        chan.receiveEvent(event).catch(err => {
+          console.log("error receiving event", err);
+        });
       }
     };
 
@@ -55,8 +45,10 @@ export class CivilWebsocket implements RealtimeCommunication {
         deviceID: key.getPublicKey(),
         publicKeyString,
         message,
-        userAgent
-      }
+        userAgent,
+      },
+    }).catch(err => {
+      console.log("error sending event", err);
     });
 
     return this.privateChannels[channelName];
@@ -67,14 +59,9 @@ export class CivilWebsocket implements RealtimeCommunication {
     key: Key,
     message: string,
     userAgent: string,
-    onJoinRequest: (request: PartnerRequest) => Promise<boolean>
+    onJoinRequest: (request: PartnerRequest) => Promise<boolean>,
   ): Promise<PrivateChannel> {
-    const channel = await this.openSecurePrivateChannelRaw(
-      channelName,
-      key,
-      message,
-      userAgent
-    );
+    const channel = await this.openSecurePrivateChannelRaw(channelName, key, message, userAgent);
 
     // this will wait until the other party arrives
     const request = await channel.waitForPartner();
@@ -97,14 +84,10 @@ export class CivilWebsocket implements RealtimeCommunication {
   public async waitForEvent(
     eventType: string,
     timeout: number,
-    filter?: (event: ReceiveEvent) => Promise<boolean>
+    filter?: (event: ReceiveEvent) => Promise<boolean>,
   ): Promise<ReceiveEvent> {
     return new Promise((resolve, reject) => {
-      const ts = setTimeout(
-        () =>
-          reject(`wait for ${eventType} timed out after ${timeout} seconds`),
-        timeout * 1000
-      );
+      const ts = setTimeout(() => reject(`wait for ${eventType} timed out after ${timeout} seconds`), timeout * 1000);
       const fn = (event: any) => {
         if (event.type === eventType) {
           if (filter) {
@@ -124,18 +107,27 @@ export class CivilWebsocket implements RealtimeCommunication {
 
   public async send(event: SendEvent): Promise<any> {
     if (!this.connection) {
-      this.initialize();
+      await this.initialize();
     }
     this.connection!.send(JSON.stringify(event));
   }
 
-  async closeSecureChannel(
-    channelName: string,
-    deviceID: string
-  ): Promise<any> {
-    this.send({
+  public async closeSecureChannel(channelName: string, deviceID: string): Promise<any> {
+    return this.send({
       type: SendTypes.CLOSE_SECURE_CHANNEL,
-      data: { channelName, deviceID }
+      data: { channelName, deviceID },
+    });
+  }
+
+  private async initialize(): Promise<void> {
+    return new Promise(resolve => {
+      this.connection = new WebSocket(this.url);
+
+      this.connection.onmessage = event => {
+        const data = JSON.parse(event.data);
+        this.subscribers.map(sub => sub(data));
+      };
+      this.connection.onopen = (value: any) => resolve();
     });
   }
 }

@@ -26,14 +26,14 @@ describe("PrivateChannel", () => {
       mobileKey,
       "mobile join message",
       "mobile user Agent",
-      async () => true
+      async () => true,
     );
     const desktop = desktopComms.openSecurePrivateChannel(
       channelName,
       desktopKey,
       "mobile join message",
       "mobile user Agent",
-      async () => true
+      async () => true,
     );
 
     return [await mobile, await desktop];
@@ -46,14 +46,12 @@ describe("PrivateChannel", () => {
   it("should wait for secure events", async () => {
     const [mobile, desktop] = await openChannel();
 
-    const waitPromise = desktop.waitForSecureMessage(
-      SecurePrivateMessageTypes.TEXT_MESSAGE
-    );
+    const waitPromise = desktop.waitForSecureMessage(SecurePrivateMessageTypes.TEXT_MESSAGE);
     await mobile.sendSecureMessage({
       type: SecurePrivateMessageTypes.TEXT_MESSAGE,
       data: {
-        message: "hello, world"
-      }
+        message: "hello, world",
+      },
     });
 
     const result = await waitPromise;
@@ -68,7 +66,7 @@ describe("PrivateChannel", () => {
       channelName,
       mobileKey,
       "mobile join message",
-      "mobile user Agent"
+      "mobile user Agent",
     );
     // start promise for partner to arrive
     const waitForMobilePartnerPromise = mobile.waitForPartner();
@@ -78,7 +76,7 @@ describe("PrivateChannel", () => {
       channelName,
       desktopKey,
       "desktop join message",
-      "desktop user Agent"
+      "desktop user Agent",
     );
     const waitForDesktopPartnerPromise = desktop.waitForPartner();
 
@@ -86,28 +84,20 @@ describe("PrivateChannel", () => {
     const mobilePartner = await waitForMobilePartnerPromise;
     const desktopPartner = await waitForDesktopPartnerPromise;
 
-    await mobile.confirmPartner(
-      mobilePartner.deviceID,
-      mobilePartner.publicKeyString
-    );
-    await desktop.confirmPartner(
-      desktopPartner.deviceID,
-      desktopPartner.publicKeyString
-    );
+    await mobile.confirmPartner(mobilePartner.deviceID, mobilePartner.publicKeyString);
+    await desktop.confirmPartner(desktopPartner.deviceID, desktopPartner.publicKeyString);
 
     const desktopWaitForConfirmation = desktop.waitForConfirmation();
     const mobileWaitForConfirmation = mobile.waitForConfirmation();
 
     await Promise.all([desktopWaitForConfirmation, mobileWaitForConfirmation]);
 
-    const messageEventPromise = desktop.waitForSecureMessage(
-      SecurePrivateMessageTypes.TEXT_MESSAGE
-    );
+    const messageEventPromise = desktop.waitForSecureMessage(SecurePrivateMessageTypes.TEXT_MESSAGE);
     await mobile.sendSecureMessage({
       type: SecurePrivateMessageTypes.TEXT_MESSAGE,
       data: {
-        message: "hello, world"
-      }
+        message: "hello, world",
+      },
     });
 
     const result = await messageEventPromise;

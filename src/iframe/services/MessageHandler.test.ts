@@ -31,7 +31,7 @@ describe("MessageHandler", () => {
     handler = new SpyMessageHandler();
     handler.initialize(() => {
       return {
-        keyManager: new KeyManager(lockbox, new CivilWebsocket("xx"), deviceKey)
+        keyManager: new KeyManager(lockbox, new CivilWebsocket("xx"), deviceKey),
       };
     });
   });
@@ -39,19 +39,17 @@ describe("MessageHandler", () => {
   it("should handle REGISTRY_GET_STATUS", async () => {
     const message = {
       type: SDKMessageTypes.REGISTRY_GET_STATUS,
-      data: {}
+      data: {},
     };
     await handler.receive(message);
 
-    expect(handler.replies).toEqual([
-      { type: "REGISTRY_GET_STATUS", data: { alive: true } }
-    ]);
+    expect(handler.replies).toEqual([{ type: "REGISTRY_GET_STATUS", data: { alive: true } }]);
   });
 
   it("should handle LOCKBOX_CREATE_KEY", async () => {
     const message = {
       type: SDKMessageTypes.LOCKBOX_CREATE_KEY,
-      data: {}
+      data: {},
     };
     await handler.receive(message);
 

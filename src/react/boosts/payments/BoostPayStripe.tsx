@@ -10,10 +10,17 @@ export interface BoostPayStripeProps {
 export const BoostPayStripe: React.FunctionComponent<BoostPayStripeProps> = props => {
   return (
     <BoostPayOption>
-      <BoostPayRadioBtn value={props.value} defaultChecked={props.defaultChecked} disabled={true}>Pay using card</BoostPayRadioBtn>
+      <BoostPayRadioBtn value={props.value} defaultChecked={props.defaultChecked} disabled={true}>
+        Pay using card
+      </BoostPayRadioBtn>
       <BoostPayCardDetails>
-        <p>Coming Soon <a href="#TODO" target="_blank">Why only ETH?</a></p>
+        <p>
+          Coming Soon{" "}
+          <a href="#TODO" target="_blank">
+            Why only ETH?
+          </a>
+        </p>
       </BoostPayCardDetails>
     </BoostPayOption>
   );
-}
+};

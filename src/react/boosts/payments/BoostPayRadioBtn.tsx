@@ -57,7 +57,7 @@ const BoostRadioButton: StyledComponentClass<ButtonProps, "button"> = styled(Sec
     color: ${colors.accent.CIVIL_GRAY_2};
     cursor: auto;
   }
-`
+`;
 export interface BoostPayRadioBtnProps {
   onChange?: any;
   value: any;
@@ -78,7 +78,14 @@ export const BoostPayRadioBtn: React.FunctionComponent<BoostPayRadioBtnProps> = 
 
   return (
     <BoostPayRadioWrapper>
-      <input type="radio" value={value} onChange={onChange} defaultChecked={defaultChecked} name={name} ref={ref => (input = ref)} />
+      <input
+        type="radio"
+        value={value}
+        onChange={onChange}
+        defaultChecked={defaultChecked}
+        name={name}
+        ref={ref => (input = ref)}
+      />
       <BoostRadioButton onClick={clickHandler} disabled={disabled || false}>
         <RadioBtnCircle />
         {children}

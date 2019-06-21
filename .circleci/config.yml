@@ -28,12 +28,26 @@ jobs:
                 name: Building
                 command: yarn build
             - run:
+                name: Building package
+                command: yarn package:build
+            - run:
                 name: Release
                 command: yarn release
             - persist_to_workspace:
                 root: ../
                 paths:
                     - project/
+    lint:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                at: ../
+            - run:
+                name: Ensuring prettified
+                command: yarn prettier
+            - run:
+                name: Linting
+                command: yarn lint
 
     # Docker steps
     # These steps have a different workspace roots and so will behave a bit differently
@@ -84,7 +98,7 @@ jobs:
                 command: |
                     gcloud config list
                     echo "pushing $GOOGLE_PROJECT_ID"
-                    docker push gcr.io/$GOOGLE_PROJECT_ID/civil-sdk                   
+                    docker push gcr.io/$GOOGLE_PROJECT_ID/civil-sdk
     deploy:
         <<: *defaults
         docker:
@@ -104,6 +118,10 @@ workflows:
         jobs:
             - build:
                 context: gcp-common
+            - lint:
+                context: gcp-common
+                requires:
+                    - build
             - setup-gcp:
                 context: gcp-common
                 requires:

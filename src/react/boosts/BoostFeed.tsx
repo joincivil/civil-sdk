@@ -5,12 +5,12 @@ import { boostFeedQuery } from "./queries";
 
 export const BoostFeed: React.FunctionComponent = () => {
   const search = {
-    "postType": "boost"
+    postType: "boost",
   };
 
   return (
     <>
-      <Query query={boostFeedQuery} variables={{search}}>
+      <Query query={boostFeedQuery} variables={{ search }}>
         {({ loading, error, data }) => {
           if (loading) {
             return "Loading...";
@@ -18,7 +18,9 @@ export const BoostFeed: React.FunctionComponent = () => {
             return "Error: " + JSON.stringify(error);
           }
 
-          return data.postsSearch.posts.map((boost: any, i: number) => <Boost key={i} boostId={boost.id} open={false} />);
+          return data.postsSearch.posts.map((boost: any, i: number) => (
+            <Boost key={i} boostId={boost.id} open={false} />
+          ));
         }}
       </Query>
     </>

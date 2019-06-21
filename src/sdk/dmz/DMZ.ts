@@ -13,7 +13,7 @@ export class DMZ {
     this.sdkOrigin = sdkOrigin;
   }
 
-  public initialize() {
+  public initialize(): void {
     const body = document.getElementsByTagName("BODY")[0];
     const iframe = document.createElement("iframe");
     iframe.src = "http://localhost:3000/iframe.html";
@@ -31,12 +31,8 @@ export class DMZ {
     if (window.addEventListener) {
       const subs = this.subscribers;
       const sdkOrigin = this.sdkOrigin;
-      window.addEventListener("message", function waitForAlive(message: any) {
-        if (
-          message.origin === sdkOrigin &&
-          message.data.type &&
-          message.data.type === "ALIVE"
-        ) {
+      window.addEventListener("message", function waitForAlive(message: any): void {
+        if (message.origin === sdkOrigin && message.data.type && message.data.type === "ALIVE") {
           subs.READY.map(cb => cb());
           window.addEventListener("message", waitForAlive);
         }
@@ -49,7 +45,7 @@ export class DMZ {
 
     body.appendChild(iframe);
   }
-  public send(message: SDKMessage): Promise<void> {
+  public async send(message: SDKMessage): Promise<void> {
     if (!this.iframe) {
       console.log("not ready to send");
       return Promise.reject("not ready to send - iframe not available yet");
@@ -76,10 +72,11 @@ export class DMZ {
     this.subscribers[event].push(callback);
   }
 
-  private handleMessage(message: any) {
+  private handleMessage(message: any): void {
     if (message.origin === this.sdkOrigin) {
-      this.subscribers[message.data.type] &&
+      if (this.subscribers[message.data.type]) {
         this.subscribers[message.data.type].forEach(cb => cb(message.data));
+      }
       this.subscribers[message.data.type] = [];
     }
   }

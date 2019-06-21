@@ -1,4 +1,3 @@
-import { IncomingMessageType } from "./messageTypes";
 import { KeyManager } from "./keys/KeyManager";
 import * as responses from "./MessageHandlerTypes";
 import { PartnerRequest } from "./communication/PrivateChannel";
@@ -13,9 +12,7 @@ export abstract class MessageHandler {
   private waitingMessages: SDKMessage[] = [];
   private depenencies?: MessageHandlerDependencies;
 
-  public async initialize(
-    initializer: () => Promise<MessageHandlerDependencies>
-  ): Promise<void> {
+  public async initialize(initializer: () => Promise<MessageHandlerDependencies>): Promise<void> {
     const deps = await initializer();
     this.depenencies = deps;
     await Promise.all(this.waitingMessages.map(m => this.receive(m)));
@@ -23,9 +20,9 @@ export abstract class MessageHandler {
     this.ready = true;
   }
 
-  abstract reply(type: SDKMessageTypes, data: any): void;
+  public abstract reply(type: SDKMessageTypes, data: any): void;
 
-  public async receive(message: SDKMessage) {
+  public async receive(message: SDKMessage): Promise<void> {
     if (!this.ready) {
       this.waitingMessages.push(message);
       return;
@@ -44,9 +41,7 @@ export abstract class MessageHandler {
       case SDKMessageTypes.LOCKBOX_SEND_DEVICE_ACTIVATION_REQUEST:
         response = await this.handleSendDeviceActivationRequest(message.data);
       case SDKMessageTypes.LOCKBOX_CONFIRM_DEVICE_ACTIVATION_REQUEST:
-        response = await this.handleConfirmDeviceActivationRequest(
-          message.data
-        );
+        response = await this.handleConfirmDeviceActivationRequest(message.data);
       default:
         console.error("unrecognized event type from parent", message.type);
     }
@@ -54,46 +49,38 @@ export abstract class MessageHandler {
     this.reply(message.type, response);
   }
 
-  private handleGetStatus() {
+  private handleGetStatus(): any {
     return { alive: true };
   }
 
-  private async handleCreateKey(
-    keyName: string
-  ): Promise<responses.CreateOrGetAccountResponse> {
+  private async handleCreateKey(keyName: string): Promise<responses.CreateOrGetAccountResponse> {
     const { keyManager } = this.depenencies!;
-    let key = await keyManager.createPersistentKey(keyName);
+    const key = await keyManager.createPersistentKey(keyName);
     const response = { publicKey: key.getPublicKey() };
 
     return response;
   }
 
-  private async handleGetKey(
-    keyName: string
-  ): Promise<responses.CreateOrGetAccountResponse> {
+  private async handleGetKey(keyName: string): Promise<responses.CreateOrGetAccountResponse> {
     const { keyManager } = this.depenencies!;
-    let key = await keyManager.getPersistentKey(keyName);
+    const key = await keyManager.getPersistentKey(keyName);
     const response = { publicKey: key.getPublicKey() };
 
     return response;
   }
 
-  private async handleSendDeviceActivationRequest(
-    data: any
-  ): Promise<responses.DeviceActivationResponse> {
+  private async handleSendDeviceActivationRequest(data: any): Promise<responses.DeviceActivationResponse> {
     const { keyManager } = this.depenencies!;
     const response = await keyManager.sendDeviceActivationRequest(
       data.userID,
       data.keyName,
       data.message,
-      data.userAgent
+      data.userAgent,
     );
     return response;
   }
 
-  private async handleConfirmDeviceActivationRequest(
-    data: any
-  ): Promise<responses.DeviceActivationResponse> {
+  private async handleConfirmDeviceActivationRequest(data: any): Promise<responses.DeviceActivationResponse> {
     const { keyManager } = this.depenencies!;
     const onJoinRequest = async (request: PartnerRequest) => {
       alert(JSON.stringify(request));
@@ -109,7 +96,7 @@ export abstract class MessageHandler {
       data.message,
       data.userAgent,
       onJoinRequest,
-      onKeyRequest
+      onKeyRequest,
     );
     return response;
   }

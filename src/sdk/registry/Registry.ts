@@ -8,7 +8,7 @@ export class Registry {
   }
 
   public async getRegistryStatus(): Promise<any> {
-    this.dmz.send({ type: SDKMessageTypes.REGISTRY_GET_STATUS, data: {} });
+    await this.dmz.send({ type: SDKMessageTypes.REGISTRY_GET_STATUS, data: {} });
 
     return "ok";
   }

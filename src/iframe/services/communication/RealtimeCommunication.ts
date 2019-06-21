@@ -9,7 +9,7 @@ export interface RealtimeCommunication {
     deviceKey: Key,
     message: string,
     userAgent: string,
-    onJoinRequest: (request: PartnerRequest) => Promise<boolean>
+    onJoinRequest: (request: PartnerRequest) => Promise<boolean>,
   ): Promise<PrivateChannel>;
   closeSecureChannel(channelName: string, deviceID: string): Promise<any>;
   waitForEvent(eventType: string, timeout: number): Promise<ReceiveEvent>;

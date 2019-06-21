@@ -1,6 +1,5 @@
-import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton  } from "@joincivil/components";
+import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton } from "@joincivil/components";
 
 export interface BoostStyleProps {
   open?: boolean;
@@ -109,7 +108,7 @@ export const BoostDescription = styled.div`
   p {
     font-size: 14px;
     line-height: 20px;
-    margin: 0 0 15px
+    margin: 0 0 15px;
   }
 `;
 
@@ -162,7 +161,7 @@ export const BoostPayOption = styled.div`
   ${mediaQueries.MOBILE} {
     padding: 15px;
   }
-}`
+}`;
 
 export const BoostPayCardDetails = styled.div`
   margin-top: 5px;
@@ -180,7 +179,7 @@ export const BoostPayCardDetails = styled.div`
       text-decoration: underline;
     }
   }
-}`
+}`;
 
 export const LearnMore = styled.div`
   border: 1px solid ${colors.accent.CIVIL_GRAY_4};
@@ -191,19 +190,19 @@ export const LearnMore = styled.div`
     cursor: pointer;
     margin-left: 30px;
   }
-}`
+}`;
 
 export const BoostFormTitle = styled.div`
   font-size: 16px;
   font-weight: bold;
   line-height: 22px;
-`
+`;
 
 export const BoostPayFormTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
-`
+`;
 
 export const BoostFlexStart = styled.div`
   align-items: flex-start;
@@ -215,19 +214,19 @@ export const BoostFlexCenter = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-}`
+}`;
 
 export const BoostFlexEnd = styled.div`
   align-items: flex-end;
   display: flex;
   justify-content: space-between;
-}`
+}`;
 
 export const BoostModalContents = styled.div`
   padding: 10px 30px 20px 30px;
   position: relative;
   width: 500px;
-}`
+}`;
 
 export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = styled(InvertedButton)`
   border: none;
@@ -257,6 +256,6 @@ export const BoostSmallPrint = styled.div`
 `;
 
 export const BoostEthConfirm = styled.span`
-  display: block;  
+  display: block;
   font-size: 13px;
 `;

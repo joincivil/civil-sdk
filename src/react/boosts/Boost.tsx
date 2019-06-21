@@ -65,9 +65,9 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
         }}
       </Query>
     );
-  };
+  }
 
   private startPayment = (newsroomName: string) => {
-    this.setState({ payment: true, newsroomName: newsroomName });
+    this.setState({ payment: true, newsroomName });
   };
-};
+}

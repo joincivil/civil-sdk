@@ -6,10 +6,10 @@
   "types": "build/static/js/index.d.ts",
   "dependencies": {
     "@babel/core": "7.2.2",
-    "@joincivil/components": "^1.8.0",
-    "@joincivil/utils": "^1.9.0",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
+    "@joincivil/components": "^1.8.0",
+    "@joincivil/utils": "^1.9.0",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
@@ -71,9 +71,11 @@
     "start:boost": "OPEN_PATH=boost-test.html node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "lint": "tslint --project ./",
     "package:build": "tsc",
     "package:watch": "tsc -w",
     "prepublishOnly": "yarn package:build",
+    "prettier": "prettier --config .prettierrc.yaml --write --list-different './**/*.{ts,tsx,json,md}'",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "release": "semantic-release",
     "commit": "commit",
@@ -92,6 +94,7 @@
   "devDependencies": {
     "@babel/plugin-transform-member-expression-literals": "^7.2.0",
     "@commitlint/prompt-cli": "^7.5.0",
+    "@joincivil/tslint-rules": "^2.7.1",
     "@semantic-release/npm": "^5.1.7",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-links": "^5.0.10",
@@ -111,9 +114,11 @@
     "jest-fetch-mock": "^2.1.2",
     "mock-socket": "^8.0.5",
     "node-webcrypto-ossl": "^1.0.42",
+    "prettier": "^1.18.2",
     "react-docgen-typescript-loader": "^3.1.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "semantic-release": "^15.13.3",
+    "tslint": "^5.17.0",
     "typescript": "3.3.4000"
   },
   "peerDependencies": {
@@ -179,4 +184,3 @@
     }
   }
 }
-

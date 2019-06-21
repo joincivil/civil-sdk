@@ -1,7 +1,6 @@
 import { Persistence } from "./Persistence";
 import { EncryptedData } from "../crypto/crypto";
 import { Key } from "../keys/Key";
-import { object } from "prop-types";
 export class LockboxService {
   private data: Persistence;
 
@@ -11,14 +10,10 @@ export class LockboxService {
 
   public async store(key: Key, objectID: string, object: any): Promise<any> {
     const jsonString = JSON.stringify(object);
-    this.storeJson(key, objectID, jsonString);
+    return this.storeJson(key, objectID, jsonString);
   }
 
-  public async storeJson(
-    key: Key,
-    objectID: string,
-    jsonString: string
-  ): Promise<any> {
+  public async storeJson(key: Key, objectID: string, jsonString: string): Promise<any> {
     const publicKey = key.getPublicKey();
     const signature = await key.sign(objectID);
     const ciphertext = await key.encrypt(jsonString);
@@ -33,11 +28,7 @@ export class LockboxService {
   public async retrieveString(key: Key, objectID: string): Promise<any> {
     const publicKey = key.getPublicKey();
     const signature = await key.sign(objectID);
-    const ciphertext: EncryptedData = await this.data.retrieve(
-      publicKey,
-      signature,
-      objectID
-    );
+    const ciphertext: EncryptedData = await this.data.retrieve(publicKey, signature, objectID);
     return key.decrypt(ciphertext);
   }
 

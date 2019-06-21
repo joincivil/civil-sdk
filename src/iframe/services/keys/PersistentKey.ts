@@ -1,20 +1,15 @@
 import * as ethers from "ethers";
 
-const alg: EcKeyGenParams = {
-  name: "ECDSA",
-  namedCurve: "P-256"
-};
-
 export class PersistentKey {
-  private wallet: ethers.Wallet;
-
-  static createRandom(): PersistentKey {
+  public static createRandom(): PersistentKey {
     const wallet = ethers.Wallet.createRandom();
     return PersistentKey.restore(wallet.privateKey);
   }
-  static restore(privateKey: string) {
+  public static restore(privateKey: string): PersistentKey {
     return new PersistentKey(privateKey);
   }
+
+  private wallet: ethers.Wallet;
 
   public constructor(privateKey: string) {
     this.wallet = new ethers.Wallet(privateKey);

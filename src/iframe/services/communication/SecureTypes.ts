@@ -2,14 +2,10 @@ export enum SecurePrivateMessageTypes {
   TEXT_MESSAGE = "TEXT_MESSAGE",
   ACTIVATE_DEVICE_REQUEST = "ACTIVATE_DEVICE_REQUEST",
   ACTIVATE_DEVICE_RESPONSE = "ACTIVATE_DEVICE_RESPONSE",
-  ACTIVATE_DEVICE_DENIED = "ACTIVATE_DEVICE_DENIED"
+  ACTIVATE_DEVICE_DENIED = "ACTIVATE_DEVICE_DENIED",
 }
 
-export type SecureMessageData =
-  | ActivateDeviceRequest
-  | TextMessage
-  | ActivateDeviceResponse
-  | ActivateDeviceDenied;
+export type SecureMessageData = ActivateDeviceRequest | TextMessage | ActivateDeviceResponse | ActivateDeviceDenied;
 
 export interface SecureMessage {
   type: SecurePrivateMessageTypes;
