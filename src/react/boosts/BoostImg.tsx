@@ -7,13 +7,13 @@ import { promisify } from "@joincivil/utils";
 const ipfs = new IPFS({
   host: "ipfs.infura.io",
   port: 5001,
-  protocol: "https"
+  protocol: "https",
 });
 
 const ipfsAsync = {
   get: promisify<[{ path: string; content: Buffer }]>(ipfs.get),
   add: promisify<[{ path: string; hash: string; size: number }]>(ipfs.add),
-  pin: promisify<[{ hash: string }]>(ipfs.pin.add)
+  pin: promisify<[{ hash: string }]>(ipfs.pin.add),
 };
 
 export const BoostImgDiv = styled.div`
@@ -47,17 +47,14 @@ export class BoostImg extends React.Component<BoostImgProps, BoostImgState> {
   constructor(props: BoostImgProps) {
     super(props);
     this.state = {
-      fetchInProgress: false
+      fetchInProgress: false,
     };
   }
   public async componentDidMount(): Promise<void> {
     const uri = this.props.charterUri.replace("ipfs://", "/ipfs/");
     const content = await ipfsAsync.get(uri);
-    const file = content.reduce(
-      (acc, file) => acc + file.content.toString("utf8"),
-      ""
-    );
-    const charter = JSON.parse(file.toString());
+    const ipfsFile = content.reduce((acc, file) => acc + file.content.toString("utf8"), "");
+    const charter = JSON.parse(ipfsFile.toString());
     this.setState({ charter });
   }
 
@@ -66,10 +63,7 @@ export class BoostImg extends React.Component<BoostImgProps, BoostImgState> {
       return (
         <BoostImgDiv>
           <img
-            src={
-              this.state.charter.logoUrl ||
-              ((defaultNewsroomImgUrl as any) as string)
-            }
+            src={this.state.charter.logoUrl || ((defaultNewsroomImgUrl as any) as string)}
             onError={e => {
               (e.target as any).src = defaultNewsroomImgUrl;
             }}
