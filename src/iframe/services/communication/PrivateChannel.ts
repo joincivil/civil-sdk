@@ -1,11 +1,10 @@
 import { CivilWebsocket } from "./CivilWebsocket";
-import { SendTypes, SendEventData } from "./SendTypes";
+import { SendTypes } from "./SendTypes";
 import { ReceiveTypes } from "./ReceiveTypes";
 import { SecurePrivateMessageTypes, SecureMessage } from "./SecureTypes";
 import {
   generateECDHKey,
   derivePartnerKey,
-  arrayBufferToBase64,
   publicKeyFromString,
   encrypt,
   decrypt,
@@ -26,14 +25,6 @@ export enum PrivateMessageTypes {
 }
 
 export class PrivateChannel {
-  private websocket: CivilWebsocket;
-  private channelName: string;
-  private deviceKey: Key;
-  private secretKey: CryptoKeyPair;
-  private sharedKey?: CryptoKey;
-  private partnerDeviceID?: string;
-  private ready: boolean = false;
-
   public static async NewPrivateChannel(
     websocket: CivilWebsocket,
     channelName: string,
@@ -43,6 +34,14 @@ export class PrivateChannel {
 
     return new PrivateChannel(websocket, channelName, deviceKey, secretKey);
   }
+
+  private websocket: CivilWebsocket;
+  private channelName: string;
+  private deviceKey: Key;
+  private secretKey: CryptoKeyPair;
+  private sharedKey?: CryptoKey;
+  private partnerDeviceID?: string;
+  private ready: boolean = false;
 
   constructor(websocket: CivilWebsocket, channelName: string, deviceKey: Key, secretKey: CryptoKeyPair) {
     this.websocket = websocket;
@@ -68,19 +67,18 @@ export class PrivateChannel {
     timeoutSeconds?: number,
     filter?: (e: any) => Promise<boolean>,
   ): Promise<any> {
-    const eventFilter = filter ? filter : () => true;
+    const eventFilter = filter ? filter : () => Promise.resolve(true);
     return this.websocket.waitForEvent(
       ReceiveTypes.PRIVATE_CHANNEL_MESSAGE,
       timeoutSeconds || 120,
-      async e =>
-        (e.data as any).channelName === this.channelName && e.data.type === type && (await eventFilter(e.data)),
+      async e => (e.data as any).channelName === this.channelName && e.data.type === type && eventFilter(e.data),
     );
   }
 
   public async waitForSecureMessage(type: SecurePrivateMessageTypes, timeoutSeconds?: number): Promise<any> {
     const filter = async (e: any) => {
-      const encrypted = e.data;
-      const decrypted = await this.decryptMessage(encrypted.iv, encrypted.ciphertext);
+      const enc = e.data;
+      const decrypted = await this.decryptMessage(enc.iv, enc.ciphertext);
       return decrypted.type === type;
     };
     const event = await this.waitForEvent(PrivateMessageTypes.SECURE_MESSAGE, timeoutSeconds || 120, filter);

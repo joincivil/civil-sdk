@@ -14,7 +14,7 @@ export class CivilPersistence implements Persistence {
       data,
     };
 
-    const result = await fetch(`${this.url}/lockbox/store`, {
+    return fetch(`${this.url}/lockbox/store`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

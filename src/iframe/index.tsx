@@ -10,7 +10,7 @@ const CIVIL_REST_URL = "http://localhost:8080";
 const handler = new WindowMessageHandler(document.referrer);
 
 let parentDomain: string;
-let parentUrl = window.location != window.parent.location ? document.referrer : document.location.href;
+const parentUrl = window.location !== window.parent.location ? document.referrer : document.location.href;
 if (parentUrl) {
   const match = parentUrl.match(/(.*):\/\/(.[^/]+)/);
   if (match) {
@@ -19,15 +19,19 @@ if (parentUrl) {
 }
 console.log("Initializing iframe from parentUrl: ", parentUrl);
 
-handler.initialize(async () => {
-  const persistence = new CivilPersistence(CIVIL_REST_URL);
-  const lockbox = new LockboxService(persistence);
-  const websockets = new CivilWebsocket(CIVIL_WEBSOCKET_URL);
-  const keyManager = await KeyManager.initialize(lockbox, websockets);
-  return {
-    keyManager,
-  };
-});
+handler
+  .initialize(async () => {
+    const persistence = new CivilPersistence(CIVIL_REST_URL);
+    const lockbox = new LockboxService(persistence);
+    const websockets = new CivilWebsocket(CIVIL_WEBSOCKET_URL);
+    const keyManager = await KeyManager.initialize(lockbox, websockets);
+    return {
+      keyManager,
+    };
+  })
+  .catch(err => {
+    console.error("Error initializing civil-sdk", err);
+  });
 
 if (window.addEventListener) {
   window.addEventListener("message", handleMessage);
@@ -35,8 +39,8 @@ if (window.addEventListener) {
   (window as any).attachEvent("onmessage", handleMessage);
 }
 
-function handleMessage(message: any) {
+async function handleMessage(message: any): Promise<void> {
   if (message.origin === parentDomain) {
-    handler.receive(message.data);
+    await handler.receive(message.data);
   }
 }
