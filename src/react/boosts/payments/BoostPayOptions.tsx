@@ -64,8 +64,8 @@ const BoostPayFooterSection = styled.div`
 
 export interface BoostPayOptionsStates {
   paymentType: string;
-  etherToSpend: number, 
-  usdToSpend: number,
+  etherToSpend: number;
+  usdToSpend: number;
 }
 
 export class BoostPayOptions extends React.Component<BoostPayOptionsProps, BoostPayOptionsStates> {
@@ -73,7 +73,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
     super(props);
     this.state = {
       paymentType: PAYMENT_TYPE.DEFAULT,
-      etherToSpend: 0, 
+      etherToSpend: 0,
       usdToSpend: 0,
     };
   }
@@ -81,16 +81,19 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
   public render(): JSX.Element {
     return (
       <>
-        {
-          this.state.paymentType === PAYMENT_TYPE.DEFAULT
-          ? <BoostInstructions>Select how you would like to support this Boost</BoostInstructions>
-          : <BoostInstructions><BoostFlexCenter>Payment <BoostButton onClick={this.handleEdit}>Edit</BoostButton></BoostFlexCenter></BoostInstructions>
-        }
+        {this.state.paymentType === PAYMENT_TYPE.DEFAULT ? (
+          <BoostInstructions>Select how you would like to support this Boost</BoostInstructions>
+        ) : (
+          <BoostInstructions>
+            <BoostFlexCenter>
+              Payment <BoostButton onClick={this.handleEdit}>Edit</BoostButton>
+            </BoostFlexCenter>
+          </BoostInstructions>
+        )}
         <RadioInput name={"BoostPayments"} label={""}>
           {this.getPaymentTypes()}
         </RadioInput>
-        {
-          this.state.paymentType === PAYMENT_TYPE.DEFAULT &&
+        {this.state.paymentType === PAYMENT_TYPE.DEFAULT && (
           <BoostPayFooter>
             <BoostPayFooterSection>
               <PaymentInfoText />
@@ -99,7 +102,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               <PaymentFAQText />
             </BoostPayFooterSection>
           </BoostPayFooter>
-        }
+        )}
       </>
     );
   }
@@ -117,17 +120,19 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             usdToSpend={this.state.usdToSpend}
           />
         );
-      {/* case PAYMENT_TYPE.STRIPE:
+        {
+          /* case PAYMENT_TYPE.STRIPE:
         return (
           <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={true} />
-        );*/}
+        );*/
+        }
       default:
         return (
           <>
             <BoostPayEth value={PAYMENT_TYPE.ETH} handleNext={this.handleEthNext} defaultChecked={true} />
             {/* <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} /> */}
           </>
-        ); 
+        );
     }
   };
 

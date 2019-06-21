@@ -1,10 +1,7 @@
 import { Key } from "./Key";
 import * as KeyUtils from "./KeyUtils";
 import { LockboxService } from "../civil-node/LockboxService";
-import {
-  SecurePrivateMessageTypes,
-  ActivateDeviceRequest
-} from "../communication/SecureTypes";
+import { SecurePrivateMessageTypes, ActivateDeviceRequest } from "../communication/SecureTypes";
 import { RealtimeCommunication } from "../communication/RealtimeCommunication";
 import { PartnerRequest } from "../communication/PrivateChannel";
 
@@ -13,18 +10,11 @@ export class KeyManager {
   private comms: RealtimeCommunication;
   private deviceKey: Key;
   private loadedKeys: { [keyName: string]: Key } = {};
-  public static async initialize(
-    lockbox: LockboxService,
-    comms: RealtimeCommunication
-  ) {
+  public static async initialize(lockbox: LockboxService, comms: RealtimeCommunication) {
     const deviceKey = await KeyUtils.getOrCreateDeviceKey();
     return new KeyManager(lockbox, comms, deviceKey);
   }
-  public constructor(
-    lockbox: LockboxService,
-    comms: RealtimeCommunication,
-    deviceKey: Key
-  ) {
+  public constructor(lockbox: LockboxService, comms: RealtimeCommunication, deviceKey: Key) {
     this.lockbox = lockbox;
     this.comms = comms;
     this.deviceKey = deviceKey;
@@ -55,26 +45,24 @@ export class KeyManager {
     userID: string,
     keyName: string,
     message: string,
-    userAgent: string
+    userAgent: string,
   ): Promise<any> {
     const channel = await this.comms.openSecurePrivateChannel(
       userID,
       this.deviceKey,
       message,
       userAgent,
-      async () => true
+      async () => true,
     );
 
     console.log("sending ACTIVATE_DEVICE_REQUEST");
     await channel.sendSecureMessage({
       type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST,
-      data: { keyName }
+      data: { keyName },
     });
 
     console.log("waiting for ACTIVATE_DEVICE_RESPONSE");
-    const response = await channel.waitForSecureMessage(
-      SecurePrivateMessageTypes.ACTIVATE_DEVICE_RESPONSE
-    );
+    const response = await channel.waitForSecureMessage(SecurePrivateMessageTypes.ACTIVATE_DEVICE_RESPONSE);
     const { keyJson } = response.data;
     const storageKey = `key|${keyName}`;
     await this.lockbox.store(this.deviceKey, storageKey, keyJson);
@@ -89,18 +77,18 @@ export class KeyManager {
     message: string,
     userAgent: string,
     onJoinRequest: (request: PartnerRequest) => Promise<boolean>,
-    onKeyRequest: (request: ActivateDeviceRequest) => Promise<boolean>
+    onKeyRequest: (request: ActivateDeviceRequest) => Promise<boolean>,
   ): Promise<any> {
     const channel = await this.comms.openSecurePrivateChannel(
       userID,
       this.deviceKey,
       message,
       userAgent,
-      onJoinRequest
+      onJoinRequest,
     );
 
     const event: ActivateDeviceRequest = await channel.waitForSecureMessage(
-      SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST
+      SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST,
     );
     try {
       const approve = await onKeyRequest(event);
@@ -111,15 +99,15 @@ export class KeyManager {
           type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_RESPONSE,
           data: {
             keyName,
-            keyJson: await key.toJson()
-          }
+            keyJson: await key.toJson(),
+          },
         });
       } else {
         await channel.sendSecureMessage({
           type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_DENIED,
           data: {
-            reason: "owner denied request"
-          }
+            reason: "owner denied request",
+          },
         });
       }
     } catch (err) {
@@ -127,8 +115,8 @@ export class KeyManager {
       await channel.sendSecureMessage({
         type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_DENIED,
         data: {
-          reason: "key does not exist on device"
-        }
+          reason: "key does not exist on device",
+        },
       });
     }
   }

@@ -14,11 +14,7 @@ export class LockboxService {
     this.storeJson(key, objectID, jsonString);
   }
 
-  public async storeJson(
-    key: Key,
-    objectID: string,
-    jsonString: string
-  ): Promise<any> {
+  public async storeJson(key: Key, objectID: string, jsonString: string): Promise<any> {
     const publicKey = key.getPublicKey();
     const signature = await key.sign(objectID);
     const ciphertext = await key.encrypt(jsonString);
@@ -33,11 +29,7 @@ export class LockboxService {
   public async retrieveString(key: Key, objectID: string): Promise<any> {
     const publicKey = key.getPublicKey();
     const signature = await key.sign(objectID);
-    const ciphertext: EncryptedData = await this.data.retrieve(
-      publicKey,
-      signature,
-      objectID
-    );
+    const ciphertext: EncryptedData = await this.data.retrieve(publicKey, signature, objectID);
     return key.decrypt(ciphertext);
   }
 

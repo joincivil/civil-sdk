@@ -8,7 +8,7 @@ import {
   generateAuthKey,
   arrayBufferToBase64,
   base64ToArrayBuffer,
-  sign
+  sign,
 } from "../crypto/crypto";
 const crypto = window.crypto;
 
@@ -25,66 +25,34 @@ export class Key {
 
     authKey.publicKey;
 
-    const authPublicKey = arrayBufferToBase64(
-      await crypto.subtle.exportKey("spki", authKey.publicKey)
-    );
+    const authPublicKey = arrayBufferToBase64(await crypto.subtle.exportKey("spki", authKey.publicKey));
 
-    return new Key(
-      encryptKey,
-      authKey.privateKey,
-      authKey.publicKey,
-      authPublicKey
-    );
+    return new Key(encryptKey, authKey.privateKey, authKey.publicKey, authPublicKey);
   }
 
   public static async fromJson(json: string): Promise<Key> {
     const data = JSON.parse(json);
 
-    const encryptKey = crypto.subtle.importKey(
-      "jwk",
-      data.encryptJwk,
-      alg,
-      true,
-      ["encrypt", "decrypt"]
-    );
-    const authPrivateKey = crypto.subtle.importKey(
-      "pkcs8",
-      base64ToArrayBuffer(data.authPrivateKey),
-      authAlg,
-      true,
-      ["sign"]
-    );
+    const encryptKey = crypto.subtle.importKey("jwk", data.encryptJwk, alg, true, ["encrypt", "decrypt"]);
+    const authPrivateKey = crypto.subtle.importKey("pkcs8", base64ToArrayBuffer(data.authPrivateKey), authAlg, true, [
+      "sign",
+    ]);
 
-    const authPublicKey = crypto.subtle.importKey(
-      "spki",
-      base64ToArrayBuffer(data.authPublicKey),
-      authAlg,
-      true,
-      ["verify"]
-    );
+    const authPublicKey = crypto.subtle.importKey("spki", base64ToArrayBuffer(data.authPublicKey), authAlg, true, [
+      "verify",
+    ]);
 
-    return new Key(
-      await encryptKey,
-      await authPrivateKey,
-      await authPublicKey,
-      data.authPublicKey
-    );
+    return new Key(await encryptKey, await authPrivateKey, await authPublicKey, data.authPublicKey);
   }
   public async toJson(): Promise<string> {
     const encryptJwk = await crypto.subtle.exportKey("jwk", this.encryptKey);
-    const authPrivateBuffer = await crypto.subtle.exportKey(
-      "pkcs8",
-      this.authPrivateKey
-    );
-    const authPublicKey = await crypto.subtle.exportKey(
-      "spki",
-      this.authPublicKey
-    );
+    const authPrivateBuffer = await crypto.subtle.exportKey("pkcs8", this.authPrivateKey);
+    const authPublicKey = await crypto.subtle.exportKey("spki", this.authPublicKey);
 
     return JSON.stringify({
       encryptJwk,
       authPrivateKey: arrayBufferToBase64(authPrivateBuffer),
-      authPublicKey: arrayBufferToBase64(authPublicKey)
+      authPublicKey: arrayBufferToBase64(authPublicKey),
     });
   }
 
@@ -92,7 +60,7 @@ export class Key {
     encryptKey: CryptoKey,
     authPrivateKey: CryptoKey,
     authPublicKey: CryptoKey,
-    publicKeyString: string
+    publicKeyString: string,
   ) {
     this.encryptKey = encryptKey;
     this.authPrivateKey = authPrivateKey;

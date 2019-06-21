@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Query } from "react-apollo";
 import { boostNewsroomQuery } from "./queries";
-import { BoostProgress } from "./BoostProgress"
+import { BoostProgress } from "./BoostProgress";
 import {
   BoostButton,
   BoostFlexStart,
@@ -41,7 +41,6 @@ const boost = {
 };
 
 export class BoostCard extends React.Component<BoostCardProps> {
-
   public render(): JSX.Element {
     const daysLeft = this.daysLeft(this.props.dateEnd);
     const addr = this.props.channelId;
@@ -89,9 +88,16 @@ export class BoostCard extends React.Component<BoostCardProps> {
         </Query>
         <BoostFlexStart>
           <BoostProgressCol open={this.props.open}>
-            <BoostProgress open={this.props.open} goalAmount={this.props.goalAmount} paymentsTotal={this.props.paymentsTotal} daysLeft={daysLeft} />
+            <BoostProgress
+              open={this.props.open}
+              goalAmount={this.props.goalAmount}
+              paymentsTotal={this.props.paymentsTotal}
+              daysLeft={daysLeft}
+            />
           </BoostProgressCol>
-          {this.props.open && (<BoostButton onClick={() => this.props.handlePayments(newsroomName)}>Support</BoostButton>)}
+          {this.props.open && (
+            <BoostButton onClick={() => this.props.handlePayments(newsroomName)}>Support</BoostButton>
+          )}
         </BoostFlexStart>
         {this.props.open && (
           <>
@@ -127,13 +133,15 @@ export class BoostCard extends React.Component<BoostCardProps> {
             </BoostDescriptionTable>
             <BoostDescription>
               <h3>Questions about Boosts?</h3>
-              <p><a href="#TODO">Learn more in our FAQ</a></p>
+              <p>
+                <a href="#TODO">Learn more in our FAQ</a>
+              </p>
             </BoostDescription>
           </>
         )}
       </BoostWrapper>
     );
-  };
+  }
 
   private daysLeft = (dateEnd: string) => {
     const endDate = Date.parse(dateEnd);
@@ -152,4 +160,4 @@ export class BoostCard extends React.Component<BoostCardProps> {
 
     return daysLeft;
   };
-};
+}

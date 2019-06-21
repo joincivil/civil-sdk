@@ -2,7 +2,7 @@ import * as ethers from "ethers";
 
 const alg: EcKeyGenParams = {
   name: "ECDSA",
-  namedCurve: "P-256"
+  namedCurve: "P-256",
 };
 
 export class PersistentKey {

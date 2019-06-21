@@ -32,11 +32,7 @@ export class DMZ {
       const subs = this.subscribers;
       const sdkOrigin = this.sdkOrigin;
       window.addEventListener("message", function waitForAlive(message: any) {
-        if (
-          message.origin === sdkOrigin &&
-          message.data.type &&
-          message.data.type === "ALIVE"
-        ) {
+        if (message.origin === sdkOrigin && message.data.type && message.data.type === "ALIVE") {
           subs.READY.map(cb => cb());
           window.addEventListener("message", waitForAlive);
         }
@@ -78,8 +74,7 @@ export class DMZ {
 
   private handleMessage(message: any) {
     if (message.origin === this.sdkOrigin) {
-      this.subscribers[message.data.type] &&
-        this.subscribers[message.data.type].forEach(cb => cb(message.data));
+      this.subscribers[message.data.type] && this.subscribers[message.data.type].forEach(cb => cb(message.data));
       this.subscribers[message.data.type] = [];
     }
   }

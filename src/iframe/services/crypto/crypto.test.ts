@@ -1,10 +1,4 @@
-import {
-  publicKeyToString,
-  publicKeyFromString,
-  sign,
-  verify,
-  generateAuthKey
-} from "./crypto";
+import { publicKeyToString, publicKeyFromString, sign, verify, generateAuthKey } from "./crypto";
 
 describe("crypto", () => {
   it("should rehydrate a public key", async () => {

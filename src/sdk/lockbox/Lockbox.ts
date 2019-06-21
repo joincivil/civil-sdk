@@ -14,16 +14,16 @@ export class Lockbox {
         userID: "dan",
         keyName: "civil",
         message: "please gimme the loot",
-        userAgent: navigator.userAgent
-      }
+        userAgent: navigator.userAgent,
+      },
     });
   }
   public async createKey(keyName: string) {
     return this.dmz.send({
       type: SDKMessageTypes.LOCKBOX_CREATE_KEY,
       data: {
-        keyName
-      }
+        keyName,
+      },
     });
   }
 
@@ -31,8 +31,8 @@ export class Lockbox {
     return this.dmz.send({
       type: SDKMessageTypes.LOCKBOX_GET_KEY,
       data: {
-        keyName
-      }
+        keyName,
+      },
     });
   }
 
@@ -43,8 +43,8 @@ export class Lockbox {
         userID: "dan",
         keyName: "civil",
         message: "please gimme the loot",
-        userAgent: navigator.userAgent
-      }
+        userAgent: navigator.userAgent,
+      },
     });
   }
 }

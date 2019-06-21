@@ -8,7 +8,7 @@ export interface ICivilContext {
 
 const defaultContext: ICivilContext = {
   loading: true,
-  civil: new Civil()
+  civil: new Civil(),
 };
 
 export const CivilContext = React.createContext(defaultContext);
@@ -20,7 +20,7 @@ export const CivilProvider: React.FunctionComponent = ({ children }) => {
     context.civil.onLoad(() => {
       setContext({
         loading: false,
-        civil: context.civil
+        civil: context.civil,
       });
     });
   }, []);

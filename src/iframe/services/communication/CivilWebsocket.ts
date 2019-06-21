@@ -30,7 +30,7 @@ export class CivilWebsocket implements RealtimeCommunication {
     channelName: string,
     key: Key,
     message: string,
-    userAgent: string
+    userAgent: string,
   ): Promise<PrivateChannel> {
     if (!this.connection) {
       await this.initialize();
@@ -55,8 +55,8 @@ export class CivilWebsocket implements RealtimeCommunication {
         deviceID: key.getPublicKey(),
         publicKeyString,
         message,
-        userAgent
-      }
+        userAgent,
+      },
     });
 
     return this.privateChannels[channelName];
@@ -67,14 +67,9 @@ export class CivilWebsocket implements RealtimeCommunication {
     key: Key,
     message: string,
     userAgent: string,
-    onJoinRequest: (request: PartnerRequest) => Promise<boolean>
+    onJoinRequest: (request: PartnerRequest) => Promise<boolean>,
   ): Promise<PrivateChannel> {
-    const channel = await this.openSecurePrivateChannelRaw(
-      channelName,
-      key,
-      message,
-      userAgent
-    );
+    const channel = await this.openSecurePrivateChannelRaw(channelName, key, message, userAgent);
 
     // this will wait until the other party arrives
     const request = await channel.waitForPartner();
@@ -97,14 +92,10 @@ export class CivilWebsocket implements RealtimeCommunication {
   public async waitForEvent(
     eventType: string,
     timeout: number,
-    filter?: (event: ReceiveEvent) => Promise<boolean>
+    filter?: (event: ReceiveEvent) => Promise<boolean>,
   ): Promise<ReceiveEvent> {
     return new Promise((resolve, reject) => {
-      const ts = setTimeout(
-        () =>
-          reject(`wait for ${eventType} timed out after ${timeout} seconds`),
-        timeout * 1000
-      );
+      const ts = setTimeout(() => reject(`wait for ${eventType} timed out after ${timeout} seconds`), timeout * 1000);
       const fn = (event: any) => {
         if (event.type === eventType) {
           if (filter) {
@@ -129,13 +120,10 @@ export class CivilWebsocket implements RealtimeCommunication {
     this.connection!.send(JSON.stringify(event));
   }
 
-  async closeSecureChannel(
-    channelName: string,
-    deviceID: string
-  ): Promise<any> {
+  async closeSecureChannel(channelName: string, deviceID: string): Promise<any> {
     this.send({
       type: SendTypes.CLOSE_SECURE_CHANNEL,
-      data: { channelName, deviceID }
+      data: { channelName, deviceID },
     });
   }
 }

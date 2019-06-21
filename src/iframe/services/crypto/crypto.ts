@@ -2,7 +2,7 @@ export const alg = { name: "AES-CBC", length: 256 };
 export const authAlg = {
   name: "ECDSA",
   hash: { name: "SHA-256" },
-  namedCurve: "P-256"
+  namedCurve: "P-256",
 };
 
 export interface EncryptedData {
@@ -10,10 +10,7 @@ export interface EncryptedData {
   ciphertext: string; // encrypted data
 }
 
-export async function encrypt(
-  plaintext: string,
-  key: CryptoKey
-): Promise<EncryptedData> {
+export async function encrypt(plaintext: string, key: CryptoKey): Promise<EncryptedData> {
   const encoder = new TextEncoder();
   const encoded = encoder.encode(plaintext);
   const iv = window.crypto.getRandomValues(new Uint8Array(16));
@@ -21,22 +18,15 @@ export async function encrypt(
 
   return {
     iv: arrayBufferToBase64(iv),
-    ciphertext: arrayBufferToBase64(ciphertext)
+    ciphertext: arrayBufferToBase64(ciphertext),
   };
 }
 
-export async function decrypt(
-  data: EncryptedData,
-  key: CryptoKey
-): Promise<string> {
+export async function decrypt(data: EncryptedData, key: CryptoKey): Promise<string> {
   const ciphertextBuffer = base64ToArrayBuffer(data.ciphertext);
   const iv = base64ToArrayBuffer(data.iv);
 
-  const plaintextBuffer = await crypto.subtle.decrypt(
-    { ...alg, iv },
-    key,
-    ciphertextBuffer
-  );
+  const plaintextBuffer = await crypto.subtle.decrypt({ ...alg, iv }, key, ciphertextBuffer);
 
   const decoder = new TextDecoder();
   return decoder.decode(plaintextBuffer);
@@ -50,11 +40,7 @@ export async function sign(message: string, key: CryptoKey): Promise<string> {
   return arrayBufferToBase64(signatureBuffer);
 }
 
-export async function verify(
-  message: string,
-  signature: string,
-  key: CryptoKey
-): Promise<boolean> {
+export async function verify(message: string, signature: string, key: CryptoKey): Promise<boolean> {
   const encoder = new TextEncoder();
   const messageEncoded = encoder.encode(message);
 
@@ -71,29 +57,20 @@ export async function generateAuthKey(): Promise<CryptoKeyPair> {
 }
 
 export async function generateECDHKey() {
-  return crypto.subtle.generateKey(
-    { name: "ECDH", namedCurve: "P-256" },
-    true,
-    ["deriveKey"]
-  );
+  return crypto.subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveKey"]);
 }
 
-export async function derivePartnerKey(
-  privateKey: CryptoKey,
-  publicKey: CryptoKey
-): Promise<any> {
+export async function derivePartnerKey(privateKey: CryptoKey, publicKey: CryptoKey): Promise<any> {
   return crypto.subtle.deriveKey(
     { name: "ECDH", public: publicKey },
     privateKey,
     { name: "AES-CBC", length: 256 },
     true,
-    ["encrypt", "decrypt"]
+    ["encrypt", "decrypt"],
   );
 }
 
-export async function publicKeyToString(
-  keyPair: CryptoKeyPair
-): Promise<string> {
+export async function publicKeyToString(keyPair: CryptoKeyPair): Promise<string> {
   const data = await window.crypto.subtle.exportKey("spki", keyPair.publicKey);
   return arrayBufferToBase64(data);
 }
@@ -101,17 +78,9 @@ export async function publicKeyToString(
 export async function publicKeyFromString(pub: string, isECDH: boolean) {
   const arr = base64ToArrayBuffer(pub);
 
-  const alg = isECDH
-    ? { name: "ECDH", namedCurve: "P-256", hash: { name: "SHA-256" } }
-    : authAlg;
+  const alg = isECDH ? { name: "ECDH", namedCurve: "P-256", hash: { name: "SHA-256" } } : authAlg;
   try {
-    const res = await crypto.subtle.importKey(
-      "spki",
-      arr,
-      alg,
-      true,
-      isECDH ? [] : ["verify"]
-    );
+    const res = await crypto.subtle.importKey("spki", arr, alg, true, isECDH ? [] : ["verify"]);
 
     return res;
   } catch (err) {

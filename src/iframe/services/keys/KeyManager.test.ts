@@ -34,7 +34,7 @@ describe("KeyManager", () => {
     PrivateChannel.mockImplementation(() => {
       return {
         sendSecureMessage: sendSecureMessageMock,
-        waitForSecureMessage: waitForSecureMessageMock
+        waitForSecureMessage: waitForSecureMessageMock,
       };
     });
 
@@ -43,15 +43,11 @@ describe("KeyManager", () => {
       openSecurePrivateChannel: jest.fn().mockReturnValue(new PrivateChannel()),
       closeSecureChannel: jest.fn(),
       waitForEvent: jest.fn(),
-      send: jest.fn()
+      send: jest.fn(),
     }));
     lockbox = new LockboxService(persistence);
     expect(Cookies.get(DEVICE_ID_COOKIE_NAME)).not.toBeDefined();
-    keyManager = await new KeyManager(
-      lockbox,
-      new RealtimeCommunicationMock(),
-      deviceKey
-    );
+    keyManager = await new KeyManager(lockbox, new RealtimeCommunicationMock(), deviceKey);
   });
 
   afterEach(() => {
@@ -87,13 +83,13 @@ describe("KeyManager", () => {
     const randomKeyName = randomString();
     waitForSecureMessageMock.mockReturnValue({
       type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_RESPONSE,
-      data: { keyName: randomKeyName, keyJson: k1Json }
+      data: { keyName: randomKeyName, keyJson: k1Json },
     });
     const result = await keyManager.sendDeviceActivationRequest(
       userID,
       randomKeyName,
       "test message",
-      "test user agent"
+      "test user agent",
     );
 
     expect(result).toEqual(k1);
@@ -108,7 +104,7 @@ describe("KeyManager", () => {
 
     waitForSecureMessageMock.mockReturnValue({
       type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST,
-      data: { keyName: randomKeyName }
+      data: { keyName: randomKeyName },
     });
 
     const onKeyRequest = jest.fn().mockReturnValue(true);
@@ -119,20 +115,20 @@ describe("KeyManager", () => {
       "test",
       "test user agent",
       jest.fn(),
-      onKeyRequest
+      onKeyRequest,
     );
 
     expect(onKeyRequest).toHaveBeenCalledWith({
       data: { keyName: randomKeyName },
-      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST
+      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST,
     });
 
     await expect(sendSecureMessageMock).toHaveBeenCalledWith({
       data: {
         keyJson: k1Json,
-        keyName: randomKeyName
+        keyName: randomKeyName,
       },
-      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_RESPONSE
+      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_RESPONSE,
     });
   });
   it("should reject a persistent key request", async () => {
@@ -142,7 +138,7 @@ describe("KeyManager", () => {
 
     waitForSecureMessageMock.mockReturnValue({
       type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST,
-      data: { keyName: randomKeyName }
+      data: { keyName: randomKeyName },
     });
 
     const onKeyRequest = jest.fn().mockReturnValue(false);
@@ -153,30 +149,26 @@ describe("KeyManager", () => {
       "test",
       "test user agent",
       jest.fn(),
-      onKeyRequest
+      onKeyRequest,
     );
 
     expect(onKeyRequest).toHaveBeenCalledWith({
       data: { keyName: randomKeyName },
-      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST
+      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_REQUEST,
     });
 
     await expect(sendSecureMessageMock).toHaveBeenCalledWith({
       data: {
-        reason: "owner denied request"
+        reason: "owner denied request",
       },
-      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_DENIED
+      type: SecurePrivateMessageTypes.ACTIVATE_DEVICE_DENIED,
     });
   });
 
   it("should retrieve a persistent key from the lockbox", async () => {
     const k1 = await keyManager.createPersistentKey(keyName);
     const spy = jest.spyOn(lockbox, "retrieveString");
-    const newKeyManager = await new KeyManager(
-      lockbox,
-      new RealtimeCommunicationMock(),
-      deviceKey
-    );
+    const newKeyManager = await new KeyManager(lockbox, new RealtimeCommunicationMock(), deviceKey);
 
     const k1RetrieveA = await keyManager.getPersistentKey(keyName);
     expect(spy).not.toHaveBeenCalled();

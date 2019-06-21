@@ -3,16 +3,13 @@ export interface SendEvent {
   data: SendEventData;
 }
 
-export type SendEventData =
-  | OpenSecureChannelEvent
-  | PrivateChannelMessageType
-  | CloseSecureChannelEvent;
+export type SendEventData = OpenSecureChannelEvent | PrivateChannelMessageType | CloseSecureChannelEvent;
 
 export enum SendTypes {
   OPEN_SECURE_CHANNEL = "OPEN_SECURE_CHANNEL",
   CLOSE_SECURE_CHANNEL = "CLOSE_SECURE_CHANNEL",
   PRIVATE_CHANNEL_MESSAGE = "PRIVATE_CHANNEL_MESSAGE",
-  CONFIRM_PARTNER = "CONFIRM_PARTNER"
+  CONFIRM_PARTNER = "CONFIRM_PARTNER",
 }
 
 export interface PrivateChannelMessageType {

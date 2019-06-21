@@ -10,10 +10,7 @@ const CIVIL_REST_URL = "http://localhost:8080";
 const handler = new WindowMessageHandler(document.referrer);
 
 let parentDomain: string;
-let parentUrl =
-  window.location != window.parent.location
-    ? document.referrer
-    : document.location.href;
+let parentUrl = window.location != window.parent.location ? document.referrer : document.location.href;
 if (parentUrl) {
   const match = parentUrl.match(/(.*):\/\/(.[^/]+)/);
   if (match) {
@@ -28,7 +25,7 @@ handler.initialize(async () => {
   const websockets = new CivilWebsocket(CIVIL_WEBSOCKET_URL);
   const keyManager = await KeyManager.initialize(lockbox, websockets);
   return {
-    keyManager
+    keyManager,
   };
 });
 

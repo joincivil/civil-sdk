@@ -1,10 +1,30 @@
 import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts, mediaQueries, Button, buttonSizes, CurrencyInput, InputIcon, TextInput, TextareaInput, QuestionToolTip, defaultNewsroomImgUrl } from "@joincivil/components";
+import {
+  colors,
+  fonts,
+  mediaQueries,
+  Button,
+  buttonSizes,
+  CurrencyInput,
+  InputIcon,
+  TextInput,
+  TextareaInput,
+  QuestionToolTip,
+  defaultNewsroomImgUrl,
+} from "@joincivil/components";
 import { Mutation, MutationFunc } from "react-apollo";
 import { boostMutation } from "./queries";
 import { BoostData } from "./types";
-import { BoostImg, BoostWrapper, BoostWrapperFullWidthHr, BoostFormTitle, BoostDescriptionTable, BoostPayFormTitle, BoostSmallPrint } from "./BoostStyledComponents";
+import {
+  BoostImg,
+  BoostWrapper,
+  BoostWrapperFullWidthHr,
+  BoostFormTitle,
+  BoostDescriptionTable,
+  BoostPayFormTitle,
+  BoostSmallPrint,
+} from "./BoostStyledComponents";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};
@@ -167,7 +187,10 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
     return (
       <PageWrapper>
         <Title>Let's get you started</Title>
-        <p>Create and launch your Boost. Boosts will be displayed on the Boost directory in addition to your Registry listing.</p>
+        <p>
+          Create and launch your Boost. Boosts will be displayed on the Boost directory in addition to your Registry
+          listing.
+        </p>
 
         <Mutation mutation={boostMutation}>
           {createBoost => {
@@ -176,7 +199,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                 <BoostWrapper>
                   <BoostImg>
                     <img
-                      src={this.props.newsroomLogoUrl || defaultNewsroomImgUrl as any as string}
+                      src={this.props.newsroomLogoUrl || ((defaultNewsroomImgUrl as any) as string)}
                       onError={e => {
                         (e.target as any).src = defaultNewsroomImgUrl;
                       }}
@@ -206,20 +229,33 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                     <QuestionToolTip explainerText="This is your newsroom wallet address where you will receive the funds from your Boost." />
                   </BoostFormTitle>
                   <TextInput name="newsroomWallet" value={this.props.newsroomWallet} disabled />
-                  <p>Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to widthdraw from the newsroom wallet and either deposit or exchange them into other currencies. <a href="#TODO">Learn more</a></p>
+                  <p>
+                    Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to
+                    widthdraw from the newsroom wallet and either deposit or exchange them into other currencies.{" "}
+                    <a href="#TODO">Learn more</a>
+                  </p>
 
                   <BoostWrapperFullWidthHr />
 
                   <BoostFormTitle>Give your Boost a title</BoostFormTitle>
-                  <p>What do you need? Start with an action verb to tell people how they can help. For example: “Help [newsroom] do [thing].”</p>
+                  <p>
+                    What do you need? Start with an action verb to tell people how they can help. For example: “Help
+                    [newsroom] do [thing].”
+                  </p>
                   <TextareaInput name="title" value={this.state.boost.title} onChange={this.onInputChange} />
 
                   <BoostFormTitle>Describe your Boost</BoostFormTitle>
-                  <p>What are you raising funds to do, and why you need help. Tell people why they should be excited to support your Boost.</p>
+                  <p>
+                    What are you raising funds to do, and why you need help. Tell people why they should be excited to
+                    support your Boost.
+                  </p>
                   <TextareaInput name="why" value={this.state.boost.why} onChange={this.onInputChange} />
 
                   <BoostFormTitle>Describe what the outcome will be</BoostFormTitle>
-                  <p>Tell the community what to expect at the end of the fundraising time. You can be specific, but be clear and brief.</p>
+                  <p>
+                    Tell the community what to expect at the end of the fundraising time. You can be specific, but be
+                    clear and brief.
+                  </p>
                   <TextareaInput name="what" value={this.state.boost.what} onChange={this.onInputChange} />
 
                   <BoostFormTitle>Describe your Newsroom</BoostFormTitle>
@@ -232,20 +268,36 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                     End date
                     <QuestionToolTip explainerText="All proceeds go directly to the Newsroom. There are small fees charged by the Ethereum network." />
                   </BoostFormTitle>
-                  <EndDateInput type="date" name="dateEnd" value={this.state.dateEndInput} onChange={this.onDateEndInputChange} />
+                  <EndDateInput
+                    type="date"
+                    name="dateEnd"
+                    value={this.state.dateEndInput}
+                    onChange={this.onDateEndInputChange}
+                  />
                   <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
                 </BoostWrapper>
 
-                <LaunchDisclaimer>By creating a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>.</LaunchDisclaimer>
-                <LaunchButton size={buttonSizes.MEDIUM} type="submit" disabled={this.state.loading || !!this.state.boostId}>Launch Boost</LaunchButton>
+                <LaunchDisclaimer>
+                  By creating a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>.
+                </LaunchDisclaimer>
+                <LaunchButton
+                  size={buttonSizes.MEDIUM}
+                  type="submit"
+                  disabled={this.state.loading || !!this.state.boostId}
+                >
+                  Launch Boost
+                </LaunchButton>
 
                 {/*@TODO/tobek Temporary feedback until we implement success modal*/}
                 <div style={{ clear: "both", float: "right", marginTop: 10 }}>
                   {this.state.loading && "loading..."}
-                  {this.state.error && (<Error>{this.state.error}</Error>)}
-                  {this.state.boostId && (<>
-                    Boost created successfully! <a href={"/boosts/" + this.state.boostId + "?feature-flag=boosts-mvp"}>View boost.</a>
-                  </>)}
+                  {this.state.error && <Error>{this.state.error}</Error>}
+                  {this.state.boostId && (
+                    <>
+                      Boost created successfully!{" "}
+                      <a href={"/boosts/" + this.state.boostId + "?feature-flag=boosts-mvp"}>View boost.</a>
+                    </>
+                  )}
                 </div>
               </form>
             );
@@ -271,22 +323,39 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             </tr>
           </thead>
           <tbody>
-            {this.state.boost.items && this.state.boost.items.map((item: any, i: number) => (
-              <tr key={i}>
-                <td>
-                  <ItemNameInput name="item" value={this.state.boost.items![i].item} onChange={this.onItemInputChange.bind(this, i)} />
-                </td>
-                <ItemCostCell>
-                  <StyledCurrencyInput icon={(<>$</>)} name="cost" type="number" value={"" + (this.state.boost.items![i].cost || "")} onChange={this.onItemInputChange.bind(this, i)} />
-                </ItemCostCell>
-                <td>
-                  {i > 0 && (<ItemLink href="#" onClick={(e) => this.removeItem(e, i)}>x</ItemLink>)}
-                </td>
-              </tr>
-            ))}
+            {this.state.boost.items &&
+              this.state.boost.items.map((item: any, i: number) => (
+                <tr key={i}>
+                  <td>
+                    <ItemNameInput
+                      name="item"
+                      value={this.state.boost.items![i].item}
+                      onChange={this.onItemInputChange.bind(this, i)}
+                    />
+                  </td>
+                  <ItemCostCell>
+                    <StyledCurrencyInput
+                      icon={<>$</>}
+                      name="cost"
+                      type="number"
+                      value={"" + (this.state.boost.items![i].cost || "")}
+                      onChange={this.onItemInputChange.bind(this, i)}
+                    />
+                  </ItemCostCell>
+                  <td>
+                    {i > 0 && (
+                      <ItemLink href="#" onClick={e => this.removeItem(e, i)}>
+                        x
+                      </ItemLink>
+                    )}
+                  </td>
+                </tr>
+              ))}
             <tr>
               <td>
-                <ItemLink href="#" onClick={this.addItem}>Add item</ItemLink>
+                <ItemLink href="#" onClick={this.addItem}>
+                  Add item
+                </ItemLink>
               </td>
             </tr>
           </tbody>
@@ -294,19 +363,28 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             <tr>
               <td>
                 <BoostFormTitle>Boost Goal</BoostFormTitle>
-                <p>Your Boost Goal is the amount you would like to raise. If you Boost does not reach it’s amount goal by the end date, the funds sent by supporters will still be collected into your Newsroom Wallet. Once the Boost will ends, you’ll be able to widthdrawl and either dispense or exchange the funds to your wallet or exchange for another currency.</p>
+                <p>
+                  Your Boost Goal is the amount you would like to raise. If you Boost does not reach it’s amount goal by
+                  the end date, the funds sent by supporters will still be collected into your Newsroom Wallet. Once the
+                  Boost will ends, you’ll be able to widthdrawl and either dispense or exchange the funds to your wallet
+                  or exchange for another currency.
+                </p>
               </td>
               <ItemCostCell>
                 <BoostPayFormTitle>Total amount</BoostPayFormTitle>
-                <StyledCurrencyInput icon={(<>$</>)} name="goalAmount" value={"" + (this.state.boost.goalAmount || "")} disabled />
+                <StyledCurrencyInput
+                  icon={<>$</>}
+                  name="goalAmount"
+                  value={"" + (this.state.boost.goalAmount || "")}
+                  disabled
+                />
                 <ItemsAmountNote>
                   Proceeds will be in ETH
                   <QuestionToolTip explainerText="We recommend periods between 14 and 60 days." />
                 </ItemsAmountNote>
                 <ItemsAmountNote>Civil does not collect any fees.</ItemsAmountNote>
               </ItemCostCell>
-              <td>
-              </td>
+              <td></td>
             </tr>
           </tfoot>
         </table>
@@ -320,7 +398,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         ...this.state.boost,
         [name]: val,
       },
-    })
+    });
   };
 
   private onDateEndInputChange = (event: any) => {
@@ -331,7 +409,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         ...this.state.boost,
         dateEnd: new Date(event.target.value),
       },
-    })
+    });
   };
 
   private onItemInputChange = (i: number, name: "cost" | "item", val: string) => {
@@ -363,7 +441,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         items: this.state.boost.items!.concat({} as any),
       },
     });
-  }
+  };
 
   private removeItem = (event: React.MouseEvent, i: number) => {
     event.preventDefault();
@@ -371,10 +449,10 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
       boost: {
         ...this.state.boost,
         goalAmount: (this.state.boost.goalAmount || 0) - (this.state.boost.items![i].cost || 0),
-        items: this.state.boost.items!.slice(0, i).concat(this.state.boost.items!.slice(i+1)),
+        items: this.state.boost.items!.slice(0, i).concat(this.state.boost.items!.slice(i + 1)),
       },
     });
-  }
+  };
 
   private async handleSubmit(event: React.FormEvent, mutation: MutationFunc): Promise<void> {
     event.preventDefault();
@@ -403,7 +481,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
       } else {
         this.setState({ error: "Error: Unexpected or missing response data" });
       }
-    } catch(error) {
+    } catch (error) {
       this.setState({ error: error.toString() });
     }
 

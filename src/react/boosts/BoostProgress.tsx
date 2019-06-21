@@ -31,7 +31,7 @@ const BoostProgressBar = styled.div`
 const BoostProgressPercent = styled.div`
   background-color: ${colors.accent.CIVIL_GRAY_2};
   height: 10px;
-  width: ${(props: BoostProgressWidthProps) => (props.paymentsTotal / props.goalAmount * 100).toString()}%;
+  width: ${(props: BoostProgressWidthProps) => ((props.paymentsTotal / props.goalAmount) * 100).toString()}%;
 `;
 
 const ProgressFlexLeft = styled.div`
@@ -51,7 +51,7 @@ const AlignRight = styled.div`
 `;
 
 const TextSecondary = styled.div`
-color: ${colors.accent.CIVIL_GRAY_2};
+  color: ${colors.accent.CIVIL_GRAY_2};
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
@@ -70,21 +70,27 @@ export const BoostProgress: React.FunctionComponent<BoostProgressProps> = props 
 
   return (
     <BoostProgressWrapper>
-      {props.open ?
+      {props.open ? (
         <>
           <BoostFlexStart>
             <TextPrimary>{"$" + props.paymentsTotal} raised</TextPrimary>
-            <AlignRight><TextPrimary><b>${props.goalAmount}</b> goal</TextPrimary></AlignRight>
+            <AlignRight>
+              <TextPrimary>
+                <b>${props.goalAmount}</b> goal
+              </TextPrimary>
+            </AlignRight>
           </BoostFlexStart>
           <BoostProgressBar>
             <BoostProgressPercent paymentsTotal={props.paymentsTotal} goalAmount={props.goalAmount} />
           </BoostProgressBar>
           <BoostFlexStart>
             <TextSecondary>{percentRaised}%</TextSecondary>
-            <AlignRight><TextSecondary>{props.daysLeft}</TextSecondary></AlignRight>
+            <AlignRight>
+              <TextSecondary>{props.daysLeft}</TextSecondary>
+            </AlignRight>
           </BoostFlexStart>
         </>
-        :
+      ) : (
         <BoostFlexEnd>
           <ProgressFlexLeft>
             <BoostFlexStart>
@@ -99,12 +105,14 @@ export const BoostProgress: React.FunctionComponent<BoostProgressProps> = props 
               <TextSecondary>{props.daysLeft}</TextSecondary>
             </MarginBottom>
             <MarginBottom>
-              <TextPrimary>{"$" + props.paymentsTotal} of <b>{"$" + props.goalAmount}</b></TextPrimary>
+              <TextPrimary>
+                {"$" + props.paymentsTotal} of <b>{"$" + props.goalAmount}</b>
+              </TextPrimary>
             </MarginBottom>
             <TextSecondary>{"$" + amountToGoal} till funded</TextSecondary>
           </ProgressFlexRight>
         </BoostFlexEnd>
-      }
+      )}
     </BoostProgressWrapper>
   );
 };

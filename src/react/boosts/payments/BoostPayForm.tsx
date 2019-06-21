@@ -19,14 +19,14 @@ const BoostPayFormWrapper = styled.div`
   display: block;
   font-family: ${fonts.SANS_SERIF};
   margin: 0 0 0 20px;
-`
+`;
 
 const SubmitInstructions = styled.p`
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
   margin: 0 30px 0 0;
-}`
+}`;
 
 const SubmitWarning = styled.p`
   font-size: 12px;
@@ -38,15 +38,15 @@ const SubmitWarning = styled.p`
     color: ${colors.accent.CIVIL_BLUE};
     text-decoration: underline;
   }
-}`
+}`;
 
 const BoostPayFormContain = styled.div`
   margin-bottom: 30px;
-}`
+}`;
 
 const CheckboxLabel = styled.span`
   margin-left: 10px;
-}`
+}`;
 
 export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFormState> {
   constructor(props: BoostPayFormProps) {
@@ -70,10 +70,18 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
             <CheckboxLabel>Email me about progress of this Boost</CheckboxLabel>
           </BoostPayFormContain>*/}
           <BoostFlexStart>
-            <SubmitInstructions>Once your Boost is sent, we’ll be sending you a confirmation email if selected of your completed transaction.  All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the proceeds will still go to fund the selected newsroom.</SubmitInstructions>
+            <SubmitInstructions>
+              Once your Boost is sent, we’ll be sending you a confirmation email if selected of your completed
+              transaction. All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the
+              proceeds will still go to fund the selected newsroom.
+            </SubmitInstructions>
             <div>
               <BoostButton>Support this Boost</BoostButton>
-              <SubmitWarning>Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees charged by the Ethereum network. By sending a Boost, you agree to Civil’s Terms of Use and Privacy Policy. Depending on your selection, your email and comment may be visible to the newsroom.</SubmitWarning>
+              <SubmitWarning>
+                Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees
+                charged by the Ethereum network. By sending a Boost, you agree to Civil’s Terms of Use and Privacy
+                Policy. Depending on your selection, your email and comment may be visible to the newsroom.
+              </SubmitWarning>
             </div>
           </BoostFlexStart>
         </form>
