@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { colors, fonts } from "@joincivil/components";
 import { BoostPayOptions } from "./BoostPayOptions";
 import { BoostWrapper, BoostTitle, BoostNewsroom, BoostSmallPrint } from "../BoostStyledComponents";
+import { EthAddress } from "@joincivil/core";
 
 const BoostHeaderWrap = styled.div`
   margin: 0 0 0 20px;
@@ -31,6 +32,7 @@ const BoostAmount = styled.p`
 `;
 
 export interface BoostPaymentsProps {
+  paymentAddr: EthAddress;
   boostId: string;
   title: string;
   newsroomName: string;
@@ -51,7 +53,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
           </BoostSmallPrint>
         </BoostDetails>
       </BoostHeaderWrap>
-      <BoostPayOptions />
+      <BoostPayOptions paymentAddr={props.paymentAddr} />
     </BoostWrapper>
   );
 };

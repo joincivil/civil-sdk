@@ -40,6 +40,7 @@ export const boostNewsroomQuery = gql`
       name
       url
       contractAddress
+      owner
       charter {
         uri
       }

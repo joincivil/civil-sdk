@@ -9,6 +9,8 @@
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
     "@joincivil/components": "^1.8.0",
+    "@joincivil/core": "^4.8.0",
+    "@joincivil/ethapi": "^0.3.4",
     "@joincivil/utils": "^1.9.0",
     "@svgr/webpack": "4.1.0",
     "babel-core": "7.0.0-bridge.0",

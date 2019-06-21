@@ -3,6 +3,7 @@ import { Query } from "react-apollo";
 import { boostQuery } from "./queries";
 import { BoostCard } from "./BoostCard";
 import { BoostPayments } from "./payments/BoostPayments";
+import { EthAddress } from "@joincivil/core";
 
 export interface BoostProps {
   boostId: string;
@@ -12,6 +13,7 @@ export interface BoostProps {
 export interface BoostStates {
   payment: boolean;
   newsroomName: string;
+  paymentAddr: EthAddress;
 }
 
 export class Boost extends React.Component<BoostProps, BoostStates> {
@@ -19,7 +21,8 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     super(props);
     this.state = {
       payment: false,
-      newsroomName: ""
+      newsroomName: "",
+      paymentAddr: "",
     };
   }
 
@@ -42,10 +45,12 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
                 title={data.postsGet.title}
                 amount={20}
                 newsroomName={this.state.newsroomName}
+                paymentAddr={this.state.paymentAddr}
               />
             );
           }
 
+          console.log("challelID: ", data.postsGet.channelID);
           return (
             <BoostCard
               channelId={data.postsGet.channelID}
@@ -67,7 +72,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
     );
   }
 
-  private startPayment = (newsroomName: string) => {
-    this.setState({ payment: true, newsroomName });
+  private startPayment = (newsroomName: string, paymentAddr: EthAddress) => {
+    this.setState({ payment: true, newsroomName, paymentAddr });
   };
 }
