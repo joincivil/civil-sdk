@@ -71,6 +71,7 @@
     "start:boost": "OPEN_PATH=boost-test.html node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "lint": "tslint --project ./",
     "package:build": "tsc",
     "package:watch": "tsc -w",
     "prepublishOnly": "yarn package:build",
@@ -116,6 +117,7 @@
     "react-docgen-typescript-loader": "^3.1.0",
     "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "semantic-release": "^15.13.3",
+    "tslint": "^5.17.0",
     "typescript": "3.3.4000"
   },
   "peerDependencies": {

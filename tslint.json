@@ -1,0 +1,10 @@
+{
+  "extends": ["@joincivil/tslint-rules"],
+  "linterOptions": {
+    // @TODO Should lint iframe code but there's a ton that needs changing, punting for now.
+    "exclude": ["src/iframe/**/*"]
+  },
+  "rules": {
+    "variable-name": [true, "ban-keywords", "allow-leading-underscore"]
+  }
+}

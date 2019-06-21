@@ -1,9 +1,8 @@
 import * as React from "react";
-import { RadioInput } from "@joincivil/components";
+import { RadioInput, colors, fonts } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
 // import { BoostPayStripe } from "./BoostPayStripe";
-import styled, { StyledComponentClass } from "styled-components";
-import { colors, fonts } from "@joincivil/components";
+import styled from "styled-components";
 import { BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
 import { PaymentInfoText, PaymentFAQText } from "../BoostTextComponents";
 

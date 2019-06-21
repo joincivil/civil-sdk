@@ -1,8 +1,7 @@
 import * as React from "react";
-import styled, { StyledComponentClass } from "styled-components";
+import styled from "styled-components";
 import {
   colors,
-  fonts,
   mediaQueries,
   Button,
   buttonSizes,
@@ -96,10 +95,6 @@ const ItemsTableWrapper = styled(BoostDescriptionTable)`
 const ItemLink = styled.a`
   font-size: 16px;
   font-weight: 500;
-`;
-const RemoveItem = styled(ItemLink)`
-  position: relative;
-  top: -6px;
 `;
 const ItemNameInput = styled(TextInput)`
   max-width: 420px;

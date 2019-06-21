@@ -1,4 +1,3 @@
-import * as React from "react";
 import styled, { StyledComponentClass } from "styled-components";
 import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton } from "@joincivil/components";
 

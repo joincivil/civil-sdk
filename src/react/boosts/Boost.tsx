@@ -68,6 +68,6 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
   }
 
   private startPayment = (newsroomName: string) => {
-    this.setState({ payment: true, newsroomName: newsroomName });
+    this.setState({ payment: true, newsroomName });
   };
 }

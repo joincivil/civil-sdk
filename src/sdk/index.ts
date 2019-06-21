@@ -17,7 +17,7 @@ export class Civil {
     this.telemetry = new Telemetry();
   }
 
-  public onLoad(f: () => void) {
+  public onLoad(f: () => void): void {
     dmz.addOnloadHandler(f);
   }
 }

@@ -1,6 +1,6 @@
 import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
-import { BoostPayFormTitle, BoostFlexStart, BoostButton } from "../BoostStyledComponents";
+import { BoostFlexStart, BoostButton } from "../BoostStyledComponents";
 import styled from "styled-components";
 import { colors, fonts } from "@joincivil/components";
 
@@ -40,6 +40,7 @@ const SubmitWarning = styled.p`
   }
 }`;
 
+/*
 const BoostPayFormContain = styled.div`
   margin-bottom: 30px;
 }`;
@@ -47,6 +48,7 @@ const BoostPayFormContain = styled.div`
 const CheckboxLabel = styled.span`
   margin-left: 10px;
 }`;
+*/
 
 export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFormState> {
   constructor(props: BoostPayFormProps) {

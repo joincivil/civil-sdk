@@ -9,11 +9,18 @@ export const RegistryExample = () => {
 
   React.useEffect(() => {
     if (!civilContext.loading) {
-      civilContext.civil.registry.getRegistryStatus().then(res => {
-        setStatus(res);
-      });
+      civilContext.civil.registry
+        .getRegistryStatus()
+        .then(res => {
+          setStatus(res);
+        })
+        .catch(e => {
+          throw e;
+        });
       console.log("called getRegistryStatus", civilContext.loading);
-      civilContext.civil.lockbox.getKey("test");
+      civilContext.civil.lockbox.getKey("test").catch(e => {
+        throw e;
+      });
     }
   }, [civilContext.loading]);
 

@@ -42,6 +42,9 @@ jobs:
             - run:
                 name: Ensuring prettified
                 command: yarn prettier
+            - run:
+                name: Linting
+                command: yarn lint
 
     # Docker steps
     # These steps have a different workspace roots and so will behave a bit differently
@@ -112,6 +115,10 @@ workflows:
         jobs:
             - build:
                 context: gcp-common
+            - lint:
+                context: gcp-common
+                requires:
+                    - build
             - setup-gcp:
                 context: gcp-common
                 requires:
