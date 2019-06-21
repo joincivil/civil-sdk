@@ -89,6 +89,7 @@ jobs:
             - run:
                 name: Build Container
                 command: |
+                    export NPM_TOKEN=noop
                     TAG=`echo $CIRCLE_BRANCH | sed 's/\\//_/g'`
                     docker build . \
                     -t gcr.io/$GOOGLE_PROJECT_ID/civil-sdk:$TAG \
