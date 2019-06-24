@@ -41,6 +41,7 @@ export const boostNewsroomQuery = gql`
       url
       contractAddress
       owner
+      whitelisted
       charter {
         uri
       }

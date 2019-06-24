@@ -11,9 +11,10 @@ import {
   TextareaInput,
   QuestionToolTip,
   defaultNewsroomImgUrl,
+  LoadingIndicator,
 } from "@joincivil/components";
-import { Mutation, MutationFunc } from "react-apollo";
-import { boostMutation } from "./queries";
+import { Query, Mutation, MutationFunc } from "react-apollo";
+import { boostNewsroomQuery, boostMutation } from "./queries";
 import { BoostData } from "./types";
 import {
   BoostWrapper,
@@ -126,8 +127,9 @@ const StyledCurrencyInput = styled(CurrencyInput)`
     padding-left: 22px;
   }
 `;
-const ItemsAmountNote = styled.p`
+const ItemsAmountNote = styled.div`
   font-style: italic;
+  margin-top: 15px;
   white-space: nowrap;
 `;
 
@@ -178,6 +180,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
       },
     };
   }
+
   public render(): JSX.Element {
     return (
       <PageWrapper>
@@ -187,118 +190,161 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
           listing.
         </p>
 
-        <Mutation mutation={boostMutation}>
-          {createBoost => {
-            return (
-              <form onSubmit={async event => this.handleSubmit(event, createBoost)}>
+        <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
+          {({ loading, error, data }) => {
+            if (loading) {
+              return (
                 <BoostWrapper>
-                  <BoostImgDiv>
-                    <img
-                      src={this.props.newsroomLogoUrl || ((defaultNewsroomImgUrl as any) as string)}
-                      onError={e => {
-                        (e.target as any).src = defaultNewsroomImgUrl;
-                      }}
-                    />
-                  </BoostImgDiv>
-
-                  <NewsroomDetailRow>
-                    <NewsroomDetailCell>
-                      <BoostFormTitle>
-                        Newsroom Name
-                        <QuestionToolTip explainerText="You can create a Boost for your newsroom only." />
-                      </BoostFormTitle>
-                      <TextInput name="newsroomName" value={this.props.newsroomName} disabled />
-                    </NewsroomDetailCell>
-                    <NewsroomDetailCell>
-                      <BoostFormTitle>Newsroom URL</BoostFormTitle>
-                      <TextInput name="newsroomUrl" value={this.props.newsroomUrl} disabled />
-                    </NewsroomDetailCell>
-                    <NewsroomDetailCell>
-                      <BoostFormTitle>Registry Listing URL</BoostFormTitle>
-                      <TextInput name="newsroomListingUrl" value={this.props.newsroomListingUrl} disabled />
-                    </NewsroomDetailCell>
-                  </NewsroomDetailRow>
-
-                  <BoostFormTitle>
-                    Newsroom Wallet
-                    <QuestionToolTip explainerText="This is your newsroom wallet address where you will receive the funds from your Boost." />
-                  </BoostFormTitle>
-                  <TextInput name="newsroomWallet" value={this.props.newsroomWallet} disabled />
-                  <p>
-                    Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to
-                    widthdraw from the newsroom wallet and either deposit or exchange them into other currencies.{" "}
-                    <a href="#TODO">Learn more</a>
-                  </p>
-
-                  <BoostWrapperFullWidthHr />
-
-                  <BoostFormTitle>Give your Boost a title</BoostFormTitle>
-                  <p>
-                    What do you need? Start with an action verb to tell people how they can help. For example: “Help
-                    [newsroom] do [thing].”
-                  </p>
-                  <TextareaInput name="title" value={this.state.boost.title} onChange={this.onInputChange} />
-
-                  <BoostFormTitle>Describe your Boost</BoostFormTitle>
-                  <p>
-                    What are you raising funds to do, and why you need help. Tell people why they should be excited to
-                    support your Boost.
-                  </p>
-                  <TextareaInput name="why" value={this.state.boost.why} onChange={this.onInputChange} />
-
-                  <BoostFormTitle>Describe what the outcome will be</BoostFormTitle>
-                  <p>
-                    Tell the community what to expect at the end of the fundraising time. You can be specific, but be
-                    clear and brief.
-                  </p>
-                  <TextareaInput name="what" value={this.state.boost.what} onChange={this.onInputChange} />
-
-                  <BoostFormTitle>Describe your Newsroom</BoostFormTitle>
-                  <p>What is your Newsroom’s mission? Tell the community who you are.</p>
-                  <TextareaInput name="about" value={this.state.boost.about} onChange={this.onInputChange} />
-
-                  {this.renderItems()}
-
-                  <BoostFormTitle>
-                    End date
-                    <QuestionToolTip explainerText="All proceeds go directly to the Newsroom. There are small fees charged by the Ethereum network." />
-                  </BoostFormTitle>
-                  <EndDateInput
-                    type="date"
-                    name="dateEnd"
-                    value={this.state.dateEndInput}
-                    onChange={this.onDateEndInputChange}
-                  />
-                  <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
+                  <LoadingIndicator />
                 </BoostWrapper>
+              );
+            } else if (error || !data) {
+              console.error(`error querying newsroom data for ${this.props.newsroomAddress}:`, error, data);
+              return (
+                <Error>Error retrieving newsroom data: {error ? JSON.stringify(error) : "no listing data found"}</Error>
+              );
+            }
 
-                <LaunchDisclaimer>
-                  By creating a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>.
-                </LaunchDisclaimer>
-                <LaunchButton
-                  size={buttonSizes.MEDIUM}
-                  type="submit"
-                  disabled={this.state.loading || !!this.state.boostId}
-                >
-                  Launch Boost
-                </LaunchButton>
+            if (!data.listing) {
+              return (
+                <BoostWrapper>
+                  Your newsroom <b>{this.props.newsroomName}</b> has not yet applied to the Civil Registry. Please{" "}
+                  <a href="/apply-to-registry">continue your newsroom application</a> and then, once you have applied
+                  and your newsroom has been approved, you can return to create a Boost.
+                </BoostWrapper>
+              );
+            }
 
-                {/*@TODO/tobek Temporary feedback until we implement success modal*/}
-                <div style={{ clear: "both", float: "right", marginTop: 10 }}>
-                  {this.state.loading && "loading..."}
-                  {this.state.error && <Error>{this.state.error}</Error>}
-                  {this.state.boostId && (
-                    <>
-                      Boost created successfully!{" "}
-                      <a href={"/boosts/" + this.state.boostId + "?feature-flag=boosts-mvp"}>View boost.</a>
-                    </>
-                  )}
-                </div>
-              </form>
-            );
+            if (!data.listing.whitelisted) {
+              return (
+                <BoostWrapper>
+                  Your newsroom <b>{this.props.newsroomName}</b> is not currently approved on the Civil Registry. Please{" "}
+                  <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on the status of your
+                  application. Once your newsroom is approved, you can return to create a Boost.
+                </BoostWrapper>
+              );
+            }
+
+            return this.renderForm();
           }}
-        </Mutation>
+        </Query>
       </PageWrapper>
+    );
+  }
+
+  public renderForm(): JSX.Element {
+    return (
+      <Mutation mutation={boostMutation}>
+        {createBoost => {
+          return (
+            <form onSubmit={async event => this.handleSubmit(event, createBoost)}>
+              <BoostWrapper>
+                <BoostImgDiv>
+                  <img
+                    src={this.props.newsroomLogoUrl || ((defaultNewsroomImgUrl as any) as string)}
+                    onError={e => {
+                      (e.target as any).src = defaultNewsroomImgUrl;
+                    }}
+                  />
+                </BoostImgDiv>
+
+                <NewsroomDetailRow>
+                  <NewsroomDetailCell>
+                    <BoostFormTitle>
+                      Newsroom Name
+                      <QuestionToolTip explainerText="You can create a Boost for your newsroom only." />
+                    </BoostFormTitle>
+                    <TextInput name="newsroomName" value={this.props.newsroomName} disabled />
+                  </NewsroomDetailCell>
+                  <NewsroomDetailCell>
+                    <BoostFormTitle>Newsroom URL</BoostFormTitle>
+                    <TextInput name="newsroomUrl" value={this.props.newsroomUrl} disabled />
+                  </NewsroomDetailCell>
+                  <NewsroomDetailCell>
+                    <BoostFormTitle>Registry Listing URL</BoostFormTitle>
+                    <TextInput name="newsroomListingUrl" value={this.props.newsroomListingUrl} disabled />
+                  </NewsroomDetailCell>
+                </NewsroomDetailRow>
+
+                <BoostFormTitle>
+                  Newsroom Wallet
+                  <QuestionToolTip explainerText="This is your newsroom wallet address where you will receive the funds from your Boost." />
+                </BoostFormTitle>
+                <TextInput name="newsroomWallet" value={this.props.newsroomWallet} disabled />
+                <p>
+                  Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to
+                  widthdraw from the newsroom wallet and either deposit or exchange them into other currencies.{" "}
+                  <a href="#TODO">Learn more</a>
+                </p>
+
+                <BoostWrapperFullWidthHr />
+
+                <BoostFormTitle>Give your Boost a title</BoostFormTitle>
+                <p>
+                  What do you need? Start with an action verb to tell people how they can help. For example: “Help
+                  [newsroom] do [thing].”
+                </p>
+                <TextareaInput name="title" value={this.state.boost.title} onChange={this.onInputChange} />
+
+                <BoostFormTitle>Describe your Boost</BoostFormTitle>
+                <p>
+                  What are you raising funds to do, and why you need help. Tell people why they should be excited to
+                  support your Boost.
+                </p>
+                <TextareaInput name="why" value={this.state.boost.why} onChange={this.onInputChange} />
+
+                <BoostFormTitle>Describe what the outcome will be</BoostFormTitle>
+                <p>
+                  Tell the community what to expect at the end of the fundraising time. You can be specific, but be
+                  clear and brief.
+                </p>
+                <TextareaInput name="what" value={this.state.boost.what} onChange={this.onInputChange} />
+
+                <BoostFormTitle>Describe your Newsroom</BoostFormTitle>
+                <p>What is your Newsroom’s mission? Tell the community who you are.</p>
+                <TextareaInput name="about" value={this.state.boost.about} onChange={this.onInputChange} />
+
+                {this.renderItems()}
+
+                <BoostFormTitle>
+                  End date
+                  <QuestionToolTip explainerText="All proceeds go directly to the Newsroom. There are small fees charged by the Ethereum network." />
+                </BoostFormTitle>
+                <EndDateInput
+                  type="date"
+                  name="dateEnd"
+                  value={this.state.dateEndInput}
+                  onChange={this.onDateEndInputChange}
+                />
+                <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
+              </BoostWrapper>
+
+              <LaunchDisclaimer>
+                By creating a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>.
+              </LaunchDisclaimer>
+              <LaunchButton
+                size={buttonSizes.MEDIUM}
+                type="submit"
+                disabled={this.state.loading || !!this.state.boostId}
+              >
+                Launch Boost
+              </LaunchButton>
+
+              {/*@TODO/tobek Temporary feedback until we implement success modal*/}
+              <div style={{ clear: "both", float: "right", marginTop: 10 }}>
+                {this.state.loading && "loading..."}
+                {this.state.error && <Error>{this.state.error}</Error>}
+                {this.state.boostId && (
+                  <>
+                    Boost created successfully!{" "}
+                    <a href={"/boosts/" + this.state.boostId + "?feature-flag=boosts-mvp"}>View boost.</a>
+                  </>
+                )}
+              </div>
+            </form>
+          );
+        }}
+      </Mutation>
     );
   }
 
@@ -307,7 +353,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
       <ItemsTableWrapper>
         <BoostFormTitle>
           List the expenses this Boost can help cover
-          <QuestionToolTip explainerText="Itemizing your costs helps educate your audience about the costs of your Boost needs and the running your newsroom." />
+          <QuestionToolTip explainerText="Itemizing your costs helps educate your audience about the costs of journalism and running of your newsroom." />
         </BoostFormTitle>
         <table>
           <thead>
