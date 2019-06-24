@@ -54,6 +54,7 @@ storiesOf("Boosts", module)
   .add("Card List View", () => {
     return (
       <BoostCard
+        boostOwner={true}
         channelId={boost.address}
         open={false}
         boostId={boost.id}
@@ -72,6 +73,7 @@ storiesOf("Boosts", module)
   .add("Card Full View", () => {
     return (
       <BoostCard
+        boostOwner={true}
         channelId={boost.address}
         open={true}
         boostId={boost.id}

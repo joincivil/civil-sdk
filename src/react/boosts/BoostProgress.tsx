@@ -11,7 +11,7 @@ export interface BoostProgressProps {
   open: boolean;
   paymentsTotal: number;
   goalAmount: number;
-  daysLeft: string;
+  timeRemaining: string;
 }
 
 const BoostProgressWrapper = styled.div`
@@ -77,7 +77,7 @@ export const BoostProgress: React.FunctionComponent<BoostProgressProps> = props 
       <BoostProgressFlex>
         <TextSecondary>{percentRaised}%</TextSecondary>
         <AlignRight>
-          <TextSecondary>{props.daysLeft}</TextSecondary>
+          <TextSecondary>{props.timeRemaining}</TextSecondary>
         </AlignRight>
       </BoostProgressFlex>
     </BoostProgressWrapper>

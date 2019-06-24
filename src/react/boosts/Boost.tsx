@@ -6,6 +6,7 @@ import { BoostPayments } from "./payments/BoostPayments";
 import { EthAddress } from "@joincivil/core";
 
 export interface BoostProps {
+  boostOwner: boolean;
   boostId: string;
   open: boolean;
 }
@@ -52,6 +53,7 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
 
           return (
             <BoostCard
+              boostOwner={this.props.boostOwner}
               channelId={data.postsGet.channelID}
               open={this.props.open}
               boostId={id}

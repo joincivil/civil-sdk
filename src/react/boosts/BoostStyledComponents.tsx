@@ -373,3 +373,37 @@ export const BoostNotice = styled.div`
     line-height: 18px;
   }
 `;
+
+export const BoostCompeletedWrapper = styled.div `
+  border: 1px solid ${colors.accent.CIVIL_GRAY_2};
+  font-family: ${fonts.SANS_SERIF};
+  font-size: 14px;
+  line-height: 20px;
+  padding: 20px 25px 12px;
+  margin: 30px 50px;
+
+  ${mediaQueries.MOBILE} {
+    padding: 10px 15px 2px;
+    margin: 15px 10px;
+  }
+
+  h3, p {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0 0 10px;
+
+    ${mediaQueries.MOBILE} {
+      margin: 0 0 15px;
+    }
+  }
+
+  a {
+    color: ${colors.accent.CIVIL_BLUE};
+    text-decoration: none;
+
+    &:hover {
+      color: ${colors.accent.CIVIL_BLUE};
+      text-decoration: underline;
+    }
+  }
+`;
