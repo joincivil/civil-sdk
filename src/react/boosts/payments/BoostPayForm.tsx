@@ -2,7 +2,7 @@ import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
 import { BoostFlexStart } from "../BoostStyledComponents";
 import styled from "styled-components";
-import { colors, fonts, TransactionButton } from "@joincivil/components";
+import { colors, fonts, mediaQueries, TransactionButton } from "@joincivil/components";
 import { Civil, EthAddress, TwoStepEthTransaction } from "@joincivil/core";
 import { detectProvider } from "@joincivil/ethapi";
 
@@ -22,6 +22,18 @@ const BoostPayFormWrapper = styled.div`
   display: block;
   font-family: ${fonts.SANS_SERIF};
   margin: 0 0 0 20px;
+
+  button {
+    margin-bottom: 20px;
+
+    ${mediaQueries.MOBILE} {
+      width: 100%;
+    }
+  }
+
+  ${mediaQueries.MOBILE} {
+    margin: 0;
+  }
 `;
 
 const SubmitInstructions = styled.p`
@@ -29,6 +41,10 @@ const SubmitInstructions = styled.p`
   font-weight: 500;
   line-height: 22px;
   margin: 0 30px 0 0;
+
+  ${mediaQueries.MOBILE} {
+    margin: 0 0 20px;
+  }
 }`;
 
 const SubmitWarning = styled.p`

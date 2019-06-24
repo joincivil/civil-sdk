@@ -1,12 +1,16 @@
 import * as React from "react";
 import styled from "styled-components";
-import { colors, fonts } from "@joincivil/components";
+import { colors, fonts, mediaQueries } from "@joincivil/components";
 import { BoostPayOptions } from "./BoostPayOptions";
 import { BoostWrapper, BoostTitle, BoostNewsroom, BoostSmallPrint } from "../BoostStyledComponents";
 import { EthAddress } from "@joincivil/core";
 
 const BoostHeaderWrap = styled.div`
   margin: 0 0 0 20px;
+
+  ${mediaQueries.MOBILE} {
+    margin: 0;
+  }
 `;
 
 const BoostHeader = styled.h2`

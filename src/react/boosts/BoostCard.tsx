@@ -10,11 +10,14 @@ import {
   BoostNewsroomInfo,
   BoostNewsroom,
   BoostDescription,
+  BoostDescriptionWhy,
   BoostDescriptionTable,
   BoostProgressCol,
+  BoostNotice,
 } from "./BoostStyledComponents";
 import { BoostImg } from "./BoostImg";
 import { EthAddress } from "@joincivil/core";
+import { QuestionToolTip } from "@joincivil/components";
 
 export interface Items {
   item: string;
@@ -93,9 +96,15 @@ export class BoostCard extends React.Component<BoostCardProps> {
                   </BoostFlexStart>
                   {this.props.open && (
                     <>
-                      <BoostDescription>
+                      <BoostNotice>
+                        All funds raised will go directly to the newsroom even if this goal is not met.
+                        <QuestionToolTip
+                          explainerText={"Any money you give goes directly to the newsroom. Civil does not take a cut of any funds raised."}
+                        />
+                      </BoostNotice>
+                      <BoostDescriptionWhy>
                         <p>{this.props.why}</p>
-                      </BoostDescription>
+                      </BoostDescriptionWhy>
                       <BoostDescription>
                         <h3>What the outcome will be</h3>
                         <p>{this.props.what}</p>

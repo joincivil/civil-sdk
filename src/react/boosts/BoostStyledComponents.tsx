@@ -13,7 +13,10 @@ export const BoostWrapper = styled.div`
   position: relative;
 
   ${mediaQueries.MOBILE} {
-    padding: 20px;
+    border-color: transparent;
+    border-bottom: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_4)};
+    border-top: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_3)};
+    padding: 20px 10px;
   }
 `;
 
@@ -38,6 +41,27 @@ export const BoostButton: StyledComponentClass<ButtonProps, "button"> = styled(B
   line-height: 19px;
   padding: 10px 40px;
   text-transform: none;
+
+  ${mediaQueries.MOBILE} {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+`;
+
+export const BoostTextButton: StyledComponentClass<ButtonProps, "button"> = styled(InvertedButton)`
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 19px;
+  padding: 0;
+  text-transform: none;
+
+  &:hover {
+    background-color: transparent;
+    color: ${colors.accent.CIVIL_BLUE};
+    text-decoration: underline;
+  }
 `;
 
 export const BoostTitle = styled.h2`
@@ -63,8 +87,25 @@ export const BoostNewsroomInfo = styled.div`
   display: flex;
   margin-bottom: 30px;
 
+  ${mediaQueries.MOBILE} {
+    display: block;
+  }
+
   a {
+    color: ${colors.accent.CIVIL_BLUE};
+    font-size: 14px;
+    line-height: 20px;
     margin-right: 20px;
+    text-decoration: none;
+
+    &:hover {
+      color: ${colors.accent.CIVIL_BLUE};
+      text-decoration: underline;
+    }
+
+    ${mediaQueries.MOBILE} {
+      display: block;
+    }
   }
 `;
 
@@ -84,12 +125,35 @@ export const BoostDescription = styled.div`
   h3 {
     font-size: 14px;
     font-weight: bold;
+    line-height: 19px;
     margin: 0 0 10px;
+
+    ${mediaQueries.MOBILE} {
+      color: ${colors.primary.BLACK};
+      font-size: 16px;
+      line-height: 22px;
+    }
   }
 
   p {
     font-size: 14px;
     line-height: 20px;
+    margin: 0 0 15px;
+
+    ${mediaQueries.MOBILE} {
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+`;
+
+export const BoostDescriptionWhy = styled.div`
+  color: ${colors.accent.CIVIL_GRAY_0};
+  margin-bottom: 30px;
+
+  p {
+    font-size: 16px;
+    line-height: 22px;
     margin: 0 0 15px;
   }
 `;
@@ -99,10 +163,20 @@ export const BoostDescriptionTable = styled.div`
   margin-bottom: 30px;
   padding: 20px;
 
+  ${mediaQueries.MOBILE} {
+    border: none;
+    padding: 0;
+  }
+
   h3 {
     font-size: 14px;
     font-weight: bold;
     margin: 0 0 10px;
+
+    ${mediaQueries.MOBILE} {
+      font-size: 16px;
+      line-height: 22px;
+    }
   }
 
   table {
@@ -116,16 +190,38 @@ export const BoostDescriptionTable = styled.div`
       padding: 8px 15px 8px 0;
       text-align: left;
       text-transform: uppercase;
+
+      ${mediaQueries.MOBILE} {
+        color: ${colors.accent.CIVIL_GRAY_2};
+        padding: 8px;
+      }
     }
 
     td {
       padding: 8px 15px 8px 0;
+
+      ${mediaQueries.MOBILE} {
+        color: ${colors.accent.CIVIL_GRAY_2};
+        padding: 8px;
+      }
+    }
+
+    ${mediaQueries.MOBILE} {
+      tbody {
+        tr:nth-child(odd) {
+          background-color: ${colors.accent.CIVIL_GRAY_4};
+        }
+      }
     }
   }
 `;
 
 export const BoostProgressCol = styled.div`
   width: ${(props: BoostStyleProps) => (props.open ? "calc(100% - 200px)" : "100%")};
+
+  ${mediaQueries.MOBILE} {
+    width: 100%;
+  }
 `;
 
 export const BoostPayOption = styled.div`
@@ -148,6 +244,11 @@ export const BoostPayOption = styled.div`
 export const BoostPayCardDetails = styled.div`
   margin-top: 5px;
   padding-left: 35px;
+
+  ${mediaQueries.MOBILE} {
+    margin-top: 15px;
+    padding-left: 0;
+  }
 
   p {
     margin-top: 0;
@@ -190,18 +291,38 @@ export const BoostFlexStart = styled.div`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+  }
 `;
 
 export const BoostFlexCenter = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
+
+  button {
+    margin: 0 15px;
+  }
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+
+    button {
+      margin: 0;
+    }
+  }
 }`;
 
 export const BoostFlexEnd = styled.div`
   align-items: flex-end;
   display: flex;
   justify-content: space-between;
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+  }
 }`;
 
 export const BoostModalContents = styled.div`
@@ -240,4 +361,15 @@ export const BoostSmallPrint = styled.div`
 export const BoostEthConfirm = styled.span`
   display: block;
   font-size: 13px;
+`;
+
+export const BoostNotice = styled.div`
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 25px;
+
+  ${mediaQueries.MOBILE} {
+    font-size: 12px;
+    line-height: 18px;
+  }
 `;
