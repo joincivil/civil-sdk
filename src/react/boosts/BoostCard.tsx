@@ -57,83 +57,81 @@ export class BoostCard extends React.Component<BoostCardProps> {
               return <>ERROR</>;
             }
 
-            if (data.listing) {
-              newsroomName = data.listing.name;
-              return (
-                <>
-                  <BoostImg charterUri={data.listing.charter.uri} />
-                  <BoostNewsroomInfo>
-                    <BoostNewsroom>{newsroomName}</BoostNewsroom>
-                    {this.props.open && (
-                      <>
-                        <a href={data.listing.url} target="_blank">
-                          Visit Newsroom
-                        </a>
-                        <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
-                          Visit Civil Registry
-                        </a>
-                      </>
-                    )}
-                  </BoostNewsroomInfo>
-
-                  <BoostFlexStart>
-                    <BoostProgressCol open={this.props.open}>
-                      <BoostProgress
-                        open={this.props.open}
-                        goalAmount={this.props.goalAmount}
-                        paymentsTotal={this.props.paymentsTotal}
-                        daysLeft={daysLeft}
-                      />
-                    </BoostProgressCol>
-                    {this.props.open && (
-                      <BoostButton onClick={() => this.props.handlePayments(newsroomName, data.listing.owner)}>
-                        Support
-                      </BoostButton>
-                    )}
-                  </BoostFlexStart>
+            newsroomName = data.listing.name;
+            return (
+              <>
+                <BoostImg charterUri={data.listing.charter.uri} />
+                <BoostNewsroomInfo>
+                  <BoostNewsroom>{newsroomName}</BoostNewsroom>
                   {this.props.open && (
                     <>
-                      <BoostDescription>
-                        <p>{this.props.why}</p>
-                      </BoostDescription>
-                      <BoostDescription>
-                        <h3>What the outcome will be</h3>
-                        <p>{this.props.what}</p>
-                      </BoostDescription>
-                      <BoostDescription>
-                        <h3>About the newsroom</h3>
-                        <p>{this.props.about}</p>
-                      </BoostDescription>
-                      <BoostDescriptionTable>
-                        <h3>Where your support goes</h3>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Item</th>
-                              <th>Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.props.items.map((item: any, i: number) => (
-                              <tr key={i}>
-                                <td>{item.item}</td>
-                                <td>{"$" + item.cost}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </BoostDescriptionTable>
-                      <BoostDescription>
-                        <h3>Questions about Boosts?</h3>
-                        <p>
-                          <a href="#TODO">Learn more in our FAQ</a>
-                        </p>
-                      </BoostDescription>
+                      <a href={data.listing.url} target="_blank">
+                        Visit Newsroom
+                      </a>
+                      <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
+                        Visit Civil Registry
+                      </a>
                     </>
                   )}
-                </>
-              );
-            }
+                </BoostNewsroomInfo>
+
+                <BoostFlexStart>
+                  <BoostProgressCol open={this.props.open}>
+                    <BoostProgress
+                      open={this.props.open}
+                      goalAmount={this.props.goalAmount}
+                      paymentsTotal={this.props.paymentsTotal}
+                      daysLeft={daysLeft}
+                    />
+                  </BoostProgressCol>
+                  {this.props.open && (
+                    <BoostButton onClick={() => this.props.handlePayments(newsroomName, data.listing.owner)}>
+                      Support
+                    </BoostButton>
+                  )}
+                </BoostFlexStart>
+                {this.props.open && (
+                  <>
+                    <BoostDescription>
+                      <p>{this.props.why}</p>
+                    </BoostDescription>
+                    <BoostDescription>
+                      <h3>What the outcome will be</h3>
+                      <p>{this.props.what}</p>
+                    </BoostDescription>
+                    <BoostDescription>
+                      <h3>About the newsroom</h3>
+                      <p>{this.props.about}</p>
+                    </BoostDescription>
+                    <BoostDescriptionTable>
+                      <h3>Where your support goes</h3>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Item</th>
+                            <th>Cost</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.props.items.map((item: any, i: number) => (
+                            <tr key={i}>
+                              <td>{item.item}</td>
+                              <td>{"$" + item.cost}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </BoostDescriptionTable>
+                    <BoostDescription>
+                      <h3>Questions about Boosts?</h3>
+                      <p>
+                        <a href="#TODO">Learn more in our FAQ</a>
+                      </p>
+                    </BoostDescription>
+                  </>
+                )}
+              </>
+            );
 
             return <></>;
           }}

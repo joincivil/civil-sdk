@@ -127,8 +127,9 @@ const StyledCurrencyInput = styled(CurrencyInput)`
     padding-left: 22px;
   }
 `;
-const ItemsAmountNote = styled.p`
+const ItemsAmountNote = styled.div`
   font-style: italic;
+  margin-top: 15px;
   white-space: nowrap;
 `;
 
@@ -352,7 +353,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
       <ItemsTableWrapper>
         <BoostFormTitle>
           List the expenses this Boost can help cover
-          <QuestionToolTip explainerText="Itemizing your costs helps educate your audience about the costs of your Boost needs and the running your newsroom." />
+          <QuestionToolTip explainerText="Itemizing your costs helps educate your audience about the costs of journalism and running of your newsroom." />
         </BoostFormTitle>
         <table>
           <thead>
