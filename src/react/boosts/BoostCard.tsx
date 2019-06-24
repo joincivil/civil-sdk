@@ -43,8 +43,8 @@ export interface BoostCardProps {
 
 export class BoostCard extends React.Component<BoostCardProps> {
   public render(): JSX.Element {
-    let timeEnded = false;
-    const timeRemaining = this.timeRemaining(this.props.dateEnd, timeEnded);
+    const timeRemaining = this.timeRemaining(this.props.dateEnd);
+    const timeEnded = timeRemaining === "Boost Ended";
     const goalReached = this.props.paymentsTotal >= this.props.goalAmount;
     const addr = this.props.channelId;
     let newsroomName = "";
@@ -54,7 +54,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
         {this.props.boostOwner && timeEnded &&
           <BoostCompleted goalReached={goalReached} />
         }
-        
+
         <BoostWrapper open={this.props.open}>
           <BoostTitle>
             {this.props.open ? <>{this.props.title}</> : <a href={"/boosts/" + this.props.boostId}>{this.props.title}</a>}
@@ -161,21 +161,21 @@ export class BoostCard extends React.Component<BoostCardProps> {
     );
   }
 
-  private timeRemaining = (dateEnd: string, timeEnded: boolean) => {
+  private timeRemaining = (dateEnd: string) => {
     const endDate = Date.parse(dateEnd);
     const currentDate = Date.now();
     let timeRemainingSeconds = (endDate - currentDate) / 1000;
-    let timeRemaining;
 
-    let days = Math.floor(timeRemainingSeconds / (3600 * 24));
-    timeRemainingSeconds  -= days * 3600 * 24;
-    let hours   = Math.floor(timeRemainingSeconds / 3600);
-    timeRemainingSeconds  -= hours * 3600;
-    let mins = Math.floor(timeRemainingSeconds / 60);
+    const days = Math.floor(timeRemainingSeconds / (3600 * 24));
+    timeRemainingSeconds -= days * 3600 * 24;
+    const hours = Math.floor(timeRemainingSeconds / 3600);
+    timeRemainingSeconds -= hours * 3600;
+    const mins = Math.floor(timeRemainingSeconds / 60);
+    let timeRemaining;
 
     if (days >= 1) {
       timeRemaining = days === 1 ? "1 day left" : days + " days left";
-    }  else if (days < 1 && hours > 1) {
+    } else if (days < 1 && hours > 1) {
       timeRemaining = hours === 1 ? "1 hour left" : hours + " hours left";
     } else if (hours < 1 && mins > 1) {
       timeRemaining = mins + " minutes left";
@@ -183,7 +183,6 @@ export class BoostCard extends React.Component<BoostCardProps> {
       timeRemaining = "1 minute left";
     } else {
       timeRemaining = "Boost Ended";
-      timeEnded = true;
     }
 
     return timeRemaining;
