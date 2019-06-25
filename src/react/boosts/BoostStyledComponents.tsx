@@ -3,6 +3,7 @@ import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton } from
 
 export interface BoostStyleProps {
   open?: boolean;
+  marginBottom?: number;
 }
 
 export const BoostWrapper = styled.div`
@@ -356,6 +357,7 @@ export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = s
 
 export const BoostSmallPrint = styled.div`
   font-size: 12px;
+  margin-bottom: ${(props: BoostStyleProps) => (props.marginBottom + "px" || "0")};
 `;
 
 export const BoostEthConfirm = styled.span`
