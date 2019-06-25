@@ -112,7 +112,13 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
             </SubmitInstructions>
             <div>
               <TransactionButton
-                transactions={[{ transaction: this.sendPayment, handleTransactionHash: this.getHash, postTransaction: this.postTransaction }]}
+                transactions={[
+                  {
+                    transaction: this.sendPayment,
+                    handleTransactionHash: this.getHash,
+                    postTransaction: this.postTransaction,
+                  },
+                ]}
                 modalContentComponents={PAY_MODAL_COMPONENTS}
               >
                 Support this Boost
@@ -133,8 +139,8 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     console.log(txHash);
   };
 
-  private postTransaction = (result: any, txHash: TxHash): void => {
-    console.log("postTransaction")
+  private postTransaction = (result: any, txHash: TxHash) => {
+    console.log("postTransaction");
   };
 
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
