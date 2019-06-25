@@ -164,6 +164,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
     );
   }
 
+  // TODO(sruddy) add to util
   private timeRemaining = (dateEnd: string) => {
     const endDate = Date.parse(dateEnd);
     const currentDate = Date.now();
