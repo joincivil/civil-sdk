@@ -2,13 +2,27 @@ import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
 import { BoostFlexStart } from "../BoostStyledComponents";
 import styled from "styled-components";
-import { colors, fonts, TransactionButton } from "@joincivil/components";
-import { Civil, EthAddress, TwoStepEthTransaction } from "@joincivil/core";
+import {
+  colors,
+  fonts,
+  mediaQueries,
+  TransactionButton,
+  TransactionButtonModalContentComponentsProps,
+  progressModalStates,
+} from "@joincivil/components";
+import { Civil, EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
 import { detectProvider } from "@joincivil/ethapi";
+import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalText } from "../BoostTextComponents";
+import { MutationFunc } from "react-apollo";
 
 export interface BoostPayFormProps {
+  boostId: string;
+  etherToSpend: number;
+  usdToSpend: number;
+  newsroomName: string;
   paymentAddr: EthAddress;
   amount: number;
+  savePayment: MutationFunc;
 }
 
 export interface BoostPayFormState {
@@ -22,6 +36,18 @@ const BoostPayFormWrapper = styled.div`
   display: block;
   font-family: ${fonts.SANS_SERIF};
   margin: 0 0 0 20px;
+
+  button {
+    margin-bottom: 20px;
+
+    ${mediaQueries.MOBILE} {
+      width: 100%;
+    }
+  }
+
+  ${mediaQueries.MOBILE} {
+    margin: 0;
+  }
 `;
 
 const SubmitInstructions = styled.p`
@@ -29,6 +55,10 @@ const SubmitInstructions = styled.p`
   font-weight: 500;
   line-height: 22px;
   margin: 0 30px 0 0;
+
+  ${mediaQueries.MOBILE} {
+    margin: 0 0 20px;
+  }
 }`;
 
 const SubmitWarning = styled.p`
@@ -63,6 +93,18 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     };
   }
   public render(): JSX.Element {
+    const PAY_MODAL_COMPONENTS: TransactionButtonModalContentComponentsProps = {
+      [progressModalStates.IN_PROGRESS]: <PaymentInProgressModalText />,
+      [progressModalStates.SUCCESS]: (
+        <PaymentSuccessModalText
+          newsroomName={this.props.newsroomName}
+          etherToSpend={this.props.etherToSpend}
+          usdToSpend={this.props.usdToSpend}
+        />
+      ),
+      [progressModalStates.ERROR]: <PaymentErrorModalText />,
+    };
+
     return (
       <BoostPayFormWrapper>
         <form>
@@ -81,7 +123,15 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
               proceeds will still go to fund the selected newsroom.
             </SubmitInstructions>
             <div>
-              <TransactionButton transactions={[{ transaction: this.sendPayment }]}>
+              <TransactionButton
+                transactions={[
+                  {
+                    transaction: this.sendPayment,
+                    postTransaction: this.postTransaction,
+                  },
+                ]}
+                modalContentComponents={PAY_MODAL_COMPONENTS}
+              >
                 Support this Boost
               </TransactionButton>
               <SubmitWarning>
@@ -107,6 +157,15 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     } else {
       // TODO: pop dialog telling them to install metamask/web3
     }
+  };
+
+  private postTransaction = async (result: any, txHash: TxHash) => {
+    await this.props.savePayment({
+      variables: {
+        postID: this.props.boostId,
+        input: { transactionID: txHash },
+      },
+    });
   };
 
   /*private onClick = (): void => {

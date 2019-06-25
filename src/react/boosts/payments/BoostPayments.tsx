@@ -1,12 +1,16 @@
 import * as React from "react";
 import styled from "styled-components";
-import { colors, fonts } from "@joincivil/components";
+import { colors, fonts, mediaQueries } from "@joincivil/components";
 import { BoostPayOptions } from "./BoostPayOptions";
 import { BoostWrapper, BoostTitle, BoostNewsroom, BoostSmallPrint } from "../BoostStyledComponents";
 import { EthAddress } from "@joincivil/core";
 
 const BoostHeaderWrap = styled.div`
   margin: 0 0 0 20px;
+
+  ${mediaQueries.MOBILE} {
+    margin: 0;
+  }
 `;
 
 const BoostHeader = styled.h2`
@@ -22,14 +26,14 @@ const BoostDetails = styled.div`
   margin: 0 0 50px;
 `;
 
-const BoostAmount = styled.p`
+/*const BoostAmount = styled.p`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-family: ${fonts.SANS_SERIF};
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
   margin-bottom: 20px;
-`;
+`;*/
 
 export interface BoostPaymentsProps {
   paymentAddr: EthAddress;
@@ -47,13 +51,13 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
           <BoostNewsroom>{props.newsroomName}</BoostNewsroom>
-          <BoostAmount>{"$" + props.amount}</BoostAmount>
-          <BoostSmallPrint>
+          {/* <BoostAmount>{"$" + props.amount}</BoostAmount> */}
+          <BoostSmallPrint marginBottom={30}>
             This Boost will receive all proceeds raised even if it does not reach its goal.
           </BoostSmallPrint>
         </BoostDetails>
       </BoostHeaderWrap>
-      <BoostPayOptions paymentAddr={props.paymentAddr} />
+      <BoostPayOptions paymentAddr={props.paymentAddr} newsroomName={props.newsroomName} boostId={props.boostId} />
     </BoostWrapper>
   );
 };

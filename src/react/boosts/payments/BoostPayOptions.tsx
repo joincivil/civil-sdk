@@ -1,9 +1,9 @@
 import * as React from "react";
-import { RadioInput, colors, fonts } from "@joincivil/components";
+import { RadioInput, colors, fonts, mediaQueries } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
 // import { BoostPayStripe } from "./BoostPayStripe";
 import styled from "styled-components";
-import { BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
+import { BoostFlexCenter, BoostTextButton } from "../BoostStyledComponents";
 import { PaymentInfoText, PaymentFAQText } from "../BoostTextComponents";
 import { EthAddress } from "@joincivil/core";
 
@@ -14,6 +14,8 @@ export enum PAYMENT_TYPE {
 }
 
 export interface BoostPayOptionsProps {
+  boostId: string;
+  newsroomName: string;
   onChange?: any;
   value?: any;
   name?: string;
@@ -33,6 +35,11 @@ const BoostPayFooter = styled.div`
   border-top: 1px solid ${colors.accent.CIVIL_GRAY_3};
   margin: 20px 15px;
   padding: 20px;
+
+  ${mediaQueries.MOBILE} {
+    margin: 20px 0;
+    padding: 10px;
+  }
 `;
 
 const BoostPayFooterSection = styled.div`
@@ -87,7 +94,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
         ) : (
           <BoostInstructions>
             <BoostFlexCenter>
-              Payment <BoostButton onClick={this.handleEdit}>Edit</BoostButton>
+              Payment <BoostTextButton onClick={this.handleEdit}>Edit</BoostTextButton>
             </BoostFlexCenter>
           </BoostInstructions>
         )}
@@ -113,6 +120,8 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
       case PAYMENT_TYPE.ETH:
         return (
           <BoostPayEth
+            boostId={this.props.boostId}
+            newsroomName={this.props.newsroomName}
             value={PAYMENT_TYPE.ETH}
             handleNext={() => this.handleEthNext(this.state.etherToSpend, this.state.usdToSpend)}
             defaultChecked={true}
@@ -132,6 +141,8 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
         return (
           <>
             <BoostPayEth
+              boostId={this.props.boostId}
+              newsroomName={this.props.newsroomName}
               value={PAYMENT_TYPE.ETH}
               handleNext={this.handleEthNext}
               defaultChecked={true}

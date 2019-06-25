@@ -19,7 +19,7 @@ export const BoostFeed: React.FunctionComponent = () => {
           }
 
           return data.postsSearch.posts.map((boost: any, i: number) => (
-            <Boost key={i} boostId={boost.id} open={false} />
+            <Boost key={i} boostId={boost.id} open={false} boostOwner={false} />
           ));
         }}
       </Query>

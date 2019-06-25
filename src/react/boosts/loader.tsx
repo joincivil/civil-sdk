@@ -12,7 +12,7 @@ function init(): void {
   ReactDOM.render(
     // `apolloClient as any` because of bug with types e.g. https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/166
     <ApolloProvider client={apolloClient as any}>
-      <Boost boostId={"f14cd4b6-c85a-4a1e-b788-277b4b847233"} open={true} />
+      <Boost boostOwner={true} boostId={"1bdf971f-54e9-472d-a975-e175c5fccaa1"} open={true} />
     </ApolloProvider>,
     document.getElementById("civil-boost"),
   );

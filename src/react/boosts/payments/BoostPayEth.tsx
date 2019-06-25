@@ -13,6 +13,8 @@ import { BoostModal } from "../BoostModal";
 import { BoostPayForm } from "./BoostPayForm";
 import { UsdEthConverter } from "@joincivil/components";
 import { EthAddress } from "@joincivil/core";
+import { Mutation, MutationFunc } from "react-apollo";
+import { boostPayEthMutation } from "../queries";
 
 export enum MODEL_CONTENT {
   WHY_ETH = "why eth",
@@ -21,6 +23,8 @@ export enum MODEL_CONTENT {
 }
 
 export interface BoostPayEthProps {
+  boostId: string;
+  newsroomName: string;
   paymentAddr: EthAddress;
   paymentStarted?: boolean;
   defaultChecked: boolean;
@@ -61,7 +65,21 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
         </BoostPayOption>
 
         {this.props.paymentStarted && (
-          <BoostPayForm paymentAddr={this.props.paymentAddr} amount={this.state.etherToSpend} />
+          <Mutation mutation={boostPayEthMutation}>
+            {(paymentsCreateEtherPayment: MutationFunc) => {
+              return (
+                <BoostPayForm
+                  boostId={this.props.boostId}
+                  paymentAddr={this.props.paymentAddr}
+                  amount={this.state.etherToSpend}
+                  savePayment={paymentsCreateEtherPayment}
+                  etherToSpend={this.state.etherToSpend}
+                  usdToSpend={this.state.usdToSpend}
+                  newsroomName={this.props.newsroomName}
+                />
+              );
+            }}
+          </Mutation>
         )}
       </>
     );

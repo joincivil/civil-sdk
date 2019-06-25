@@ -1,5 +1,6 @@
 import * as React from "react";
-import { ModalHeading, ModalContent } from "@joincivil/components";
+import { ModalHeading, ModalContent, ClipLoader } from "@joincivil/components";
+import { BoostButton } from "./BoostStyledComponents";
 
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>
@@ -78,3 +79,82 @@ export const PaymentFAQText: React.FunctionComponent = props => (
     <a href="#TODO">What information can others see about my payment?</a>
   </>
 );
+
+export const PaymentConfirmTransactionText: React.FunctionComponent = props => (
+  <>
+    <h3>Let's Boost</h3>
+    <p>Your Wallet has popped up a new window. Confirm the transaction in the Wallet to complete the Boost.</p>
+  </>
+);
+
+export interface BoostPaymentTextProps {
+  newsroomName?: string;
+  etherToSpend?: number;
+  usdToSpend?: number;
+  boostURL?: string;
+  hideModal?(): void;
+}
+
+export const PaymentSuccessText: React.FunctionComponent = props => <ModalHeading>Payment Successful!</ModalHeading>;
+
+export const PaymentErrorText: React.FunctionComponent = props => (
+  <>
+    <ModalHeading>Payment Failed</ModalHeading>
+    <ModalContent>Your transaction failed. Please try again.</ModalContent>
+  </>
+);
+
+export const PaymentEthConfirmationText: React.FunctionComponent<BoostPaymentTextProps> = props => (
+  <>
+    <p>
+      Thank you! {props.newsroomName} has received your Boost of {props.etherToSpend} ETH ({props.usdToSpend}} USD)
+    </p>
+  </>
+);
+
+export const PaymentShareText: React.FunctionComponent<BoostPaymentTextProps> = props => (
+  <>
+    <p>
+      Tell your friends about your Boost! <a href={props.boostURL}>Share a link to the Boost</a>
+    </p>
+  </>
+);
+
+export const PaymentInProgressModalText: React.FunctionComponent = props => (
+  <>
+    <PaymentConfirmTransactionText />
+    <ClipLoader />
+  </>
+);
+
+export const PaymentSuccessModalText: React.FunctionComponent<BoostPaymentTextProps> = props => {
+  const handleOnClick = (event: any): void => {
+    if (props.hideModal) {
+      props.hideModal();
+    }
+  };
+
+  return (
+    <>
+      <PaymentSuccessText />
+      <PaymentEthConfirmationText usdToSpend={props.usdToSpend} etherToSpend={props.etherToSpend} />
+      <PaymentShareText boostURL={props.boostURL} />
+      <BoostButton onClick={handleOnClick}>Done</BoostButton>
+    </>
+  );
+};
+
+export const PaymentErrorModalText: React.FunctionComponent<BoostPaymentTextProps> = props => {
+  const handleOnClick = (event: any): void => {
+    if (props.hideModal) {
+      props.hideModal();
+    }
+  };
+
+  return (
+    <>
+      <PaymentErrorText />
+      <BoostButton onClick={handleOnClick}>Dismiss</BoostButton>
+    </>
+  );
+};
