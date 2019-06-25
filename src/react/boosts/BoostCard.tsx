@@ -51,13 +51,15 @@ export class BoostCard extends React.Component<BoostCardProps> {
 
     return (
       <>
-        {this.props.boostOwner && timeEnded &&
-          <BoostCompleted goalReached={goalReached} />
-        }
+        {this.props.boostOwner && timeEnded && <BoostCompleted goalReached={goalReached} />}
 
         <BoostWrapper open={this.props.open}>
           <BoostTitle>
-            {this.props.open ? <>{this.props.title}</> : <a href={"/boosts/" + this.props.boostId}>{this.props.title}</a>}
+            {this.props.open ? (
+              <>{this.props.title}</>
+            ) : (
+              <a href={"/boosts/" + this.props.boostId}>{this.props.title}</a>
+            )}
           </BoostTitle>
 
           <Query query={boostNewsroomQuery} variables={{ addr }}>
@@ -97,7 +99,10 @@ export class BoostCard extends React.Component<BoostCardProps> {
                       />
                     </BoostProgressCol>
                     {this.props.open && (
-                      <BoostButton disabled={timeEnded} onClick={() => this.props.handlePayments(newsroomName, data.listing.owner)}>
+                      <BoostButton
+                        disabled={timeEnded}
+                        onClick={() => this.props.handlePayments(newsroomName, data.listing.owner)}
+                      >
                         {timeEnded ? "Boost Ended" : "Support"}
                       </BoostButton>
                     )}
@@ -107,7 +112,9 @@ export class BoostCard extends React.Component<BoostCardProps> {
                       <BoostNotice>
                         All funds raised will go directly to the newsroom even if this goal is not met.
                         <QuestionToolTip
-                          explainerText={"Any money you give goes directly to the newsroom. Civil does not take a cut of any funds raised."}
+                          explainerText={
+                            "Any money you give goes directly to the newsroom. Civil does not take a cut of any funds raised."
+                          }
                         />
                       </BoostNotice>
                       <BoostDescriptionWhy>

@@ -89,31 +89,26 @@ export const PaymentConfirmTransactionText: React.FunctionComponent = props => (
 
 export interface BoostPaymentTextProps {
   newsroomName?: string;
-  ethPrice?: string;
-  usdPrice?: string;
-  transactionURL?: string;
+  etherToSpend?: number;
+  usdToSpend?: number;
   boostURL?: string;
-  receiptURL?: string;
   hideModal?(): void;
 }
 
 export const PaymentSuccessText: React.FunctionComponent = props => <ModalHeading>Payment Successful!</ModalHeading>;
 
-export const PaymentErrorText: React.FunctionComponent<BoostPaymentTextProps> = props => (
+export const PaymentErrorText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Payment Failed</ModalHeading>
     <ModalContent>Your transaction failed. Please try again.</ModalContent>
   </>
 );
 
-
 export const PaymentEthConfirmationText: React.FunctionComponent<BoostPaymentTextProps> = props => (
   <>
     <p>
-      Thank you! {props.newsroomName} has received your Boost of {props.ethPrice} ETH ({props.usdPrice}} USD){" "}
-      <a href={props.transactionURL}>View transaction</a>
+      Thank you! {props.newsroomName} has received your Boost of {props.etherToSpend} ETH ({props.usdToSpend}} USD)
     </p>
-    <a href={props.receiptURL}>View your Receipt</a>
   </>
 );
 
@@ -132,7 +127,7 @@ export const PaymentJoinCivilText: React.FunctionComponent = props => (
   </p>
 );
 
-export const PaymentInProgressModalText: React.FunctionComponent<BoostPaymentTextProps> = props => (
+export const PaymentInProgressModalText: React.FunctionComponent = props => (
   <>
     <PaymentConfirmTransactionText />
     <ClipLoader />
@@ -149,18 +144,11 @@ export const PaymentSuccessModalText: React.FunctionComponent<BoostPaymentTextPr
   return (
     <>
       <PaymentSuccessText />
-      <PaymentEthConfirmationText
-        usdPrice={props.usdPrice}
-        ethPrice={props.ethPrice}
-        receiptURL={props.receiptURL}
-        transactionURL={props.transactionURL}
-      />
+      <PaymentEthConfirmationText usdToSpend={props.usdToSpend} etherToSpend={props.etherToSpend} />
       <PaymentShareText boostURL={props.boostURL} />
-      <BoostButton onClick={handleOnClick}>
-        Done
-      </BoostButton>
+      <BoostButton onClick={handleOnClick}>Done</BoostButton>
     </>
-  )
+  );
 };
 
 export const PaymentErrorModalText: React.FunctionComponent<BoostPaymentTextProps> = props => {
@@ -173,9 +161,7 @@ export const PaymentErrorModalText: React.FunctionComponent<BoostPaymentTextProp
   return (
     <>
       <PaymentErrorText />
-      <BoostButton onClick={handleOnClick}>
-        Dismiss
-      </BoostButton>
+      <BoostButton onClick={handleOnClick}>Dismiss</BoostButton>
     </>
   );
 };

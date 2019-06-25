@@ -13,16 +13,16 @@ import {
 import { Civil, EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
 import { detectProvider } from "@joincivil/ethapi";
 import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalText } from "../BoostTextComponents";
-
-const PAY_MODAL_COMPONENTS: TransactionButtonModalContentComponentsProps = {
-  [progressModalStates.IN_PROGRESS]: <PaymentInProgressModalText />,
-  [progressModalStates.SUCCESS]: <PaymentSuccessModalText />,
-  [progressModalStates.ERROR]: <PaymentErrorModalText />,
-};
+import { MutationFunc } from "react-apollo";
 
 export interface BoostPayFormProps {
+  boostId: string;
+  etherToSpend: number;
+  usdToSpend: number;
+  newsroomName: string;
   paymentAddr: EthAddress;
   amount: number;
+  savePayment: MutationFunc;
 }
 
 export interface BoostPayFormState {
@@ -93,6 +93,18 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     };
   }
   public render(): JSX.Element {
+    const PAY_MODAL_COMPONENTS: TransactionButtonModalContentComponentsProps = {
+      [progressModalStates.IN_PROGRESS]: <PaymentInProgressModalText />,
+      [progressModalStates.SUCCESS]: (
+        <PaymentSuccessModalText
+          newsroomName={this.props.newsroomName}
+          etherToSpend={this.props.etherToSpend}
+          usdToSpend={this.props.usdToSpend}
+        />
+      ),
+      [progressModalStates.ERROR]: <PaymentErrorModalText />,
+    };
+
     return (
       <BoostPayFormWrapper>
         <form>
@@ -115,7 +127,6 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
                 transactions={[
                   {
                     transaction: this.sendPayment,
-                    handleTransactionHash: this.getHash,
                     postTransaction: this.postTransaction,
                   },
                 ]}
@@ -135,14 +146,6 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     );
   }
 
-  private getHash = (txHash: TxHash) => {
-    console.log(txHash);
-  };
-
-  private postTransaction = (result: any, txHash: TxHash) => {
-    console.log("postTransaction");
-  };
-
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
     const provider = detectProvider();
     if (provider) {
@@ -154,6 +157,15 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     } else {
       // TODO: pop dialog telling them to install metamask/web3
     }
+  };
+
+  private postTransaction = async (result: any, txHash: TxHash) => {
+    await this.props.savePayment({
+      variables: {
+        postID: this.props.boostId,
+        input: { transactionID: txHash },
+      },
+    });
   };
 
   /*private onClick = (): void => {

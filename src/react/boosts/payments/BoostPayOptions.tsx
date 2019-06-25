@@ -14,6 +14,8 @@ export enum PAYMENT_TYPE {
 }
 
 export interface BoostPayOptionsProps {
+  boostId: string;
+  newsroomName: string;
   onChange?: any;
   value?: any;
   name?: string;
@@ -118,6 +120,8 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
       case PAYMENT_TYPE.ETH:
         return (
           <BoostPayEth
+            boostId={this.props.boostId}
+            newsroomName={this.props.newsroomName}
             value={PAYMENT_TYPE.ETH}
             handleNext={() => this.handleEthNext(this.state.etherToSpend, this.state.usdToSpend)}
             defaultChecked={true}
@@ -137,6 +141,8 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
         return (
           <>
             <BoostPayEth
+              boostId={this.props.boostId}
+              newsroomName={this.props.newsroomName}
               value={PAYMENT_TYPE.ETH}
               handleNext={this.handleEthNext}
               defaultChecked={true}
