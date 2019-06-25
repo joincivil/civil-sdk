@@ -64,7 +64,7 @@ export const BoostProgress: React.FunctionComponent<BoostProgressProps> = props 
   return (
     <BoostProgressWrapper>
       <BoostProgressFlex>
-        <TextPrimary>{"$" + props.paymentsTotal} raised</TextPrimary>
+        <TextPrimary>{"$" + (props.paymentsTotal).toFixed(2)} raised</TextPrimary>
         <AlignRight>
           <TextPrimary>
             <b>${props.goalAmount}</b> goal

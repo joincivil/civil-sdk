@@ -2,9 +2,23 @@ import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
 import { BoostFlexStart } from "../BoostStyledComponents";
 import styled from "styled-components";
-import { colors, fonts, mediaQueries, TransactionButton } from "@joincivil/components";
-import { Civil, EthAddress, TwoStepEthTransaction } from "@joincivil/core";
+import {
+  colors,
+  fonts,
+  mediaQueries,
+  TransactionButton,
+  TransactionButtonModalContentComponentsProps,
+  progressModalStates,
+} from "@joincivil/components";
+import { Civil, EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
 import { detectProvider } from "@joincivil/ethapi";
+import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalText } from "../BoostTextComponents";
+
+const PAY_MODAL_COMPONENTS: TransactionButtonModalContentComponentsProps = {
+  [progressModalStates.IN_PROGRESS]: <PaymentInProgressModalText />,
+  [progressModalStates.SUCCESS]: <PaymentSuccessModalText />,
+  [progressModalStates.ERROR]: <PaymentErrorModalText />,
+};
 
 export interface BoostPayFormProps {
   paymentAddr: EthAddress;
@@ -97,7 +111,10 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
               proceeds will still go to fund the selected newsroom.
             </SubmitInstructions>
             <div>
-              <TransactionButton transactions={[{ transaction: this.sendPayment }]}>
+              <TransactionButton
+                transactions={[{ transaction: this.sendPayment, handleTransactionHash: this.getHash, postTransaction: this.postTransaction }]}
+                modalContentComponents={PAY_MODAL_COMPONENTS}
+              >
                 Support this Boost
               </TransactionButton>
               <SubmitWarning>
@@ -111,6 +128,14 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
       </BoostPayFormWrapper>
     );
   }
+
+  private getHash = (txHash: TxHash) => {
+    console.log(txHash);
+  };
+
+  private postTransaction = (result: any, txHash: TxHash): void => {
+    console.log("postTransaction")
+  };
 
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
     const provider = detectProvider();

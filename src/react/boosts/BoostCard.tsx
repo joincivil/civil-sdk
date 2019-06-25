@@ -171,7 +171,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
 
     if (days >= 1) {
       timeRemaining = days === 1 ? "1 day left" : days + " days left";
-    } else if (days < 1 && hours > 1) {
+    } else if (days < 1 && hours >= 1) {
       timeRemaining = hours === 1 ? "1 hour left" : hours + " hours left";
     } else if (hours < 1 && mins > 1) {
       timeRemaining = mins + " minutes left";
