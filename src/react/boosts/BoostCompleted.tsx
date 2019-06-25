@@ -20,7 +20,7 @@ export const BoostCompleted: React.FunctionComponent<BoostCompletedProps> = prop
         <>
           <h3>Your Boost has ended.</h3>
           <p>
-            Your Boost did not reach it’s raised goal within the time frame. You are still able to access the procceds
+            Your Boost did not reach its raised goal within the time frame. You are still able to access the proceeds
             from your contributors. Here are some next steps for you to take:
           </p>
           <p>

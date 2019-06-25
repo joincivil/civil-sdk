@@ -127,7 +127,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
                 transactions={[
                   {
                     transaction: this.sendPayment,
-                    postTransaction: this.postTransaction,
+                    handleTransactionHash: this.handleTransactionHash,
                   },
                 ]}
                 modalContentComponents={PAY_MODAL_COMPONENTS}
@@ -159,7 +159,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
     }
   };
 
-  private postTransaction = async (result: any, txHash: TxHash) => {
+  private handleTransactionHash = async (txHash: TxHash) => {
     await this.props.savePayment({
       variables: {
         postID: this.props.boostId,

@@ -120,13 +120,6 @@ export const PaymentShareText: React.FunctionComponent<BoostPaymentTextProps> = 
   </>
 );
 
-export const PaymentJoinCivilText: React.FunctionComponent = props => (
-  <p>
-    Want to create a Civil account and keep track of your boost? Join the Civil Community and take part in helping to
-    support newsrooms.
-  </p>
-);
-
 export const PaymentInProgressModalText: React.FunctionComponent = props => (
   <>
     <PaymentConfirmTransactionText />
