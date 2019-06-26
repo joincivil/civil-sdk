@@ -288,6 +288,7 @@ export const BoostPayOption = styled.div`
   width: 100%;
 
   ${mediaQueries.MOBILE} {
+    border-radius: 0;
     padding: 15px;
   }
 }`;
@@ -315,14 +316,48 @@ export const BoostPayCardDetails = styled.div`
   }
 }`;
 
+export const BoostPayWallet = styled.p`
+  display: block;
+  font-size: 14px;
+  line-height: 19px;
+
+  ${mediaQueries.MOBILE} {
+    display: none;
+  }
+}`;
+
+export const BoostPayWalletMobile = styled.p`
+  display: none;
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+    font-size: 14px;
+    line-height: 21px;
+  }
+}`;
+
 export const LearnMore = styled.div`
   border: 1px solid ${colors.accent.CIVIL_GRAY_4};
   border-radius: 5px;
+  font-size: 14px;
+  line-height: 19px;
   padding: 15px;
 
   a {
     cursor: pointer;
-    margin-left: 30px;
+    margin-right: 30px;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  ${mediaQueries.MOBILE} {
+    // TODO(sruddy) add to yellow to const
+    background-color: #FFFDE9;
+    font-size: 12px;
+    letter-spacing: -0.07px;
+    line-height: 18px;
   }
 }`;
 
