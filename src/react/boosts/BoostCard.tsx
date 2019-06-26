@@ -3,6 +3,8 @@ import { Query } from "react-apollo";
 import { boostNewsroomQuery } from "./queries";
 import { BoostProgress } from "./BoostProgress";
 import {
+  BoostImgDiv,
+  BoostImgDivMobile,
   BoostButton,
   BoostFlexStart,
   BoostWrapper,
@@ -14,6 +16,8 @@ import {
   BoostDescriptionTable,
   BoostProgressCol,
   BoostNotice,
+  BoostFlexStartMobile,
+  MobileStyle,
 } from "./BoostStyledComponents";
 import { BoostImg } from "./BoostImg";
 import { BoostCompleted } from "./BoostCompleted";
@@ -74,20 +78,29 @@ export class BoostCard extends React.Component<BoostCardProps> {
               newsroomName = data.listing.name;
               return (
                 <>
-                  <BoostImg charterUri={data.listing.charter.uri} />
-                  <BoostNewsroomInfo>
-                    <BoostNewsroom>{newsroomName}</BoostNewsroom>
-                    {this.props.open && (
-                      <>
-                        <a href={data.listing.url} target="_blank">
-                          Visit Newsroom
-                        </a>
-                        <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
-                          Visit Civil Registry
-                        </a>
-                      </>
-                    )}
-                  </BoostNewsroomInfo>
+                  <BoostImgDiv>
+                    <BoostImg charterUri={data.listing.charter.uri} />
+                  </BoostImgDiv>
+                  <BoostFlexStartMobile>
+                    <BoostImgDivMobile>
+                      <BoostImg charterUri={data.listing.charter.uri} />
+                    </BoostImgDivMobile>
+                    <BoostNewsroomInfo>
+                      <BoostNewsroom>
+                        {newsroomName}
+                      </BoostNewsroom>
+                      {this.props.open && (
+                        <>
+                          <a href={data.listing.url} target="_blank">
+                            Visit Newsroom <MobileStyle>&raquo;</MobileStyle>
+                          </a>
+                          <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
+                            Visit Civil Registry <MobileStyle>&raquo;</MobileStyle>
+                          </a>
+                        </>
+                      )}
+                    </BoostNewsroomInfo>
+                  </BoostFlexStartMobile>
 
                   <BoostFlexStart>
                     <BoostProgressCol open={this.props.open}>
