@@ -23,8 +23,8 @@ import {
   BoostDescriptionTable,
   BoostPayFormTitle,
   BoostSmallPrint,
+  BoostImgDiv,
 } from "./BoostStyledComponents";
-import { BoostImgDiv } from "./BoostImg";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};

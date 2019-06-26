@@ -57,7 +57,11 @@ const SubmitInstructions = styled.p`
   margin: 0 30px 0 0;
 
   ${mediaQueries.MOBILE} {
-    margin: 0 0 20px;
+    border-bottom: 1px solid ${colors.accent.CIVIL_GRAY_4};
+    font-size: 14px;
+    line-height: 24px;
+    margin: 0 0 30px;
+    padding: 0 0 30px;
   }
 }`;
 
@@ -70,6 +74,11 @@ const SubmitWarning = styled.p`
   a {
     color: ${colors.accent.CIVIL_BLUE};
     text-decoration: underline;
+  }
+
+  ${mediaQueries.MOBILE} {
+    font-size: 12px;
+    line-height: 22px;
   }
 }`;
 
@@ -120,7 +129,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
             <SubmitInstructions>
               Once your Boost is sent, we’ll be sending you a confirmation email if selected of your completed
               transaction. All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the
-              proceeds will still go to fund the selected newsroom.
+              proceeds will still go to fund the selected newsroom. Refunds are not possible.
             </SubmitInstructions>
             <div>
               <TransactionButton
@@ -135,9 +144,9 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
                 Support this Boost
               </TransactionButton>
               <SubmitWarning>
-                Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees
-                charged by the Ethereum network. By sending a Boost, you agree to Civil’s Terms of Use and Privacy
-                Policy. Depending on your selection, your email and comment may be visible to the newsroom.
+                By sending a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>. Civil does not charge any fees
+                for this transaction. There are small fees charged by the Ethereum network. Depending on your selection,
+                your email and comment may be visible to the newsroom.
               </SubmitWarning>
             </div>
           </BoostFlexStart>

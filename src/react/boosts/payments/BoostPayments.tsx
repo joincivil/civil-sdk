@@ -1,8 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
-import { colors, fonts, mediaQueries } from "@joincivil/components";
+import { colors, fonts, mediaQueries, QuestionToolTip } from "@joincivil/components";
 import { BoostPayOptions } from "./BoostPayOptions";
-import { BoostWrapper, BoostTitle, BoostNewsroom, BoostSmallPrint } from "../BoostStyledComponents";
+import { BoostWrapper, BoostTitle, BoostSmallPrint } from "../BoostStyledComponents";
 import { EthAddress } from "@joincivil/core";
 
 const BoostHeaderWrap = styled.div`
@@ -20,6 +20,19 @@ const BoostHeader = styled.h2`
   line-height: 33px;
   font-weight: bold;
   margin: 0 0 25px;
+`;
+
+const BoostPayNewsroom = styled.div`
+  color: ${colors.accent.CIVIL_GRAY_0};
+  font-family: ${fonts.SANS_SERIF};
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 200;
+  margin-bottom: 20px;
+
+  ${mediaQueries.MOBILE} {
+    font-size: 14px;
+  }
 `;
 
 const BoostDetails = styled.div`
@@ -50,10 +63,15 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         <BoostHeader>Complete your Boost</BoostHeader>
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
-          <BoostNewsroom>{props.newsroomName}</BoostNewsroom>
+          <BoostPayNewsroom>{props.newsroomName}</BoostPayNewsroom>
           {/* <BoostAmount>{"$" + props.amount}</BoostAmount> */}
-          <BoostSmallPrint marginBottom={30}>
-            This Boost will receive all proceeds raised even if it does not reach its goal.
+          <BoostSmallPrint margin={"0 0 20px"}>
+            All funds raised will go directly to the newsroom even if this goal is not met.
+            <QuestionToolTip
+              explainerText={
+                "Any money you give goes directly to the newsroom. Civil does not take a cut of any funds raised."
+              }
+            />
           </BoostSmallPrint>
         </BoostDetails>
       </BoostHeaderWrap>

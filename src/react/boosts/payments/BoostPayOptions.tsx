@@ -28,7 +28,11 @@ const BoostInstructions = styled.div`
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
-  margin-bottom: 20px;
+  margin: 0 0 20px 20px;
+
+  ${mediaQueries.MOBILE} {
+    margin: 0 0 20px;
+  }
 `;
 
 const BoostPayFooter = styled.div`

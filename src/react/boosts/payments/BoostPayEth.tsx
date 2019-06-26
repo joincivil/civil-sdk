@@ -7,6 +7,8 @@ import {
   BoostFlexCenter,
   BoostButton,
   BoostEthConfirm,
+  BoostPayWallet,
+  BoostPayWalletMobile,
 } from "../BoostStyledComponents";
 import { WhyEthModalText, WhatIsEthModalText, CanUseCVLText } from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
@@ -86,6 +88,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
   }
 
   private getPaymentAmount = () => {
+    const disableBtn = this.state.usdToSpend <= 0;
     return (
       <>
         <BoostPayCardDetails>
@@ -102,16 +105,19 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
             </a>
           </p>
           <LearnMore>
-            Learn more
             <a onClick={() => this.openModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
             <a onClick={() => this.openModal(MODEL_CONTENT.WHY_ETH)}>Why ETH?</a>
             <a onClick={() => this.openModal(MODEL_CONTENT.CAN_USE_CVL)}>Can I use CVL?</a>
           </LearnMore>
           <h3>Boost Amount</h3>
           <BoostFlexCenter>
+            {/* TODO(sruddy) add wallet check to converter */}
             <UsdEthConverter onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)} />
-            <BoostButton onClick={() => this.props.handleNext(this.state.etherToSpend, this.state.usdToSpend)}>
-              Next
+            <BoostButton
+              disabled={disableBtn}
+              onClick={() => this.props.handleNext(this.state.etherToSpend, this.state.usdToSpend)}
+            >
+              Continue
             </BoostButton>
           </BoostFlexCenter>
         </BoostPayCardDetails>
@@ -131,12 +137,23 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
   private getPaymentForm = (etherToSpend: number, usdToSpend: number) => {
     return (
       <BoostPayCardDetails>
-        <p>
+        <BoostPayWallet>
           You will be paying using a digital wallet such as{" "}
           <a href="#TODO" target="_blank">
             MetaMask
           </a>
-        </p>
+        </BoostPayWallet>
+
+        <BoostPayWalletMobile>
+          You will be paying using your wallet such as{" "}
+          <a href="https://www.coinbase.com/mobile" target="_blank">
+            Coinbase Wallet
+          </a>{" "}
+          or{" "}
+          <a href="https://alphawallet.com/" target="_blank">
+            Alpha Wallet
+          </a>
+        </BoostPayWalletMobile>
         <h3>Boost Amount</h3>
         <span>
           {etherToSpend + " ETH"} {"($" + usdToSpend + ")"}

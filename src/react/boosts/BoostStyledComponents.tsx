@@ -3,13 +3,21 @@ import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton } from
 
 export interface BoostStyleProps {
   open?: boolean;
-  marginBottom?: number;
+  margin?: string;
 }
+
+export const MobileStyle = styled.span`
+  display: none:
+
+  ${mediaQueries.MOBILE} {
+    display: inline;
+  }
+`;
 
 export const BoostWrapper = styled.div`
   border: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_4)};
   font-family: ${fonts.SANS_SERIF};
-  margin: 0 auto 30px;
+  margin: 0 auto 45px;
   padding: 30px 30px 30px 110px;
   position: relative;
 
@@ -17,7 +25,8 @@ export const BoostWrapper = styled.div`
     border-color: transparent;
     border-bottom: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_4)};
     border-top: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_3)};
-    padding: 20px 10px;
+    margin: 0 auto 30px;
+    padding: 20px 15px;
   }
 `;
 
@@ -73,6 +82,12 @@ export const BoostTitle = styled.h2`
   font-weight: bold;
   margin: 0 0 8px;
 
+  ${mediaQueries.MOBILE} {
+    font-size: 16px;
+    line-height: 22px;
+    margin: 0 0 12px;
+  }
+
   a {
     color: ${colors.accent.CIVIL_GRAY_0};
     transition: color 200ms ease;
@@ -80,6 +95,36 @@ export const BoostTitle = styled.h2`
     &:hover {
       color: ${colors.accent.CIVIL_BLUE};
     }
+  }
+`;
+export const BoostImgDiv = styled.div`
+  left: 30px;
+  position: absolute;
+  top: 30px;
+
+  img {
+    height: 64px;
+    object-fit: contain;
+    width: 64px;
+  }
+
+  ${mediaQueries.MOBILE} {
+    display: none;
+  }
+`;
+
+export const BoostImgDivMobile = styled.div`
+  display: none;
+
+  img {
+    height: ${(props: BoostStyleProps) => (props.open ? "64px" : "32px")};
+    margin-right: 10px;
+    object-fit: contain;
+    width: ${(props: BoostStyleProps) => (props.open ? "64px" : "32px")};
+  }
+
+  ${mediaQueries.MOBILE} {
+    display: block;
   }
 `;
 
@@ -106,6 +151,7 @@ export const BoostNewsroomInfo = styled.div`
 
     ${mediaQueries.MOBILE} {
       display: block;
+      margin-bottom: 5px;
     }
   }
 `;
@@ -117,6 +163,10 @@ export const BoostNewsroom = styled.div`
   line-height: 26px;
   font-weight: 200;
   margin-right: 20px;
+
+  ${mediaQueries.MOBILE} {
+    font-size: 14px;
+  }
 `;
 
 export const BoostDescription = styled.div`
@@ -132,7 +182,7 @@ export const BoostDescription = styled.div`
     ${mediaQueries.MOBILE} {
       color: ${colors.primary.BLACK};
       font-size: 16px;
-      line-height: 22px;
+      line-height: 28px;
     }
   }
 
@@ -143,7 +193,7 @@ export const BoostDescription = styled.div`
 
     ${mediaQueries.MOBILE} {
       font-size: 16px;
-      line-height: 22px;
+      line-height: 28px;
     }
   }
 `;
@@ -153,8 +203,8 @@ export const BoostDescriptionWhy = styled.div`
   margin-bottom: 30px;
 
   p {
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 32px;
     margin: 0 0 15px;
   }
 `;
@@ -176,7 +226,7 @@ export const BoostDescriptionTable = styled.div`
 
     ${mediaQueries.MOBILE} {
       font-size: 16px;
-      line-height: 22px;
+      line-height: 28px;
     }
   }
 
@@ -238,6 +288,7 @@ export const BoostPayOption = styled.div`
   width: 100%;
 
   ${mediaQueries.MOBILE} {
+    border-radius: 0;
     padding: 15px;
   }
 }`;
@@ -265,14 +316,48 @@ export const BoostPayCardDetails = styled.div`
   }
 }`;
 
+export const BoostPayWallet = styled.p`
+  display: block;
+  font-size: 14px;
+  line-height: 19px;
+
+  ${mediaQueries.MOBILE} {
+    display: none;
+  }
+}`;
+
+export const BoostPayWalletMobile = styled.p`
+  display: none;
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+    font-size: 14px;
+    line-height: 21px;
+  }
+}`;
+
 export const LearnMore = styled.div`
   border: 1px solid ${colors.accent.CIVIL_GRAY_4};
   border-radius: 5px;
+  font-size: 14px;
+  line-height: 19px;
   padding: 15px;
 
   a {
     cursor: pointer;
-    margin-left: 30px;
+    margin-right: 30px;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  ${mediaQueries.MOBILE} {
+    // TODO(sruddy) add to yellow to const
+    background-color: #FFFDE9;
+    font-size: 12px;
+    letter-spacing: -0.07px;
+    line-height: 18px;
   }
 }`;
 
@@ -295,6 +380,13 @@ export const BoostFlexStart = styled.div`
 
   ${mediaQueries.MOBILE} {
     display: block;
+  }
+`;
+
+export const BoostFlexStartMobile = styled.div`
+  ${mediaQueries.MOBILE} {
+    align-items: flex-start;
+    display: flex;
   }
 `;
 
@@ -357,7 +449,7 @@ export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = s
 
 export const BoostSmallPrint = styled.div`
   font-size: 12px;
-  margin-bottom: ${(props: BoostStyleProps) => (props.marginBottom + "px" || "0")};
+  margin: ${(props: BoostStyleProps) => (props.margin || "0")};
 `;
 
 export const BoostEthConfirm = styled.span`
