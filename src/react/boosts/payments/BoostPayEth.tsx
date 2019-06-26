@@ -111,7 +111,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           <BoostFlexCenter>
             <UsdEthConverter onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)} />
             <BoostButton onClick={() => this.props.handleNext(this.state.etherToSpend, this.state.usdToSpend)}>
-              Next
+              Continue
             </BoostButton>
           </BoostFlexCenter>
         </BoostPayCardDetails>

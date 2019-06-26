@@ -1,6 +1,5 @@
 import * as React from "react";
-import styled from "styled-components";
-import { mediaQueries, defaultNewsroomImgUrl } from "@joincivil/components";
+import { defaultNewsroomImgUrl } from "@joincivil/components";
 import * as IPFS from "ipfs-http-client";
 import { promisify } from "@joincivil/utils";
 
