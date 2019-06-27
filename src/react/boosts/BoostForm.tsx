@@ -11,11 +11,11 @@ import {
   TextareaInput,
   QuestionToolTip,
   defaultNewsroomImgUrl,
-  LoadingIndicator,
+  LoadingMessage,
 } from "@joincivil/components";
 import { Query, Mutation, MutationFunc } from "react-apollo";
 import { boostNewsroomQuery, boostMutation } from "./queries";
-import { BoostData } from "./types";
+import { BoostData, BoostNewsroomData } from "./types";
 import {
   BoostWrapper,
   BoostWrapperFullWidthHr,
@@ -36,10 +36,6 @@ const PageWrapper = styled.div`
 
   p {
     margin-top: 15px;
-  }
-
-  a {
-    color: ${colors.accent.CIVIL_PURPLE};
   }
 
   input[disabled] {
@@ -146,7 +142,6 @@ const LaunchDisclaimer = styled(BoostSmallPrint)`
   float: left;
 `;
 const LaunchButton = styled(Button)`
-  background-color: ${colors.accent.CIVIL_PURPLE};
   height: 48px;
   float: right;
   text-transform: none;
@@ -154,17 +149,14 @@ const LaunchButton = styled(Button)`
 `;
 
 export interface BoostFormProps {
+  newsroomData: BoostNewsroomData;
   newsroomAddress: string;
-  newsroomName: string;
   newsroomListingUrl: string;
-  newsroomWallet: string;
   newsroomLogoUrl?: string;
-  newsroomUrl?: string;
   newsroomTagline?: string;
 }
 export interface BoostFormState {
   boost: Partial<BoostData>;
-  dateEndInput?: string;
   boostId?: string;
   loading?: boolean;
   error?: string;
@@ -195,7 +187,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             if (loading) {
               return (
                 <BoostWrapper>
-                  <LoadingIndicator />
+                  <LoadingMessage />
                 </BoostWrapper>
               );
             } else if (error || !data) {
@@ -208,7 +200,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             if (!data.listing) {
               return (
                 <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomName}</b> has not yet applied to the Civil Registry. Please{" "}
+                  Your newsroom <b>{this.props.newsroomData.name}</b> has not yet applied to the Civil Registry. Please{" "}
                   <a href="/apply-to-registry">continue your newsroom application</a> and then, once you have applied
                   and your newsroom has been approved, you can return to create a Boost.
                 </BoostWrapper>
@@ -218,8 +210,8 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             if (!data.listing.whitelisted) {
               return (
                 <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomName}</b> is not currently approved on the Civil Registry. Please{" "}
-                  <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on the status of your
+                  Your newsroom <b>{this.props.newsroomData.name}</b> is not currently approved on the Civil Registry.
+                  Please <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on the status of your
                   application. Once your newsroom is approved, you can return to create a Boost.
                 </BoostWrapper>
               );
@@ -254,11 +246,11 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                       Newsroom Name
                       <QuestionToolTip explainerText="You can create a Boost for your newsroom only." />
                     </BoostFormTitle>
-                    <TextInput name="newsroomName" value={this.props.newsroomName} disabled />
+                    <TextInput name="newsroomName" value={this.props.newsroomData.name} disabled />
                   </NewsroomDetailCell>
                   <NewsroomDetailCell>
                     <BoostFormTitle>Newsroom URL</BoostFormTitle>
-                    <TextInput name="newsroomUrl" value={this.props.newsroomUrl} disabled />
+                    <TextInput name="newsroomUrl" value={this.props.newsroomData.url} disabled />
                   </NewsroomDetailCell>
                   <NewsroomDetailCell>
                     <BoostFormTitle>Registry Listing URL</BoostFormTitle>
@@ -270,7 +262,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                   Newsroom Wallet
                   <QuestionToolTip explainerText="This is your newsroom wallet address where you will receive the funds from your Boost." />
                 </BoostFormTitle>
-                <TextInput name="newsroomWallet" value={this.props.newsroomWallet} disabled />
+                <TextInput name="newsroomWallet" value={this.props.newsroomData.owner} disabled />
                 <p>
                   Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to
                   widthdraw from the newsroom wallet and either deposit or exchange them into other currencies.{" "}
@@ -313,7 +305,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                 <EndDateInput
                   type="date"
                   name="dateEnd"
-                  value={this.state.dateEndInput}
+                  value={this.state.boost.dateEnd && this.state.boost.dateEnd.substr(0, 10)}
                   onChange={this.onDateEndInputChange}
                 />
                 <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
@@ -445,10 +437,9 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
   private onDateEndInputChange = (event: any) => {
     event.preventDefault();
     this.setState({
-      dateEndInput: event.target.value,
       boost: {
         ...this.state.boost,
-        dateEnd: new Date(event.target.value),
+        dateEnd: new Date(event.target.value).toISOString(),
       },
     });
   };
@@ -511,7 +502,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             about: boost.about,
             goalAmount: boost.goalAmount,
             items: boost.items,
-            dateEnd: boost.dateEnd && boost.dateEnd.toISOString(),
+            dateEnd: boost.dateEnd,
           },
         },
       });

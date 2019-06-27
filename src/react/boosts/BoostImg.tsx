@@ -16,7 +16,7 @@ const ipfsAsync = {
 };
 
 export interface BoostImgProps {
-  charterUri: string;
+  charterUri?: string;
 }
 
 export interface BoostImgState {
@@ -32,6 +32,9 @@ export class BoostImg extends React.Component<BoostImgProps, BoostImgState> {
     };
   }
   public async componentDidMount(): Promise<void> {
+    if (!this.props.charterUri) {
+      return;
+    }
     const uri = this.props.charterUri.replace("ipfs://", "/ipfs/");
     const content = await ipfsAsync.get(uri);
     const ipfsFile = content.reduce((acc, file) => acc + file.content.toString("utf8"), "");

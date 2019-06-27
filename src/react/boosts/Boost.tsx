@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Query } from "react-apollo";
-import { boostQuery } from "./queries";
+import { boostQuery, boostNewsroomQuery } from "./queries";
+import { BoostData, BoostNewsroomData } from "./types";
 import { BoostCard } from "./BoostCard";
 import { BoostPayments } from "./payments/BoostPayments";
 import { EthAddress } from "@joincivil/core";
+import { LoadingMessage } from "@joincivil/components";
 
 export interface BoostProps {
   boostOwner: boolean;
@@ -11,13 +13,13 @@ export interface BoostProps {
   open: boolean;
 }
 
-export interface BoostStates {
+export interface BoostState {
   payment: boolean;
   newsroomName: string;
   paymentAddr: EthAddress;
 }
 
-export class Boost extends React.Component<BoostProps, BoostStates> {
+export class Boost extends React.Component<BoostProps, BoostState> {
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
@@ -34,46 +36,55 @@ export class Boost extends React.Component<BoostProps, BoostStates> {
       <Query query={boostQuery} variables={{ id }}>
         {({ loading, error, data }) => {
           if (loading) {
-            return "Loading...";
+            return <LoadingMessage />;
           } else if (error) {
-            return "Error: " + JSON.stringify(error);
+            console.error("error loading boost data:", error, data);
+            return "Error loading Boost: " + JSON.stringify(error);
           }
-
-          if (this.state.payment) {
-            return (
-              <BoostPayments
-                boostId={id}
-                title={data.postsGet.title}
-                amount={20}
-                newsroomName={this.state.newsroomName}
-                paymentAddr={this.state.paymentAddr}
-              />
-            );
-          }
+          const boostData = data.postsGet as BoostData;
 
           return (
-            <BoostCard
-              boostOwner={this.props.boostOwner}
-              channelId={data.postsGet.channelID}
-              open={this.props.open}
-              boostId={id}
-              title={data.postsGet.title}
-              goalAmount={data.postsGet.goalAmount}
-              paymentsTotal={data.postsGet.paymentsTotal}
-              why={data.postsGet.why}
-              what={data.postsGet.what}
-              about={data.postsGet.about}
-              items={data.postsGet.items}
-              handlePayments={this.startPayment}
-              dateEnd={data.postsGet.dateEnd}
-            />
+            <Query query={boostNewsroomQuery} variables={{ addr: boostData.channelID }}>
+              {({ loading: newsroomQueryLoading, error: newsroomQueryError, data: newsroomQueryData }) => {
+                if (newsroomQueryLoading) {
+                  return <LoadingMessage>Loading Newsroom</LoadingMessage>;
+                } else if (newsroomQueryError || !newsroomQueryData || !newsroomQueryData.listing) {
+                  console.error("error loading newsroom data:", newsroomQueryError, newsroomQueryData);
+                  return "Error loading Boost newsroom data: " + JSON.stringify(newsroomQueryError);
+                }
+                const newsroomData = newsroomQueryData.listing as BoostNewsroomData;
+
+                if (this.state.payment) {
+                  return (
+                    <BoostPayments
+                      boostId={id}
+                      title={boostData.title}
+                      amount={20}
+                      newsroomName={newsroomData.name}
+                      paymentAddr={newsroomData.owner}
+                    />
+                  );
+                }
+
+                return (
+                  <BoostCard
+                    boostData={boostData}
+                    newsroomData={newsroomData}
+                    boostOwner={this.state.boostOwner}
+                    open={this.props.open}
+                    boostId={id}
+                    handlePayments={this.startPayment}
+                  />
+                );
+              }}
+            </Query>
           );
         }}
       </Query>
     );
   }
 
-  private startPayment = (newsroomName: string, paymentAddr: EthAddress) => {
-    this.setState({ payment: true, newsroomName, paymentAddr });
+  private startPayment = () => {
+    this.setState({ payment: true });
   };
 }

@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Query } from "react-apollo";
-import { boostNewsroomQuery } from "./queries";
 import { BoostProgress } from "./BoostProgress";
+import { BoostData, BoostNewsroomData } from "./types";
 import {
   BoostImgDiv,
   BoostImgDivMobile,
@@ -21,37 +20,23 @@ import {
 } from "./BoostStyledComponents";
 import { BoostImg } from "./BoostImg";
 import { BoostCompleted } from "./BoostCompleted";
-import { EthAddress } from "@joincivil/core";
 import { QuestionToolTip } from "@joincivil/components";
 
-export interface Items {
-  item: string;
-  cost: number;
-}
-
 export interface BoostCardProps {
-  boostOwner: boolean;
-  channelId: string;
+  boostData: BoostData;
+  newsroomData: BoostNewsroomData;
   open: boolean;
   boostId: string;
-  title: string;
-  goalAmount: number;
-  paymentsTotal: number;
-  dateEnd: string;
-  why: string;
-  what: string;
-  about: string;
-  items: Items[];
-  handlePayments(newsroom: string, paymentAddr: EthAddress): void;
+  boostOwner?: boolean;
+  handlePayments(): void;
 }
 
 export class BoostCard extends React.Component<BoostCardProps> {
   public render(): JSX.Element {
-    const timeRemaining = this.timeRemaining(this.props.dateEnd);
+    const timeRemaining = this.timeRemaining(this.props.boostData.dateEnd);
     const timeEnded = timeRemaining === "Boost Ended";
-    const goalReached = this.props.paymentsTotal >= this.props.goalAmount;
-    const addr = this.props.channelId;
-    let newsroomName = "";
+    const goalReached = this.props.boostData.paymentsTotal >= this.props.boostData.goalAmount;
+    const newsroomAddress = this.props.boostData.channelID;
 
     return (
       <>
@@ -60,118 +45,97 @@ export class BoostCard extends React.Component<BoostCardProps> {
         <BoostWrapper open={this.props.open}>
           <BoostTitle>
             {this.props.open ? (
-              <>{this.props.title}</>
+              <>{this.props.boostData.title}</>
             ) : (
-              <a href={"/boosts/" + this.props.boostId}>{this.props.title}</a>
+              <a href={"/boosts/" + this.props.boostId}>{this.props.boostData.title}</a>
             )}
           </BoostTitle>
 
-          <Query query={boostNewsroomQuery} variables={{ addr }}>
-            {({ loading, error, data }) => {
-              if (loading) {
-                return <></>;
-              } else if (error || !data.listing) {
-                console.log(JSON.stringify(error));
-                return <>ERROR</>;
-              }
-
-              newsroomName = data.listing.name;
-              return (
+          <BoostImgDiv>
+            <BoostImg charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri} />
+          </BoostImgDiv>
+          <BoostFlexStartMobile>
+            <BoostImgDivMobile>
+              <BoostImg charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri} />
+            </BoostImgDivMobile>
+            <BoostNewsroomInfo>
+              <BoostNewsroom>{this.props.newsroomData.name}</BoostNewsroom>
+              {this.props.open && (
                 <>
-                  <BoostImgDiv>
-                    <BoostImg charterUri={data.listing.charter.uri} />
-                  </BoostImgDiv>
-                  <BoostFlexStartMobile>
-                    <BoostImgDivMobile>
-                      <BoostImg charterUri={data.listing.charter.uri} />
-                    </BoostImgDivMobile>
-                    <BoostNewsroomInfo>
-                      <BoostNewsroom>
-                        {newsroomName}
-                      </BoostNewsroom>
-                      {this.props.open && (
-                        <>
-                          <a href={data.listing.url} target="_blank">
-                            Visit Newsroom <MobileStyle>&raquo;</MobileStyle>
-                          </a>
-                          <a href={"https://registry.civil.co/listing/" + addr} target="_blank">
-                            Visit Civil Registry <MobileStyle>&raquo;</MobileStyle>
-                          </a>
-                        </>
-                      )}
-                    </BoostNewsroomInfo>
-                  </BoostFlexStartMobile>
-
-                  <BoostFlexStart>
-                    <BoostProgressCol open={this.props.open}>
-                      <BoostProgress
-                        open={this.props.open}
-                        goalAmount={this.props.goalAmount}
-                        paymentsTotal={this.props.paymentsTotal}
-                        timeRemaining={timeRemaining}
-                      />
-                    </BoostProgressCol>
-                    {this.props.open && (
-                      <BoostButton
-                        disabled={timeEnded}
-                        onClick={() => this.props.handlePayments(newsroomName, data.listing.owner)}
-                      >
-                        {timeEnded ? "Boost Ended" : "Support"}
-                      </BoostButton>
-                    )}
-                  </BoostFlexStart>
-                  {this.props.open && (
-                    <>
-                      <BoostNotice>
-                        All funds raised will go directly to the newsroom even if this goal is not met.
-                        <QuestionToolTip
-                          explainerText={
-                            "Any money you give goes directly to the newsroom. Civil does not take a cut of any funds raised."
-                          }
-                        />
-                      </BoostNotice>
-                      <BoostDescriptionWhy>
-                        <p>{this.props.why}</p>
-                      </BoostDescriptionWhy>
-                      <BoostDescription>
-                        <h3>What the outcome will be</h3>
-                        <p>{this.props.what}</p>
-                      </BoostDescription>
-                      <BoostDescription>
-                        <h3>About the newsroom</h3>
-                        <p>{this.props.about}</p>
-                      </BoostDescription>
-                      <BoostDescriptionTable>
-                        <h3>Where your support goes</h3>
-                        <table>
-                          <thead>
-                            <tr>
-                              <th>Item</th>
-                              <th>Cost</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.props.items.map((item: any, i: number) => (
-                              <tr key={i}>
-                                <td>{item.item}</td>
-                                <td>{"$" + item.cost}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </BoostDescriptionTable>
-                      <BoostDescription>
-                        <h3>Questions about Boosts?</h3>
-                        <p>
-                          <a href="#TODO">Learn more in our FAQ</a>
-                        </p>
-                      </BoostDescription>
-                    </>
-                  )}
+                  <a href={this.props.newsroomData.url} target="_blank">
+                    Visit Newsroom <MobileStyle>&raquo;</MobileStyle>
+                  </a>
+                  <a href={"https://registry.civil.co/listing/" + newsroomAddress} target="_blank">
+                    Visit Civil Registry <MobileStyle>&raquo;</MobileStyle>
+                  </a>
                 </>
-              );
-            }}
-          </Query>
+              )}
+            </BoostNewsroomInfo>
+          </BoostFlexStartMobile>
+
+          <BoostFlexStart>
+            <BoostProgressCol open={this.props.open}>
+              <BoostProgress
+                open={this.props.open}
+                goalAmount={this.props.boostData.goalAmount}
+                paymentsTotal={this.props.boostData.paymentsTotal}
+                timeRemaining={timeRemaining}
+              />
+            </BoostProgressCol>
+            {this.props.open && (
+              <BoostButton disabled={timeEnded} onClick={() => this.props.handlePayments()}>
+                {timeEnded ? "Boost Ended" : "Support"}
+              </BoostButton>
+            )}
+          </BoostFlexStart>
+          {this.props.open && (
+            <>
+              <BoostNotice>
+                All funds raised will go directly to the newsroom even if this goal is not met.
+                <QuestionToolTip
+                  explainerText={
+                    "Any money you give goes directly to the newsroom. Civil does not take a cut of any funds raised."
+                  }
+                />
+              </BoostNotice>
+              <BoostDescriptionWhy>
+                <p>{this.props.boostData.why}</p>
+              </BoostDescriptionWhy>
+              <BoostDescription>
+                <h3>What the outcome will be</h3>
+                <p>{this.props.boostData.what}</p>
+              </BoostDescription>
+              <BoostDescription>
+                <h3>About the newsroom</h3>
+                <p>{this.props.boostData.about}</p>
+              </BoostDescription>
+              <BoostDescriptionTable>
+                <h3>Where your support goes</h3>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.props.boostData.items.map((item: any, i: number) => (
+                      <tr key={i}>
+                        <td>{item.item}</td>
+                        <td>{"$" + item.cost}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </BoostDescriptionTable>
+              <BoostDescription>
+                <h3>Questions about Boosts?</h3>
+                <p>
+                  <a href="#TODO">Learn more in our FAQ</a>
+                </p>
+              </BoostDescription>
+            </>
+          )}
         </BoostWrapper>
       </>
     );

@@ -19,6 +19,9 @@ const boost = {
     { item: "Flyers and materials", cost: 100 },
     { item: "Stage equipment", cost: 25 },
   ],
+  channelID: "0xabc123",
+  goalAmount: 325,
+  paymentsTotal: 25,
 };
 
 const typeDefs = `
@@ -40,6 +43,12 @@ const mocks = {
   },
 };
 
+const newsroomData = {
+  name: "Block Club Chicago",
+  url: "https://blockclubchicago.org/",
+  charter: {},
+} as any;
+
 const onClickFunc = () => {
   console.log("clicked!");
 };
@@ -55,17 +64,10 @@ storiesOf("Boosts", module)
     return (
       <BoostCard
         boostOwner={true}
-        channelId={boost.address}
+        newsroomData={newsroomData}
+        boostData={boost}
         open={false}
         boostId={boost.id}
-        title={boost.title}
-        goalAmount={325}
-        paymentsTotal={25}
-        dateEnd={boost.dateEnd}
-        why={boost.why}
-        what={boost.what}
-        about={boost.about}
-        items={boost.items}
         handlePayments={onClickFunc}
       />
     );
@@ -73,18 +75,11 @@ storiesOf("Boosts", module)
   .add("Card Full View", () => {
     return (
       <BoostCard
+        boostData={boost}
+        newsroomData={newsroomData}
         boostOwner={true}
-        channelId={boost.address}
         open={true}
         boostId={boost.id}
-        title={boost.title}
-        goalAmount={325}
-        paymentsTotal={25}
-        dateEnd={boost.dateEnd}
-        why={boost.why}
-        what={boost.what}
-        about={boost.about}
-        items={boost.items}
         handlePayments={onClickFunc}
       />
     );
