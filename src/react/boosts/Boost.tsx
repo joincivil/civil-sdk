@@ -56,10 +56,18 @@ export class Boost extends React.Component<BoostProps, BoostState> {
       <Query query={boostQuery} variables={{ id }}>
         {({ loading, error, data }) => {
           if (loading) {
-            return <LoadingMessage>Loading Boost</LoadingMessage>;
+            return (
+              <BoostWrapper open={this.props.open}>
+                <LoadingMessage>Loading Boost</LoadingMessage>
+              </BoostWrapper>
+            );
           } else if (error) {
-            console.error("error loading boost data:", error, data);
-            return "Error loading Boost: " + JSON.stringify(error);
+            console.error("error loading boost data. error:", error, "data:", data);
+            return (
+              <BoostWrapper open={this.props.open}>
+                Error loading Boost: {error ? JSON.stringify(error) : "No Boost data found"}
+              </BoostWrapper>
+            );
           }
           const boostData = data.postsGet as BoostData;
 
@@ -76,10 +84,21 @@ export class Boost extends React.Component<BoostProps, BoostState> {
             <Query query={boostNewsroomQuery} variables={{ addr: boostData.channelID }}>
               {({ loading: newsroomQueryLoading, error: newsroomQueryError, data: newsroomQueryData }) => {
                 if (newsroomQueryLoading) {
-                  return <LoadingMessage>Loading Newsroom</LoadingMessage>;
+                  return (
+                    <BoostWrapper open={this.props.open}>
+                      <LoadingMessage>Loading Newsroom</LoadingMessage>
+                    </BoostWrapper>
+                  );
                 } else if (newsroomQueryError || !newsroomQueryData || !newsroomQueryData.listing) {
-                  console.error("error loading newsroom data:", newsroomQueryError, newsroomQueryData);
-                  return "Error loading Boost newsroom data: " + JSON.stringify(newsroomQueryError);
+                  console.error("error loading newsroom data. error:", newsroomQueryError, "data:", newsroomQueryData);
+                  return (
+                    <BoostWrapper open={this.props.open}>
+                      Error loading Boost newsroom data:{" "}
+                      {newsroomQueryError
+                        ? JSON.stringify(newsroomQueryError)
+                        : `No newsroom listing found at ${boostData.channelID}`}
+                    </BoostWrapper>
+                  );
                 }
                 const newsroomData = newsroomQueryData.listing as BoostNewsroomData;
 
@@ -121,19 +140,23 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     const listingUrl = "https://registry.civil.co/listing/" + boostData.channelID;
 
     if (this.state.checkingIfOwner) {
-      return <LoadingMessage>Loading Permissions</LoadingMessage>;
+      return (
+        <BoostWrapper open={this.props.open}>
+          <LoadingMessage>Loading Permissions</LoadingMessage>
+        </BoostWrapper>
+      );
     }
     if (!this.state.boostOwner) {
       if (!this.state.userEthAddress) {
         return (
-          <BoostWrapper open={true}>
+          <BoostWrapper open={this.props.open}>
             Please connect your Ethereum account via a browser wallet such as MetaMask so that we can verify your
             ability to edit this Boost.
           </BoostWrapper>
         );
       }
       return (
-        <BoostWrapper open={true}>
+        <BoostWrapper open={this.props.open}>
           <p>
             Your ETH address <code>{this.state.userEthAddress}</code> doesn't have permissions to edit this newsroom's
             Boost, which is owned by the following address(es):
