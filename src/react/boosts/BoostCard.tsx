@@ -62,6 +62,13 @@ export class BoostCard extends React.Component<BoostCardProps> {
               <BoostNewsroom>{this.props.newsroomData.name}</BoostNewsroom>
               {this.props.open && (
                 <>
+                  {this.props.boostOwner && (
+                    <a href={`/boosts/${this.props.boostId}/edit?feature-flag=boosts-mvp`}>
+                      <b>
+                        Edit Boost <MobileStyle>&raquo;</MobileStyle>
+                      </b>
+                    </a>
+                  )}
                   <a href={this.props.newsroomData.url} target="_blank">
                     Visit Newsroom <MobileStyle>&raquo;</MobileStyle>
                   </a>

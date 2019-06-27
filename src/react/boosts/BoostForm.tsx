@@ -239,8 +239,8 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         <>
           <Title>Edit Boost</Title>
           <p>
-            Note that after a boost has been launched, only copy can be changed. Goal amounts and end date cannot be
-            edited.
+            Note that after a boost has been launched, only text copy can be changed. Goal amounts and end date cannot
+            be edited.
           </p>
         </>
       );
