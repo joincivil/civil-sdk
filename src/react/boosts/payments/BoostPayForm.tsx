@@ -144,9 +144,9 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
                 Support this Boost
               </TransactionButton>
               <SubmitWarning>
-                By sending a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>. Civil does not charge any fees
-                for this transaction. There are small fees charged by the Ethereum network. Depending on your selection,
-                your email and comment may be visible to the newsroom.
+                By sending a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>. Civil does
+                not charge any fees for this transaction. There are small fees charged by the Ethereum network.
+                Depending on your selection, your email and comment may be visible to the newsroom.
               </SubmitWarning>
             </div>
           </BoostFlexStart>

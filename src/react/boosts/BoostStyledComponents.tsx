@@ -449,7 +449,7 @@ export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = s
 
 export const BoostSmallPrint = styled.div`
   font-size: 12px;
-  margin: ${(props: BoostStyleProps) => (props.margin || "0")};
+  margin: ${(props: BoostStyleProps) => props.margin || "0"};
 `;
 
 export const BoostEthConfirm = styled.span`
@@ -468,7 +468,7 @@ export const BoostNotice = styled.div`
   }
 `;
 
-export const BoostCompeletedWrapper = styled.div `
+export const BoostCompeletedWrapper = styled.div`
   border: 1px solid ${colors.accent.CIVIL_GRAY_2};
   font-family: ${fonts.SANS_SERIF};
   font-size: 14px;
@@ -481,7 +481,8 @@ export const BoostCompeletedWrapper = styled.div `
     margin: 15px 10px;
   }
 
-  h3, p {
+  h3,
+  p {
     font-size: 14px;
     line-height: 20px;
     margin: 0 0 10px;

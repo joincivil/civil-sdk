@@ -68,6 +68,26 @@ export const boostMutation = gql`
   }
 `;
 
+// @TODO/toby Change this over when edit mutation is live
+export const editBoostMutation = gql`
+  mutation($input: PostCreateBoostInput!) {
+    postsCreateBoost(input: $input) {
+      id
+      channelID
+      goalAmount
+      title
+      why
+      what
+      about
+      dateEnd
+      items {
+        item
+        cost
+      }
+    }
+  }
+`;
+
 export const boostPayEthMutation = gql`
   mutation($postID: String!, $input: PaymentsCreateEtherPaymentInput!) {
     paymentsCreateEtherPayment(postID: $postID, input: $input) {

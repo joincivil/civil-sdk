@@ -11,11 +11,11 @@ import {
   TextareaInput,
   QuestionToolTip,
   defaultNewsroomImgUrl,
-  LoadingIndicator,
+  LoadingMessage,
 } from "@joincivil/components";
 import { Query, Mutation, MutationFunc } from "react-apollo";
-import { boostNewsroomQuery, boostMutation } from "./queries";
-import { BoostData } from "./types";
+import { boostNewsroomQuery, boostMutation, editBoostMutation } from "./queries";
+import { BoostData, BoostNewsroomData } from "./types";
 import {
   BoostWrapper,
   BoostWrapperFullWidthHr,
@@ -25,6 +25,7 @@ import {
   BoostSmallPrint,
   BoostImgDiv,
 } from "./BoostStyledComponents";
+import { BoostImg } from "./BoostImg";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};
@@ -36,10 +37,6 @@ const PageWrapper = styled.div`
 
   p {
     margin-top: 15px;
-  }
-
-  a {
-    color: ${colors.accent.CIVIL_PURPLE};
   }
 
   input[disabled] {
@@ -58,6 +55,7 @@ const Title = styled.div`
   font-size: 24px;
   font-weight: 900;
   line-height: 33px;
+  margin-bottom: 15px;
 `;
 const Error = styled.span`
   color: red;
@@ -100,10 +98,15 @@ const ItemLink = styled.a`
 const ItemNameInput = styled(TextInput)`
   max-width: 420px;
 `;
-const ItemCostHeaderCell = styled.th`
+const ItemCostHeader = styled.th`
   && {
-    text-align: right;
+    padding-right: 0;
   }
+`;
+const ItemCostHeaderText = styled.div`
+  margin-left: auto;
+  text-align: left;
+  width: 100px;
 `;
 const ItemCostCell = styled.td`
   text-align: right;
@@ -112,9 +115,6 @@ const StyledCurrencyInput = styled(CurrencyInput)`
   position: relative;
   margin-left: auto;
   width: 100px;
-  & input[disabled] {
-    color: ${colors.primary.CIVIL_GRAY_0};
-  }
 
   ${InputIcon as any} {
     top: 15px;
@@ -125,6 +125,11 @@ const StyledCurrencyInput = styled(CurrencyInput)`
   }
   input {
     padding-left: 22px;
+  }
+`;
+const TotalGoal = styled(StyledCurrencyInput)`
+  & input[disabled] {
+    color: ${colors.primary.CIVIL_GRAY_0};
   }
 `;
 const ItemsAmountNote = styled.div`
@@ -146,25 +151,23 @@ const LaunchDisclaimer = styled(BoostSmallPrint)`
   float: left;
 `;
 const LaunchButton = styled(Button)`
-  background-color: ${colors.accent.CIVIL_PURPLE};
   height: 48px;
   float: right;
   text-transform: none;
-  width: 180px;
+  width: 190px;
 `;
 
 export interface BoostFormProps {
+  newsroomData: BoostNewsroomData;
   newsroomAddress: string;
-  newsroomName: string;
   newsroomListingUrl: string;
-  newsroomWallet: string;
   newsroomLogoUrl?: string;
-  newsroomUrl?: string;
   newsroomTagline?: string;
+  initialBoostData?: BoostData;
+  editMode?: boolean;
 }
 export interface BoostFormState {
   boost: Partial<BoostData>;
-  dateEndInput?: string;
   boostId?: string;
   loading?: boolean;
   error?: string;
@@ -174,28 +177,26 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
   constructor(props: BoostFormProps) {
     super(props);
     this.state = {
-      boost: {
-        about: props.newsroomTagline,
-        items: [{ item: "", cost: 0 }],
-      },
+      boost: props.initialBoostData
+        ? { ...props.initialBoostData }
+        : {
+            about: props.newsroomTagline,
+            items: [{ item: "", cost: 0 }],
+          },
     };
   }
 
   public render(): JSX.Element {
     return (
       <PageWrapper>
-        <Title>Let's get you started</Title>
-        <p>
-          Create and launch your Boost. Boosts will be displayed on the Boost directory in addition to your Registry
-          listing.
-        </p>
+        {this.renderHeader()}
 
         <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
           {({ loading, error, data }) => {
             if (loading) {
               return (
                 <BoostWrapper>
-                  <LoadingIndicator />
+                  <LoadingMessage />
                 </BoostWrapper>
               );
             } else if (error || !data) {
@@ -208,7 +209,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             if (!data.listing) {
               return (
                 <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomName}</b> has not yet applied to the Civil Registry. Please{" "}
+                  Your newsroom <b>{this.props.newsroomData.name}</b> has not yet applied to the Civil Registry. Please{" "}
                   <a href="/apply-to-registry">continue your newsroom application</a> and then, once you have applied
                   and your newsroom has been approved, you can return to create a Boost.
                 </BoostWrapper>
@@ -218,8 +219,8 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             if (!data.listing.whitelisted) {
               return (
                 <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomName}</b> is not currently approved on the Civil Registry. Please{" "}
-                  <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on the status of your
+                  Your newsroom <b>{this.props.newsroomData.name}</b> is not currently approved on the Civil Registry.
+                  Please <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on the status of your
                   application. Once your newsroom is approved, you can return to create a Boost.
                 </BoostWrapper>
               );
@@ -232,20 +233,48 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
     );
   }
 
-  public renderForm(): JSX.Element {
+  private renderHeader(): JSX.Element {
+    if (this.props.editMode) {
+      return (
+        <>
+          <Title>Edit Boost</Title>
+          <p>
+            Note that after a boost has been launched, only text copy can be changed. Goal amounts and end date cannot
+            be edited.
+          </p>
+        </>
+      );
+    }
+
     return (
-      <Mutation mutation={boostMutation}>
-        {createBoost => {
+      <>
+        <Title>Let's get you started</Title>
+        <p>
+          Create and launch your Boost. Boosts will be displayed on the Boost directory in addition to your Registry
+          listing.
+        </p>
+      </>
+    );
+  }
+
+  private renderForm(): JSX.Element {
+    return (
+      <Mutation mutation={this.props.editMode ? editBoostMutation : boostMutation}>
+        {mutation => {
           return (
-            <form onSubmit={async event => this.handleSubmit(event, createBoost)}>
+            <form onSubmit={async event => this.handleSubmit(event, mutation)}>
               <BoostWrapper>
                 <BoostImgDiv>
-                  <img
-                    src={this.props.newsroomLogoUrl || ((defaultNewsroomImgUrl as any) as string)}
-                    onError={e => {
-                      (e.target as any).src = defaultNewsroomImgUrl;
-                    }}
-                  />
+                  {this.props.newsroomLogoUrl ? (
+                    <img
+                      src={this.props.newsroomLogoUrl}
+                      onError={e => {
+                        (e.target as any).src = defaultNewsroomImgUrl;
+                      }}
+                    />
+                  ) : (
+                    <BoostImg charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri} />
+                  )}
                 </BoostImgDiv>
 
                 <NewsroomDetailRow>
@@ -254,11 +283,11 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                       Newsroom Name
                       <QuestionToolTip explainerText="You can create a Boost for your newsroom only." />
                     </BoostFormTitle>
-                    <TextInput name="newsroomName" value={this.props.newsroomName} disabled />
+                    <TextInput name="newsroomName" value={this.props.newsroomData.name} disabled />
                   </NewsroomDetailCell>
                   <NewsroomDetailCell>
                     <BoostFormTitle>Newsroom URL</BoostFormTitle>
-                    <TextInput name="newsroomUrl" value={this.props.newsroomUrl} disabled />
+                    <TextInput name="newsroomUrl" value={this.props.newsroomData.url} disabled />
                   </NewsroomDetailCell>
                   <NewsroomDetailCell>
                     <BoostFormTitle>Registry Listing URL</BoostFormTitle>
@@ -270,7 +299,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                   Newsroom Wallet
                   <QuestionToolTip explainerText="This is your newsroom wallet address where you will receive the funds from your Boost." />
                 </BoostFormTitle>
-                <TextInput name="newsroomWallet" value={this.props.newsroomWallet} disabled />
+                <TextInput name="newsroomWallet" value={this.props.newsroomData.owner} disabled />
                 <p>
                   Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to
                   widthdraw from the newsroom wallet and either deposit or exchange them into other currencies.{" "}
@@ -313,21 +342,23 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                 <EndDateInput
                   type="date"
                   name="dateEnd"
-                  value={this.state.dateEndInput}
+                  value={this.state.boost.dateEnd && this.state.boost.dateEnd.substr(0, 10)}
                   onChange={this.onDateEndInputChange}
+                  disabled={this.props.editMode}
                 />
                 <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
               </BoostWrapper>
 
               <LaunchDisclaimer>
-                By creating a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>.
+                By {this.props.editMode ? "using Boosts" : "creating a Boost"}, you agree to Civil’s{" "}
+                <a href="#TODO">Terms of Use and Privacy Policy</a>.
               </LaunchDisclaimer>
               <LaunchButton
                 size={buttonSizes.MEDIUM}
                 type="submit"
                 disabled={this.state.loading || !!this.state.boostId}
               >
-                Launch Boost
+                {this.props.editMode ? "Save Changes" : "Launch Boost"}
               </LaunchButton>
 
               {/*@TODO/tobek Temporary feedback until we implement success modal*/}
@@ -359,8 +390,10 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
           <thead>
             <tr>
               <th>Item</th>
-              <ItemCostHeaderCell>Cost</ItemCostHeaderCell>
-              <th />
+              <ItemCostHeader>
+                <ItemCostHeaderText>Cost</ItemCostHeaderText>
+              </ItemCostHeader>
+              {!this.props.editMode && <th />}
             </tr>
           </thead>
           <tbody>
@@ -381,24 +414,29 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                       type="number"
                       value={"" + (this.state.boost.items![i].cost || "")}
                       onChange={this.onItemInputChange.bind(this, i)}
+                      disabled={this.props.editMode}
                     />
                   </ItemCostCell>
-                  <td>
-                    {i > 0 && (
-                      <ItemLink href="#" onClick={e => this.removeItem(e, i)}>
-                        x
-                      </ItemLink>
-                    )}
-                  </td>
+                  {!this.props.editMode && (
+                    <td>
+                      {i > 0 && (
+                        <ItemLink href="#" onClick={e => this.removeItem(e, i)}>
+                          x
+                        </ItemLink>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
-            <tr>
-              <td>
-                <ItemLink href="#" onClick={this.addItem}>
-                  Add item
-                </ItemLink>
-              </td>
-            </tr>
+            {!this.props.editMode && (
+              <tr>
+                <td>
+                  <ItemLink href="#" onClick={this.addItem}>
+                    Add item
+                  </ItemLink>
+                </td>
+              </tr>
+            )}
           </tbody>
           <tfoot>
             <tr>
@@ -413,19 +451,14 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
               </td>
               <ItemCostCell>
                 <BoostPayFormTitle>Total amount</BoostPayFormTitle>
-                <StyledCurrencyInput
-                  icon={<>$</>}
-                  name="goalAmount"
-                  value={"" + (this.state.boost.goalAmount || "")}
-                  disabled
-                />
+                <TotalGoal icon={<>$</>} name="goalAmount" value={"" + (this.state.boost.goalAmount || "")} disabled />
                 <ItemsAmountNote>
                   Proceeds will be in ETH
                   <QuestionToolTip explainerText="We recommend periods between 14 and 60 days." />
                 </ItemsAmountNote>
                 <ItemsAmountNote>Civil does not collect any fees.</ItemsAmountNote>
               </ItemCostCell>
-              <td />
+              {!this.props.editMode && <td />}
             </tr>
           </tfoot>
         </table>
@@ -445,10 +478,9 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
   private onDateEndInputChange = (event: any) => {
     event.preventDefault();
     this.setState({
-      dateEndInput: event.target.value,
       boost: {
         ...this.state.boost,
-        dateEnd: new Date(event.target.value),
+        dateEnd: new Date(event.target.value).toISOString(),
       },
     });
   };
@@ -497,13 +529,21 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
   private async handleSubmit(event: React.FormEvent, mutation: MutationFunc): Promise<void> {
     event.preventDefault();
+    // @TODO/toby Implement success modal from designs.
+
+    if (this.props.editMode) {
+      // @TODO/toby Update when endpoint is launched.
+      alert("Edit Boost not yet implemented in backend");
+      return;
+    }
+
     const boost = this.state.boost;
     this.setState({ loading: true, error: undefined });
     try {
       const response = await mutation({
         variables: {
           input: {
-            channelID: this.props.newsroomAddress, // @TODO/tobek Is this the right field to use?
+            channelID: this.props.newsroomAddress,
             currencyCode: "usd", // @TODO/tobek Is this right? Why is it required, should endpoint default to usd?
             title: boost.title,
             why: boost.why,
@@ -511,7 +551,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             about: boost.about,
             goalAmount: boost.goalAmount,
             items: boost.items,
-            dateEnd: boost.dateEnd && boost.dateEnd.toISOString(),
+            dateEnd: boost.dateEnd,
           },
         },
       });
