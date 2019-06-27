@@ -343,21 +343,25 @@ export const LearnMore = styled.div`
   line-height: 19px;
   padding: 15px;
 
-  a {
-    cursor: pointer;
-    margin-right: 30px;
-
-    &:last-of-type {
-      margin-right: 0;
-    }
-  }
-
   ${mediaQueries.MOBILE} {
     // TODO(sruddy) add to yellow to const
     background-color: #FFFDE9;
     font-size: 12px;
     letter-spacing: -0.07px;
     line-height: 18px;
+  }
+
+  a {
+    cursor: pointer;
+    margin-right: 30px;
+
+    ${mediaQueries.MOBILE} {
+      margin-right: 15px;
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+    }
   }
 }`;
 
@@ -452,9 +456,21 @@ export const BoostSmallPrint = styled.div`
   margin: ${(props: BoostStyleProps) => props.margin || "0"};
 `;
 
+export const BoostAmount = styled.div`
+  span {
+    margin-right: 10px;
+  }
+`;
+
 export const BoostEthConfirm = styled.span`
   display: block;
   font-size: 13px;
+  margin-top: 15px;
+
+  svg {
+    margin-right: 3px;
+    vertical-align: sub;
+  }
 `;
 
 export const BoostNotice = styled.div`
@@ -500,5 +516,16 @@ export const BoostCompeletedWrapper = styled.div`
       color: ${colors.accent.CIVIL_BLUE};
       text-decoration: underline;
     }
+  }
+`;
+
+export const BoostWarningLabel = styled.div`
+  color: ${colors.accent.CIVIL_RED};
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 15px;
+
+  svg {
+    vertical-align: sub;
   }
 `;

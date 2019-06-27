@@ -7,13 +7,18 @@ import {
   BoostFlexCenter,
   BoostButton,
   BoostEthConfirm,
-  BoostPayWallet,
-  BoostPayWalletMobile,
+  BoostAmount,
 } from "../BoostStyledComponents";
-import { WhyEthModalText, WhatIsEthModalText, CanUseCVLText } from "../BoostTextComponents";
+import {
+  WhyEthModalText,
+  WhatIsEthModalText,
+  CanUseCVLText,
+  BoostConnectWalletWarningText,
+  BoostPayWalletText,
+} from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
 import { BoostPayForm } from "./BoostPayForm";
-import { UsdEthConverter } from "@joincivil/components";
+import { UsdEthConverter, HollowGreenCheck } from "@joincivil/components";
 import { EthAddress } from "@joincivil/core";
 import { Mutation, MutationFunc } from "react-apollo";
 import { boostPayEthMutation } from "../queries";
@@ -33,6 +38,7 @@ export interface BoostPayEthProps {
   value: string;
   etherToSpend?: number;
   usdToSpend?: number;
+  walletConnected: boolean;
   handleNext(etherToSpend: number, usdToSpend: number): void;
 }
 
@@ -88,22 +94,18 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
   }
 
   private getPaymentAmount = () => {
-    const disableBtn = this.state.usdToSpend <= 0;
+    let disableBtn;
+    if (!this.props.walletConnected || this.state.usdToSpend <= 0) {
+      disableBtn = true;
+    } else {
+      disableBtn = false;
+    }
+
     return (
       <>
         <BoostPayCardDetails>
-          <p>
-            You will be paying using a digital wallet such as{" "}
-            <a href="#TODO" target="_blank">
-              MetaMask
-            </a>
-          </p>
-          <p>
-            Don’t have one?{" "}
-            <a href="#TODO" target="_blank">
-              Get a cryptocurrency wallet and ETH
-            </a>
-          </p>
+          <BoostPayWalletText />
+          {!this.props.walletConnected && <BoostConnectWalletWarningText />}
           <LearnMore>
             <a onClick={() => this.openModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
             <a onClick={() => this.openModal(MODEL_CONTENT.WHY_ETH)}>Why ETH?</a>
@@ -137,28 +139,14 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
   private getPaymentForm = (etherToSpend: number, usdToSpend: number) => {
     return (
       <BoostPayCardDetails>
-        <BoostPayWallet>
-          You will be paying using a digital wallet such as{" "}
-          <a href="#TODO" target="_blank">
-            MetaMask
-          </a>
-        </BoostPayWallet>
-
-        <BoostPayWalletMobile>
-          You will be paying using your wallet such as{" "}
-          <a href="https://www.coinbase.com/mobile" target="_blank">
-            Coinbase Wallet
-          </a>{" "}
-          or{" "}
-          <a href="https://alphawallet.com/" target="_blank">
-            Alpha Wallet
-          </a>
-        </BoostPayWalletMobile>
+        <BoostPayWalletText />
         <h3>Boost Amount</h3>
-        <span>
-          {etherToSpend + " ETH"} {"($" + usdToSpend + ")"}
-        </span>
-        <BoostEthConfirm>&#x2714; You have enough ETH in your connected Wallet.</BoostEthConfirm>
+        <BoostAmount>
+          <span>{etherToSpend + " ETH"}</span> {"($" + usdToSpend.toFixed(2) + ")"}
+        </BoostAmount>
+        <BoostEthConfirm>
+          <HollowGreenCheck height={15} width={15} /> You have enough ETH in your connected Wallet.
+        </BoostEthConfirm>
       </BoostPayCardDetails>
     );
   };

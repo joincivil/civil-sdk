@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ModalHeading, ModalContent, ClipLoader } from "@joincivil/components";
-import { BoostButton } from "./BoostStyledComponents";
+import { ModalHeading, ModalContent, ClipLoader, ErrorIcon } from "@joincivil/components";
+import { BoostButton, BoostPayWallet, BoostPayWalletMobile, BoostWarningLabel } from "./BoostStyledComponents";
 
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>
@@ -158,3 +158,31 @@ export const PaymentErrorModalText: React.FunctionComponent<BoostPaymentTextProp
     </>
   );
 };
+
+export const BoostPayWalletText: React.FunctionComponent = props => (
+  <>
+    <BoostPayWallet>
+      You will be paying using a digital wallet such as{" "}
+      <a href="https://metamask.io/" target="_blank">
+        MetaMask
+      </a>
+    </BoostPayWallet>
+
+    <BoostPayWalletMobile>
+      You will be paying using your wallet such as{" "}
+      <a href="https://www.coinbase.com/mobile" target="_blank">
+        Coinbase Wallet
+      </a>{" "}
+      or{" "}
+      <a href="https://alphawallet.com/" target="_blank">
+        Alpha Wallet
+      </a>
+    </BoostPayWalletMobile>
+</>
+);
+
+export const BoostConnectWalletWarningText: React.FunctionComponent = props => (
+  <BoostWarningLabel>
+    <ErrorIcon height={15} width={15} /> You need a digital wallet to continue.
+  </BoostWarningLabel>
+);

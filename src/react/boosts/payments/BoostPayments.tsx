@@ -49,6 +49,7 @@ const BoostDetails = styled.div`
 `;*/
 
 export interface BoostPaymentsProps {
+  walletConnected: boolean;
   paymentAddr: EthAddress;
   boostId: string;
   title: string;
@@ -75,7 +76,12 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
           </BoostSmallPrint>
         </BoostDetails>
       </BoostHeaderWrap>
-      <BoostPayOptions paymentAddr={props.paymentAddr} newsroomName={props.newsroomName} boostId={props.boostId} />
+      <BoostPayOptions
+        paymentAddr={props.paymentAddr}
+        newsroomName={props.newsroomName}
+        boostId={props.boostId}
+        walletConnected={props.walletConnected}
+      />
     </BoostWrapper>
   );
 };
