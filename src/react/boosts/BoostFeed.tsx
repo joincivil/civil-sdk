@@ -19,7 +19,8 @@ export const BoostFeed: React.FunctionComponent = () => {
           }
 
           return data.postsSearch.posts.map((boost: any, i: number) => (
-            <Boost key={i} boostId={boost.id} open={false} boostOwner={false} />
+            // `disableOwnerCheck` true because it would be slow to pull up newsroom from web3 for every single boost
+            <Boost key={i} boostId={boost.id} open={false} disableOwnerCheck={true} />
           ));
         }}
       </Query>
