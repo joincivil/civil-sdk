@@ -70,6 +70,7 @@ const BoostPayFooterSection = styled.div`
     text-decoration: none;
 
     &:hover {
+      color: ${colors.accent.CIVIL_BLUE};
       text-decoration: underline;
     }
   }

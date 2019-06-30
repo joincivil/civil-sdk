@@ -4,7 +4,7 @@ import {
   BoostPayOption,
   BoostPayCardDetails,
   LearnMore,
-  BoostFlexCenter,
+  BoostFlexEth,
   BoostButton,
   BoostEthConfirm,
   BoostAmount,
@@ -119,8 +119,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
             <a onClick={() => this.openInfoModal(MODEL_CONTENT.CAN_USE_CVL)}>Can I use CVL?</a>
           </LearnMore>
           <h3>Boost Amount</h3>
-          <BoostFlexCenter>
-            {/* TODO(sruddy) add wallet check to converter */}
+          <BoostFlexEth>
             <UsdEthConverter onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)} />
             <BoostButton
               disabled={disableBtn}
@@ -128,7 +127,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
             >
               Continue
             </BoostButton>
-          </BoostFlexCenter>
+          </BoostFlexEth>
         </BoostPayCardDetails>
 
         <BoostModal open={this.state.isInfoModalOpen} handleClose={this.handleClose}>

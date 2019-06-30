@@ -213,6 +213,15 @@ export const BoostDescription = styled.div`
       font-size: 16px;
       line-height: 28px;
     }
+
+    a {
+      color: ${colors.accent.CIVIL_BLUE};
+
+      &:hover {
+        color: ${colors.accent.CIVIL_BLUE};
+        text-decoration: underline;
+      }
+    }
   }
 `;
 
@@ -416,10 +425,6 @@ export const BoostFlexCenter = styled.div`
   display: flex;
   justify-content: space-between;
 
-  button {
-    margin: 0 15px;
-  }
-
   ${mediaQueries.MOBILE} {
     display: block;
 
@@ -438,6 +443,24 @@ export const BoostFlexEnd = styled.div`
     display: block;
   }
 }`;
+
+export const BoostFlexEth = styled.div`
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    margin: 9px 0 0 15px;
+  }
+
+  label {
+    display: none;
+  }
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+  }
+`;
 
 export const BoostModalContain = styled.div`
   font-family: ${fonts.SANS_SERIF};
