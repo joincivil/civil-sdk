@@ -74,6 +74,24 @@ export const BoostTextButton: StyledComponentClass<ButtonProps, "button"> = styl
   }
 `;
 
+export const BoostLinkBtn = styled.a`
+  background-color: ${colors.accent.CIVIL_BLUE};
+  border-radius: 2px;
+  color: ${colors.basic.WHITE};
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 19px;
+  min-width: 220px;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    color: ${colors.basic.WHITE};
+  }
+`;
+
 export const BoostTitle = styled.h2`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-size: 20px;
@@ -344,8 +362,7 @@ export const LearnMore = styled.div`
   padding: 15px;
 
   ${mediaQueries.MOBILE} {
-    // TODO(sruddy) add to yellow to const
-    background-color: #FFFDE9;
+    background-color: ${colors.accent.CIVIL_YELLOW_VERY_FADED};
     font-size: 12px;
     letter-spacing: -0.07px;
     line-height: 18px;
@@ -422,10 +439,37 @@ export const BoostFlexEnd = styled.div`
   }
 }`;
 
-export const BoostModalContents = styled.div`
+export const BoostModalContain = styled.div`
+  font-family: ${fonts.SANS_SERIF};
+  overflow: scroll;
   padding: 10px 30px 20px 30px;
   position: relative;
   width: 500px;
+
+  ${mediaQueries.MOBILE} {
+    width: 100%;
+  }
+}`;
+
+export const BoostModalHeader = styled.div`
+  color: ${colors.primary.BLACK};
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+
+  svg {
+    display: block;
+    margin: 15px auto 20px;
+  }
+}`;
+
+export const BoostModalContent = styled.p`
+  color: ${colors.primary.BLACK};
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
 }`;
 
 export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = styled(InvertedButton)`
@@ -527,5 +571,28 @@ export const BoostWarningLabel = styled.div`
 
   svg {
     vertical-align: sub;
+  }
+`;
+
+export const BoostWalletOptions = styled.div`
+  padding: 15px;
+  text-align: center;
+
+  a {
+    display: block;
+    margin-bottom: 15px;
+  }
+`;
+
+export const BoostCopyAddress = styled.div`
+  border-top: 1px solid ${colors.accent.CIVIL_GRAY_2};
+  font-size: 13px;
+  line-height: 24px;
+  padding: 15px;
+  text-align: center;
+
+  span {
+    diplay: block;
+    margin-bottom: 15px;
   }
 `;

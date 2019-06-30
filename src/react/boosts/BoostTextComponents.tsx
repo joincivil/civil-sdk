@@ -1,6 +1,16 @@
 import * as React from "react";
-import { ModalHeading, ModalContent, ClipLoader, ErrorIcon } from "@joincivil/components";
-import { BoostButton, BoostPayWallet, BoostPayWalletMobile, BoostWarningLabel } from "./BoostStyledComponents";
+import { ModalHeading, ModalContent, ClipLoader, ErrorIcon, CopyURL, TokenWalletIcon } from "@joincivil/components";
+import {
+  BoostButton,
+  BoostLinkBtn,
+  BoostPayWallet,
+  BoostPayWalletMobile,
+  BoostWarningLabel,
+  BoostWalletOptions,
+  BoostCopyAddress,
+  BoostModalHeader,
+  BoostModalContent,
+} from "./BoostStyledComponents";
 
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>
@@ -42,6 +52,41 @@ export const WhatIsEthModalText: React.FunctionComponent = props => (
     <ModalContent>
       <a href="#TODO">Learn more about how to get ETH and support Boosts on our FAQ.</a>
     </ModalContent>
+  </>
+);
+
+export const BoostMobileWalletModalText: React.FunctionComponent = props => (
+  <>
+    <BoostModalHeader>
+      <TokenWalletIcon width={48} height={42} />A Web3 enabled browser and secure digital wallet required.
+    </BoostModalHeader>
+    <BoostModalContent>
+      In order to support a Civil Boosts, please install a secure cryptocurrency wallet such as{" "}
+      <a href="https://www.coinbase.com/mobile" target="_blank">
+        Coinbase Wallet
+      </a>{" "}
+      or
+      <a href="https://alphawallet.com/" target="_blank">
+        Alpha Wallet
+      </a>
+      . If you'd like help getting a wallet, take a look at our{" "}
+      <a href="#TODO" target="_blank">
+        FAQ Guide
+      </a>
+      .
+    </BoostModalContent>
+    <BoostWalletOptions>
+      <BoostLinkBtn href={"https://www.coinbase.com/mobile"} target="_blank">
+        Coinbase Wallet
+      </BoostLinkBtn>
+      <BoostLinkBtn href={"https://alphawallet.com/"} target="_blank">
+        Alpha Wallet
+      </BoostLinkBtn>
+    </BoostWalletOptions>
+    <BoostCopyAddress>
+      <span>Already use a wallet?</span>
+      <CopyURL copyText={"Copy the URL to open in your own wallet"} />
+    </BoostCopyAddress>
   </>
 );
 
@@ -178,7 +223,7 @@ export const BoostPayWalletText: React.FunctionComponent = props => (
         Alpha Wallet
       </a>
     </BoostPayWalletMobile>
-</>
+  </>
 );
 
 export const BoostConnectWalletWarningText: React.FunctionComponent = props => (

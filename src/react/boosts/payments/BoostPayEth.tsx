@@ -15,6 +15,7 @@ import {
   CanUseCVLText,
   BoostConnectWalletWarningText,
   BoostPayWalletText,
+  BoostMobileWalletModalText,
 } from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
 import { BoostPayForm } from "./BoostPayForm";
@@ -43,7 +44,8 @@ export interface BoostPayEthProps {
 }
 
 export interface BoostPayEthStates {
-  isModalOpen: boolean;
+  isMobileWalletModalOpen: boolean;
+  isInfoModalOpen: boolean;
   modalContent: string;
   etherToSpend: number;
   usdToSpend: number;
@@ -53,7 +55,8 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
   public constructor(props: BoostPayEthProps) {
     super(props);
     this.state = {
-      isModalOpen: false,
+      isMobileWalletModalOpen: this.showMobileWalletModal(),
+      isInfoModalOpen: false,
       modalContent: "",
       etherToSpend: this.props.etherToSpend || 0,
       usdToSpend: this.props.usdToSpend || 0,
@@ -89,6 +92,10 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
             }}
           </Mutation>
         )}
+
+        <BoostModal open={this.state.isMobileWalletModalOpen} handleClose={this.handleClose}>
+          <BoostMobileWalletModalText />
+        </BoostModal>
       </>
     );
   }
@@ -107,9 +114,9 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           <BoostPayWalletText />
           {!this.props.walletConnected && <BoostConnectWalletWarningText />}
           <LearnMore>
-            <a onClick={() => this.openModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
-            <a onClick={() => this.openModal(MODEL_CONTENT.WHY_ETH)}>Why ETH?</a>
-            <a onClick={() => this.openModal(MODEL_CONTENT.CAN_USE_CVL)}>Can I use CVL?</a>
+            <a onClick={() => this.openInfoModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
+            <a onClick={() => this.openInfoModal(MODEL_CONTENT.WHY_ETH)}>Why ETH?</a>
+            <a onClick={() => this.openInfoModal(MODEL_CONTENT.CAN_USE_CVL)}>Can I use CVL?</a>
           </LearnMore>
           <h3>Boost Amount</h3>
           <BoostFlexCenter>
@@ -124,8 +131,8 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           </BoostFlexCenter>
         </BoostPayCardDetails>
 
-        <BoostModal open={this.state.isModalOpen} handleClose={this.handleClose}>
-          {this.renderModal()}
+        <BoostModal open={this.state.isInfoModalOpen} handleClose={this.handleClose}>
+          {this.renderInfoModal()}
         </BoostModal>
       </>
     );
@@ -151,7 +158,18 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     );
   };
 
-  private renderModal = () => {
+  private showMobileWalletModal = () => {
+    let showMobileWalletModal = false;
+
+    // TODO(sruddy) do we have a check for mobile browser util?
+    if (window.innerWidth < 800 && !this.props.walletConnected) {
+      showMobileWalletModal = true;
+    }
+
+    return showMobileWalletModal;
+  };
+
+  private renderInfoModal = () => {
     switch (this.state.modalContent) {
       case MODEL_CONTENT.WHY_ETH:
         return <WhyEthModalText />;
@@ -164,11 +182,11 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     }
   };
 
-  private openModal = (modelContent: string) => {
-    this.setState({ isModalOpen: true, modalContent: modelContent });
+  private openInfoModal = (modelContent: string) => {
+    this.setState({ isInfoModalOpen: true, modalContent: modelContent });
   };
 
   private handleClose = () => {
-    this.setState({ isModalOpen: false });
+    this.setState({ isInfoModalOpen: false, isMobileWalletModalOpen: false });
   };
 }
