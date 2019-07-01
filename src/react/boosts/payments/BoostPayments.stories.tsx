@@ -31,6 +31,10 @@ const mocks = {
   },
 };
 
+const handlePaymentSuccess = () => {
+  console.log("success!");
+};
+
 storiesOf("Boosts", module)
   .addDecorator(
     apolloStorybookDecorator({
@@ -48,6 +52,7 @@ storiesOf("Boosts", module)
           amount={20}
           paymentAddr={"0x"}
           walletConnected={true}
+          handlePaymentSuccess={handlePaymentSuccess}
         />
       </>
     );

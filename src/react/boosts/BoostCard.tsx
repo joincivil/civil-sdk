@@ -17,7 +17,9 @@ import {
   BoostNotice,
   BoostFlexStartMobile,
   MobileStyle,
+  BoostNotificationContain,
 } from "./BoostStyledComponents";
+import { BoostPaymentSuccess } from "./BoostTextComponents";
 import { BoostImg } from "./BoostImg";
 import { BoostCompleted } from "./BoostCompleted";
 import { QuestionToolTip } from "@joincivil/components";
@@ -28,6 +30,7 @@ export interface BoostCardProps {
   open: boolean;
   boostId: string;
   boostOwner?: boolean;
+  paymentSuccess: boolean;
   handlePayments(): void;
 }
 
@@ -40,7 +43,16 @@ export class BoostCard extends React.Component<BoostCardProps> {
 
     return (
       <>
-        {this.props.boostOwner && timeEnded && <BoostCompleted goalReached={goalReached} />}
+        {this.props.boostOwner && timeEnded && (
+          <BoostNotificationContain>
+            <BoostCompleted goalReached={goalReached} />
+          </BoostNotificationContain>
+        )}
+        {this.props.paymentSuccess && (
+          <BoostNotificationContain>
+            <BoostPaymentSuccess />
+          </BoostNotificationContain>
+        )}
 
         <BoostWrapper open={this.props.open}>
           <BoostTitle>

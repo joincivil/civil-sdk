@@ -21,6 +21,7 @@ export interface BoostPayOptionsProps {
   name?: string;
   paymentAddr: EthAddress;
   walletConnected: boolean;
+  handlePaymentSuccess(): void;
 }
 
 const BoostInstructions = styled.div`
@@ -136,6 +137,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             usdToSpend={this.state.usdToSpend}
             paymentAddr={this.props.paymentAddr}
             walletConnected={this.props.walletConnected}
+            handlePaymentSuccess={this.props.handlePaymentSuccess}
           />
         );
         {
@@ -155,6 +157,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               defaultChecked={true}
               paymentAddr={this.props.paymentAddr}
               walletConnected={this.props.walletConnected}
+              handlePaymentSuccess={this.props.handlePaymentSuccess}
             />
             {/* <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} /> */}
           </>
