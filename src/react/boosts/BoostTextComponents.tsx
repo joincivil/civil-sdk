@@ -1,5 +1,13 @@
 import * as React from "react";
-import { ModalHeading, ModalContent, ClipLoader, ErrorIcon, CopyURL, TokenWalletIcon, HollowGreenCheck } from "@joincivil/components";
+import {
+  ModalHeading,
+  ModalContent,
+  ClipLoader,
+  ErrorIcon,
+  CopyURL,
+  TokenWalletIcon,
+  HollowGreenCheck,
+} from "@joincivil/components";
 import {
   BoostButton,
   BoostLinkBtn,
@@ -8,7 +16,6 @@ import {
   BoostWarningLabel,
   BoostWalletOptions,
   BoostCopyAddress,
-  BoostModalContain,
   BoostModalHeader,
   BoostModalContent,
   BoostNotification,
@@ -176,7 +183,6 @@ export const PaymentInProgressModalText: React.FunctionComponent = props => (
 );
 
 export const PaymentSuccessModalText: React.FunctionComponent<BoostPaymentTextProps> = props => {
-
   return (
     <>
       <PaymentSuccessText />
