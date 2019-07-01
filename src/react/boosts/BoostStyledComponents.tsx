@@ -74,6 +74,24 @@ export const BoostTextButton: StyledComponentClass<ButtonProps, "button"> = styl
   }
 `;
 
+export const BoostLinkBtn = styled.a`
+  background-color: ${colors.accent.CIVIL_BLUE};
+  border-radius: 2px;
+  color: ${colors.basic.WHITE};
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 19px;
+  min-width: 220px;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    color: ${colors.basic.WHITE};
+  }
+`;
+
 export const BoostTitle = styled.h2`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-size: 20px;
@@ -194,6 +212,15 @@ export const BoostDescription = styled.div`
     ${mediaQueries.MOBILE} {
       font-size: 16px;
       line-height: 28px;
+    }
+
+    a {
+      color: ${colors.accent.CIVIL_BLUE};
+
+      &:hover {
+        color: ${colors.accent.CIVIL_BLUE};
+        text-decoration: underline;
+      }
     }
   }
 `;
@@ -343,21 +370,24 @@ export const LearnMore = styled.div`
   line-height: 19px;
   padding: 15px;
 
+  ${mediaQueries.MOBILE} {
+    background-color: ${colors.accent.CIVIL_YELLOW_VERY_FADED};
+    font-size: 12px;
+    letter-spacing: -0.07px;
+    line-height: 18px;
+  }
+
   a {
     cursor: pointer;
     margin-right: 30px;
 
+    ${mediaQueries.MOBILE} {
+      margin-right: 15px;
+    }
+
     &:last-of-type {
       margin-right: 0;
     }
-  }
-
-  ${mediaQueries.MOBILE} {
-    // TODO(sruddy) add to yellow to const
-    background-color: #FFFDE9;
-    font-size: 12px;
-    letter-spacing: -0.07px;
-    line-height: 18px;
   }
 }`;
 
@@ -395,10 +425,6 @@ export const BoostFlexCenter = styled.div`
   display: flex;
   justify-content: space-between;
 
-  button {
-    margin: 0 15px;
-  }
-
   ${mediaQueries.MOBILE} {
     display: block;
 
@@ -418,10 +444,55 @@ export const BoostFlexEnd = styled.div`
   }
 }`;
 
-export const BoostModalContents = styled.div`
+export const BoostFlexEth = styled.div`
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    margin: 9px 0 0 15px;
+  }
+
+  label {
+    display: none;
+  }
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+  }
+`;
+
+export const BoostModalContain = styled.div`
+  font-family: ${fonts.SANS_SERIF};
+  overflow: scroll;
   padding: 10px 30px 20px 30px;
   position: relative;
   width: 500px;
+
+  ${mediaQueries.MOBILE} {
+    width: 100%;
+  }
+}`;
+
+export const BoostModalHeader = styled.div`
+  color: ${colors.primary.BLACK};
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+
+  svg {
+    display: block;
+    margin: 15px auto 20px;
+  }
+}`;
+
+export const BoostModalContent = styled.p`
+  color: ${colors.primary.BLACK};
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
 }`;
 
 export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = styled(InvertedButton)`
@@ -452,9 +523,21 @@ export const BoostSmallPrint = styled.div`
   margin: ${(props: BoostStyleProps) => props.margin || "0"};
 `;
 
+export const BoostAmount = styled.div`
+  span {
+    margin-right: 10px;
+  }
+`;
+
 export const BoostEthConfirm = styled.span`
   display: block;
   font-size: 13px;
+  margin-top: 15px;
+
+  svg {
+    margin-right: 3px;
+    vertical-align: sub;
+  }
 `;
 
 export const BoostNotice = styled.div`
@@ -500,5 +583,39 @@ export const BoostCompeletedWrapper = styled.div`
       color: ${colors.accent.CIVIL_BLUE};
       text-decoration: underline;
     }
+  }
+`;
+
+export const BoostWarningLabel = styled.div`
+  color: ${colors.accent.CIVIL_RED};
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 15px;
+
+  svg {
+    vertical-align: sub;
+  }
+`;
+
+export const BoostWalletOptions = styled.div`
+  padding: 15px;
+  text-align: center;
+
+  a {
+    display: block;
+    margin-bottom: 15px;
+  }
+`;
+
+export const BoostCopyAddress = styled.div`
+  border-top: 1px solid ${colors.accent.CIVIL_GRAY_2};
+  font-size: 13px;
+  line-height: 24px;
+  padding: 15px;
+  text-align: center;
+
+  span {
+    diplay: block;
+    margin-bottom: 15px;
   }
 `;

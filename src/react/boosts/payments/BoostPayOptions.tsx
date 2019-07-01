@@ -20,6 +20,7 @@ export interface BoostPayOptionsProps {
   value?: any;
   name?: string;
   paymentAddr: EthAddress;
+  walletConnected: boolean;
 }
 
 const BoostInstructions = styled.div`
@@ -69,6 +70,7 @@ const BoostPayFooterSection = styled.div`
     text-decoration: none;
 
     &:hover {
+      color: ${colors.accent.CIVIL_BLUE};
       text-decoration: underline;
     }
   }
@@ -133,6 +135,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             etherToSpend={this.state.etherToSpend}
             usdToSpend={this.state.usdToSpend}
             paymentAddr={this.props.paymentAddr}
+            walletConnected={this.props.walletConnected}
           />
         );
         {
@@ -151,6 +154,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               handleNext={this.handleEthNext}
               defaultChecked={true}
               paymentAddr={this.props.paymentAddr}
+              walletConnected={this.props.walletConnected}
             />
             {/* <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} /> */}
           </>

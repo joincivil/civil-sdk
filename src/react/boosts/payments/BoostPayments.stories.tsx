@@ -47,6 +47,7 @@ storiesOf("Boosts", module)
           newsroomName={"The Colorado Sun"}
           amount={20}
           paymentAddr={"0x"}
+          walletConnected={true}
         />
       </>
     );

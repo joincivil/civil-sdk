@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BoostModalContents, BoostModalCloseBtn } from "./BoostStyledComponents";
+import { BoostModalContain, BoostModalCloseBtn } from "./BoostStyledComponents";
 import { colors, FullScreenModal, CloseXIcon } from "@joincivil/components";
 
 export interface BoostModalProps {
@@ -12,12 +12,12 @@ export const BoostModal: React.FunctionComponent<BoostModalProps> = props => {
   return (
     <>
       <FullScreenModal open={props.open}>
-        <BoostModalContents>
+        <BoostModalContain>
           <BoostModalCloseBtn onClick={props.handleClose}>
             <CloseXIcon color={colors.accent.CIVIL_GRAY_2} />
           </BoostModalCloseBtn>
           {props.children}
-        </BoostModalContents>
+        </BoostModalContain>
       </FullScreenModal>
     </>
   );
