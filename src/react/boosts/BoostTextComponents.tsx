@@ -187,7 +187,7 @@ export const PaymentSuccessModalText: React.FunctionComponent<BoostPaymentTextPr
     <>
       <PaymentSuccessText />
       <PaymentEthConfirmationText usdToSpend={props.usdToSpend} etherToSpend={props.etherToSpend} />
-      <PaymentShareText boostURL={props.boostURL} />
+      {/* commenting out till share is figured out <PaymentShareText boostURL={props.boostURL} /> */}
       <BoostButton onClick={props.handlePaymentSuccess}>Done</BoostButton>
     </>
   );
