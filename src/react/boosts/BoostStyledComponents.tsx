@@ -371,7 +371,8 @@ export const LearnMore = styled.div`
   padding: 15px;
 
   ${mediaQueries.MOBILE} {
-    background-color: ${colors.accent.CIVIL_YELLOW_VERY_FADED};
+    // TODO(sruddy) switch to const when mono builds
+    background-color: "#FFFDE9;
     font-size: 12px;
     letter-spacing: -0.07px;
     line-height: 18px;
