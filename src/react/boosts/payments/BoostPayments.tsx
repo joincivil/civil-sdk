@@ -55,13 +55,14 @@ export interface BoostPaymentsProps {
   title: string;
   newsroomName: string;
   amount: number;
+  handlePaymentSuccess(): void;
 }
 
 export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props => {
   return (
     <BoostWrapper open={true}>
       <BoostHeaderWrap>
-        <BoostHeader>Complete your Boost</BoostHeader>
+        <BoostHeader>Complete your Boost payment</BoostHeader>
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
           <BoostPayNewsroom>{props.newsroomName}</BoostPayNewsroom>
@@ -81,6 +82,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         newsroomName={props.newsroomName}
         boostId={props.boostId}
         walletConnected={props.walletConnected}
+        handlePaymentSuccess={props.handlePaymentSuccess}
       />
     </BoostWrapper>
   );

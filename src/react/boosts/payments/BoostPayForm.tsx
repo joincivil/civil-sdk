@@ -23,6 +23,7 @@ export interface BoostPayFormProps {
   paymentAddr: EthAddress;
   amount: number;
   savePayment: MutationFunc;
+  handlePaymentSuccess(): void;
 }
 
 export interface BoostPayFormState {
@@ -101,6 +102,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
       checked: false,
     };
   }
+
   public render(): JSX.Element {
     const PAY_MODAL_COMPONENTS: TransactionButtonModalContentComponentsProps = {
       [progressModalStates.IN_PROGRESS]: <PaymentInProgressModalText />,
@@ -109,6 +111,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
           newsroomName={this.props.newsroomName}
           etherToSpend={this.props.etherToSpend}
           usdToSpend={this.props.usdToSpend}
+          handlePaymentSuccess={this.props.handlePaymentSuccess}
         />
       ),
       [progressModalStates.ERROR]: <PaymentErrorModalText />,

@@ -19,6 +19,7 @@ export interface BoostProps {
 
 export interface BoostState {
   payment: boolean;
+  paymentSuccess: boolean;
   boostOwner?: boolean;
   walletConnected: boolean;
   checkingIfOwner?: boolean;
@@ -33,6 +34,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     super(props);
     this.state = {
       payment: false,
+      paymentSuccess: false,
       checkingIfOwner: props.editMode, // don't need to display loading state for owner checking if not edit mode, because view only changes slightly in that case
       walletConnected: false,
     };
@@ -117,6 +119,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                       newsroomName={newsroomData.name}
                       paymentAddr={newsroomData.owner}
                       walletConnected={this.state.walletConnected}
+                      handlePaymentSuccess={this.handlePaymentSuccess}
                     />
                   );
                 }
@@ -129,6 +132,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                     open={this.props.open}
                     boostId={id}
                     handlePayments={this.startPayment}
+                    paymentSuccess={this.state.paymentSuccess}
                   />
                 );
               }}
@@ -197,6 +201,10 @@ export class Boost extends React.Component<BoostProps, BoostState> {
 
   private startPayment = () => {
     this.setState({ payment: true });
+  };
+
+  private handlePaymentSuccess = () => {
+    this.setState({ payment: false, paymentSuccess: true });
   };
 
   private async getUserEthAddress(): Promise<void> {

@@ -69,6 +69,7 @@ storiesOf("Boosts", module)
         open={false}
         boostId={boost.id}
         handlePayments={onClickFunc}
+        paymentSuccess={false}
       />
     );
   })
@@ -81,6 +82,7 @@ storiesOf("Boosts", module)
         open={true}
         boostId={boost.id}
         handlePayments={onClickFunc}
+        paymentSuccess={false}
       />
     );
   });

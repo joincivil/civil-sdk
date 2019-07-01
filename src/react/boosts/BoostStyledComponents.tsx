@@ -619,3 +619,20 @@ export const BoostCopyAddress = styled.div`
     margin-bottom: 15px;
   }
 `;
+
+export const BoostNotificationContain = styled.div`
+  padding: 20px;
+`;
+
+export const BoostNotification = styled.div`
+  border: 1px solid ${colors.accent.CIVIL_GRAY_3};
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 22px;
+  padding: 20px;
+
+  svg {
+    margin-right: 5px;
+    vertical-align: sub;
+  }
+`;

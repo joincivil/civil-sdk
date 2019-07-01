@@ -41,6 +41,7 @@ export interface BoostPayEthProps {
   usdToSpend?: number;
   walletConnected: boolean;
   handleNext(etherToSpend: number, usdToSpend: number): void;
+  handlePaymentSuccess(): void;
 }
 
 export interface BoostPayEthStates {
@@ -87,6 +88,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
                   etherToSpend={this.state.etherToSpend}
                   usdToSpend={this.state.usdToSpend}
                   newsroomName={this.props.newsroomName}
+                  handlePaymentSuccess={this.props.handlePaymentSuccess}
                 />
               );
             }}

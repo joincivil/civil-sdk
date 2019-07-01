@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ModalHeading, ModalContent, ClipLoader, ErrorIcon, CopyURL, TokenWalletIcon } from "@joincivil/components";
+import { ModalHeading, ModalContent, ClipLoader, ErrorIcon, CopyURL, TokenWalletIcon, HollowGreenCheck } from "@joincivil/components";
 import {
   BoostButton,
   BoostLinkBtn,
@@ -8,8 +8,10 @@ import {
   BoostWarningLabel,
   BoostWalletOptions,
   BoostCopyAddress,
+  BoostModalContain,
   BoostModalHeader,
   BoostModalContent,
+  BoostNotification,
 } from "./BoostStyledComponents";
 
 export const WhyEthModalText: React.FunctionComponent = props => (
@@ -137,6 +139,7 @@ export interface BoostPaymentTextProps {
   etherToSpend?: number;
   usdToSpend?: number;
   boostURL?: string;
+  handlePaymentSuccess?(): void;
   hideModal?(): void;
 }
 
@@ -152,7 +155,7 @@ export const PaymentErrorText: React.FunctionComponent = props => (
 export const PaymentEthConfirmationText: React.FunctionComponent<BoostPaymentTextProps> = props => (
   <>
     <p>
-      Thank you! {props.newsroomName} has received your Boost of {props.etherToSpend} ETH ({props.usdToSpend}} USD)
+      Thank you! {props.newsroomName} has received your Boost of {props.etherToSpend} ETH (${props.usdToSpend} USD)
     </p>
   </>
 );
@@ -173,18 +176,13 @@ export const PaymentInProgressModalText: React.FunctionComponent = props => (
 );
 
 export const PaymentSuccessModalText: React.FunctionComponent<BoostPaymentTextProps> = props => {
-  const handleOnClick = (event: any): void => {
-    if (props.hideModal) {
-      props.hideModal();
-    }
-  };
 
   return (
     <>
       <PaymentSuccessText />
       <PaymentEthConfirmationText usdToSpend={props.usdToSpend} etherToSpend={props.etherToSpend} />
       <PaymentShareText boostURL={props.boostURL} />
-      <BoostButton onClick={handleOnClick}>Done</BoostButton>
+      <BoostButton onClick={props.handlePaymentSuccess}>Done</BoostButton>
     </>
   );
 };
@@ -230,4 +228,10 @@ export const BoostConnectWalletWarningText: React.FunctionComponent = props => (
   <BoostWarningLabel>
     <ErrorIcon height={15} width={15} /> You need a digital wallet to continue.
   </BoostWarningLabel>
+);
+
+export const BoostPaymentSuccess: React.FunctionComponent = props => (
+  <BoostNotification>
+    <HollowGreenCheck /> You supported this Boost
+  </BoostNotification>
 );
