@@ -41,7 +41,14 @@ export class Boost extends React.Component<BoostProps, BoostState> {
   }
 
   public async componentDidMount(): Promise<void> {
-    await this.getUserEthAddress();
+    if ((window as any).ethereum) {
+      await (window as any).ethereum.enable();
+      await this.getUserEthAddress();
+    } else {
+      this.setState({
+        checkingIfOwner: false,
+      });
+    }
   }
 
   public async componentDidUpdate(prevProps: BoostProps, prevState: BoostState): Promise<void> {
