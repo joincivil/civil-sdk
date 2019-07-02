@@ -159,6 +159,7 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
 
   private withdrawTx = async (): Promise<TwoStepEthTransaction<any> | void> => {
     if (!this.state.multisigBalance || !this.state.userAccount || !this.context.civil || !(window as any).ethereum) {
+      // @TODO/loginV2 migrate away from window.ethereum
       // Currently, everywhere we might use this component already checks and prompts user to connect web3, so we don't need any special handling in this case at the moment.
       return;
     }

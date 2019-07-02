@@ -163,6 +163,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
   }
 
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
+    // @TODO/loginV2 migrate away from window.ethereum
     if (this.context.civil && (window as any).ethereum) {
       const amount = this.context.civil.toBigNumber(this.props.amount);
 

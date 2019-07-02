@@ -44,6 +44,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
   }
 
   public async componentDidMount(): Promise<void> {
+    // @TODO/loginV2 migrate away from window.ethereum
     if ((window as any).ethereum) {
       await (window as any).ethereum.enable();
       await this.getUserEthAddress();
