@@ -7,7 +7,7 @@ import { BoostForm } from "./BoostForm";
 import { BoostPayments } from "./payments/BoostPayments";
 import { BoostWrapper } from "./BoostStyledComponents";
 import { NewsroomWithdraw } from "../NewsroomWithdraw";
-import { EthAddress } from "@joincivil/core";
+import { EthAddress, NewsroomInstance } from "@joincivil/core";
 import { LoadingMessage, CivilContext, ICivilContext } from "@joincivil/components";
 
 export interface BoostProps {
@@ -26,6 +26,7 @@ export interface BoostState {
   newsroomAddress?: EthAddress;
   userEthAddress?: EthAddress;
   newsroomOwners?: EthAddress[];
+  newsroom?: NewsroomInstance;
 }
 
 export class Boost extends React.Component<BoostProps, BoostState> {
@@ -137,8 +138,8 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                 return (
                   <>
                     {/*@TODO/tobek Move to Newsroom Boosts page when we have that.*/}
-                    {this.props.open && this.state.boostOwner && (
-                      <NewsroomWithdraw multisigAddress={newsroomData.owner} userAddress={this.state.userEthAddress} />
+                    {this.props.open && this.state.newsroom && this.state.boostOwner && (
+                      <NewsroomWithdraw newsroom={this.state.newsroom} />
                     )}
                     <BoostCard
                       boostData={boostData}
@@ -231,7 +232,6 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     let user;
     if (this.context.civil) {
       user = await this.context.civil.accountStream.first().toPromise();
-      console.log("got user", user);
 
       if (user) {
         this.setState({
@@ -266,6 +266,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
         checkingIfOwner: false,
         boostOwner: newsroomOwners && newsroomOwners.indexOf(this.state.userEthAddress) !== -1,
         newsroomOwners,
+        newsroom,
       });
     }
   }

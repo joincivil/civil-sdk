@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-import { EthAddress } from "@joincivil/core";
+import { EthAddress, NewsroomInstance, TwoStepEthTransaction } from "@joincivil/core";
 import {
   LoadingIndicator,
   CivilContext,
@@ -11,6 +11,7 @@ import {
   fonts,
   mediaQueries,
   Button,
+  TransactionButton,
 } from "@joincivil/components";
 import { BoostButton } from "./boosts/BoostStyledComponents";
 
@@ -72,11 +73,11 @@ const BalanceAndButton = styled.div`
 `;
 
 export interface NewsroomWithdrawProps {
-  multisigAddress: EthAddress;
-  userAddress?: EthAddress;
+  newsroom: NewsroomInstance;
 }
 
 export interface NewsroomWithdrawState {
+  userAccount?: EthAddress;
   multisigBalance?: number;
 }
 
@@ -90,9 +91,21 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
   }
 
   public async componentDidMount(): Promise<void> {
+    const userAccount = await this.context.civil!.accountStream.first().toPromise();
+    const multisigAddress = await this.props.newsroom.getMultisigAddress();
+
+    if (!multisigAddress) {
+      // This can only happen if user created contract manually.
+      alert(
+        `This newsroom is owned by ${multisigAddress}, which is not a multisig wallet. You'll have to withdraw using another method.`,
+      );
+      return;
+    }
+
     this.setState({
       // @TODO Would be nice if this auto updated
-      multisigBalance: await this.context.civil!.accountBalance(this.props.multisigAddress),
+      multisigBalance: await this.context.civil!.accountBalance(multisigAddress),
+      userAccount,
     });
   }
 
@@ -123,15 +136,39 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
             <br />
             {typeof this.state.multisigBalance !== "undefined" && <>({this.state.multisigBalance.toFixed(4)} ETH)</>}
           </p>
-          <BoostButton disabled={!this.state.multisigBalance} onClick={this.withdraw}>
+          <TransactionButton
+            Button={props => (
+              <BoostButton disabled={props.disabled} onClick={props.onClick}>
+                Withdraw
+              </BoostButton>
+            )}
+            disabled={!this.state.multisigBalance || !this.state.userAccount}
+            transactions={[
+              {
+                transaction: this.withdrawTx,
+                postTransaction: this.postTransaction,
+              },
+            ]}
+          >
             Withdraw
-          </BoostButton>
+          </TransactionButton>
         </BalanceAndButton>
       </Wrapper>
     );
   }
 
-  private withdraw = (): void => {
-    alert("@TODO/tobek");
+  private withdrawTx = async (): Promise<TwoStepEthTransaction<any> | void> => {
+    if (!this.state.multisigBalance || !this.state.userAccount || !this.context.civil || !(window as any).ethereum) {
+      // Currently, everywhere we might use this component already checks and prompts user to connect web3, so we don't need any special handling in this case at the moment.
+      return;
+    }
+
+    const eth = this.context.civil!.toBigNumber(this.state.multisigBalance);
+    return this.props.newsroom.transferEthFromMultisig(eth, this.state.userAccount);
+  };
+
+  private postTransaction = (): void => {
+    // @TODO If this updated automatically that would be better.
+    this.setState({ multisigBalance: 0 });
   };
 }
