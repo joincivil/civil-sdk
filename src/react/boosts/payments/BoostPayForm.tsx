@@ -9,9 +9,10 @@ import {
   TransactionButton,
   TransactionButtonModalContentComponentsProps,
   progressModalStates,
+  CivilContext,
+  ICivilContext,
 } from "@joincivil/components";
-import { Civil, EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
-import { detectProvider } from "@joincivil/ethapi";
+import { EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
 import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalText } from "../BoostTextComponents";
 import { MutationFunc } from "react-apollo";
 
@@ -94,6 +95,9 @@ const CheckboxLabel = styled.span`
 */
 
 export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFormState> {
+  public static contextType: React.Context<ICivilContext> = CivilContext;
+  public context!: React.ContextType<typeof CivilContext>;
+
   constructor(props: BoostPayFormProps) {
     super(props);
     this.state = {
@@ -159,13 +163,11 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
   }
 
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
-    const provider = detectProvider();
-    if (provider) {
-      const civil = new Civil({ web3Provider: provider });
+    // @TODO/loginV2 migrate away from window.ethereum
+    if (this.context.civil && (window as any).ethereum) {
+      const amount = this.context.civil.toBigNumber(this.props.amount);
 
-      const amount = civil.toBigNumber(this.props.amount);
-
-      return civil.simplePayment(this.props.paymentAddr, amount);
+      return this.context.civil.simplePayment(this.props.paymentAddr, amount);
     } else {
       // TODO: pop dialog telling them to install metamask/web3
     }
