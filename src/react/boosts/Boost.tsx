@@ -6,6 +6,7 @@ import { BoostCard } from "./BoostCard";
 import { BoostForm } from "./BoostForm";
 import { BoostPayments } from "./payments/BoostPayments";
 import { BoostWrapper } from "./BoostStyledComponents";
+import { NewsroomWithdraw } from "../NewsroomWithdraw";
 import { EthAddress } from "@joincivil/core";
 import { LoadingMessage, CivilContext, ICivilContext } from "@joincivil/components";
 
@@ -82,18 +83,19 @@ export class Boost extends React.Component<BoostProps, BoostState> {
             );
           }
           const boostData = data.postsGet as BoostData;
+          const newsroomAddress = boostData.channelID;
 
           // @HACK/tobek: Bad form to call setState from render (putting in setImmediate to remove React warning) but the conditional prevents an infinite loop, and the only alternative is to use `withApollo` and get apollo client as prop and call this query on `componentDidMount` or something, which is an annoying refactor right now.
-          if (this.state.newsroomAddress !== boostData.channelID) {
+          if (this.state.newsroomAddress !== newsroomAddress) {
             setImmediate(() => {
               this.setState({
-                newsroomAddress: boostData.channelID,
+                newsroomAddress,
               });
             });
           }
 
           return (
-            <Query query={boostNewsroomQuery} variables={{ addr: boostData.channelID }}>
+            <Query query={boostNewsroomQuery} variables={{ addr: newsroomAddress }}>
               {({ loading: newsroomQueryLoading, error: newsroomQueryError, data: newsroomQueryData }) => {
                 if (newsroomQueryLoading) {
                   return (
@@ -108,7 +110,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                       Error loading Boost newsroom data:{" "}
                       {newsroomQueryError
                         ? JSON.stringify(newsroomQueryError)
-                        : `No newsroom listing found at ${boostData.channelID}`}
+                        : `No newsroom listing found at ${newsroomAddress}`}
                     </BoostWrapper>
                   );
                 }
@@ -133,15 +135,21 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                 }
 
                 return (
-                  <BoostCard
-                    boostData={boostData}
-                    newsroomData={newsroomData}
-                    boostOwner={this.state.boostOwner}
-                    open={this.props.open}
-                    boostId={id}
-                    handlePayments={this.startPayment}
-                    paymentSuccess={this.state.paymentSuccess}
-                  />
+                  <>
+                    {/*@TODO/tobek Move to Newsroom Boosts page when we have that.*/}
+                    {this.props.open && this.state.boostOwner && (
+                      <NewsroomWithdraw multisigAddress={newsroomData.owner} userAddress={this.state.userEthAddress} />
+                    )}
+                    <BoostCard
+                      boostData={boostData}
+                      newsroomData={newsroomData}
+                      boostOwner={this.state.boostOwner}
+                      open={this.props.open}
+                      boostId={id}
+                      handlePayments={this.startPayment}
+                      paymentSuccess={this.state.paymentSuccess}
+                    />
+                  </>
                 );
               }}
             </Query>
