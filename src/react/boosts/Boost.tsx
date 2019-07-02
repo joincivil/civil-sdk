@@ -6,9 +6,8 @@ import { BoostCard } from "./BoostCard";
 import { BoostForm } from "./BoostForm";
 import { BoostPayments } from "./payments/BoostPayments";
 import { BoostWrapper } from "./BoostStyledComponents";
-import { Civil, EthAddress } from "@joincivil/core";
-import { detectProvider } from "@joincivil/ethapi";
-import { LoadingMessage } from "@joincivil/components";
+import { EthAddress } from "@joincivil/core";
+import { LoadingMessage, CivilContext, ICivilContext } from "@joincivil/components";
 
 export interface BoostProps {
   boostId: string;
@@ -26,10 +25,12 @@ export interface BoostState {
   newsroomAddress?: EthAddress;
   userEthAddress?: EthAddress;
   newsroomOwners?: EthAddress[];
-  civil?: Civil;
 }
 
 export class Boost extends React.Component<BoostProps, BoostState> {
+  public static contextType: React.Context<ICivilContext> = CivilContext;
+  public context!: React.ContextType<typeof CivilContext>;
+
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
@@ -220,16 +221,14 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     }
 
     let user;
-    const provider = detectProvider();
-    if (provider) {
-      const civil = new Civil({ web3Provider: provider });
-      user = await civil.accountStream.first().toPromise();
+    if (this.context.civil) {
+      user = await this.context.civil.accountStream.first().toPromise();
+      console.log("got user", user);
 
       if (user) {
         this.setState({
           walletConnected: true,
           userEthAddress: user,
-          civil,
         });
       } else {
         this.setState({
@@ -251,8 +250,8 @@ export class Boost extends React.Component<BoostProps, BoostState> {
       return;
     }
 
-    if (this.state.userEthAddress && this.state.newsroomAddress && this.state.civil) {
-      const newsroom = await this.state.civil.newsroomAtUntrusted(this.state.newsroomAddress);
+    if (this.state.userEthAddress && this.state.newsroomAddress && this.context.civil) {
+      const newsroom = await this.context.civil.newsroomAtUntrusted(this.state.newsroomAddress);
       const newsroomOwners = (await newsroom.getNewsroomData()).owners;
 
       this.setState({
