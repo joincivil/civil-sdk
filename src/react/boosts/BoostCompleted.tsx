@@ -27,9 +27,6 @@ export const BoostCompleted: React.FunctionComponent<BoostCompletedProps> = prop
           <p>
             <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>Learn how to withdraw money from your newsroom wallet and exchange ETH for fiat</a>
           </p>
-          <p>
-            <a href="#TODO">Re-Launch your Boost</a>
-          </p>
         </>
       )}
     </BoostCompeletedWrapper>
