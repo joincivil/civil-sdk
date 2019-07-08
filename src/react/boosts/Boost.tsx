@@ -11,6 +11,7 @@ import { EthAddress, NewsroomInstance } from "@joincivil/core";
 import { LoadingMessage, CivilContext, ICivilContext } from "@joincivil/components";
 
 export interface BoostProps {
+  history?: any;
   boostId: string;
   open: boolean;
   disableOwnerCheck?: boolean;
