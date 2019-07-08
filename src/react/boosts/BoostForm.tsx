@@ -26,6 +26,7 @@ import {
   BoostImgDiv,
 } from "./BoostStyledComponents";
 import { BoostImg } from "./BoostImg";
+import { urlConstants } from "../urlConstants";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};
@@ -303,7 +304,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                 <p>
                   Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to
                   widthdraw from the newsroom wallet and either deposit or exchange them into other currencies.{" "}
-                  <a href="#TODO">Learn more</a>
+                  <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>Learn more</a>
                 </p>
 
                 <BoostWrapperFullWidthHr />
@@ -351,7 +352,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
               <LaunchDisclaimer>
                 By {this.props.editMode ? "using Boosts" : "creating a Boost"}, you agree to Civil’s{" "}
-                <a href="#TODO">Terms of Use and Privacy Policy</a>.
+                <a href={urlConstants.TERMS}>Terms of Use</a> and <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>.
               </LaunchDisclaimer>
               <LaunchButton
                 size={buttonSizes.MEDIUM}

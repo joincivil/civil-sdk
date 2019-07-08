@@ -17,6 +17,7 @@ import { BoostPaymentSuccess } from "./BoostTextComponents";
 import { BoostNewsroom } from "./BoostNewsroom";
 import { BoostCompleted } from "./BoostCompleted";
 import { QuestionToolTip } from "@joincivil/components";
+import { urlConstants } from "../urlConstants";
 
 export interface BoostCardProps {
   boostData: BoostData;
@@ -124,7 +125,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
               <BoostDescription>
                 <h3>Questions about Boosts?</h3>
                 <p>
-                  <a href="#TODO">Learn more in our FAQ</a>
+                  <a href={urlConstants.FAQ_BOOSTS}>Learn more in our FAQ</a>
                 </p>
               </BoostDescription>
             </>

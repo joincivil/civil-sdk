@@ -86,7 +86,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
           }
 
           if (this.state.paymentSuccess) {
-            refetch();
+            void refetch();
           }
 
           const boostData = data.postsGet as BoostData;
