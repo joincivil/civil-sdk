@@ -92,6 +92,10 @@ export const BoostLinkBtn = styled.a`
   }
 `;
 
+export const BoostBack = styled.div`
+  margin: 0 0 30px;
+`;
+
 export const BoostTitle = styled.h2`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-size: 20px;

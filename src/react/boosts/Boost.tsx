@@ -136,6 +136,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                       newsroomName={newsroomData.name}
                       paymentAddr={newsroomData.owner}
                       walletConnected={this.state.walletConnected}
+                      handleBackToListing={this.handleBackToListing}
                       handlePaymentSuccess={this.handlePaymentSuccess}
                     />
                   );
@@ -228,6 +229,10 @@ export class Boost extends React.Component<BoostProps, BoostState> {
 
   private handlePaymentSuccess = () => {
     this.setState({ payment: false, paymentSuccess: true });
+  };
+
+  private handleBackToListing = () => {
+    this.setState({ payment: false });
   };
 
   private async getUserEthAddress(): Promise<void> {
