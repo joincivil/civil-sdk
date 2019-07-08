@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BoostCompeletedWrapper } from "./BoostStyledComponents";
+import { urlConstants } from "../urlConstants";
 
 export interface BoostCompletedProps {
   goalReached: boolean;
@@ -13,7 +14,7 @@ export const BoostCompleted: React.FunctionComponent<BoostCompletedProps> = prop
           <h3>Congratulations!</h3>
           <p>Your Boost reached its goal. Here are some next steps for you to take:</p>
           <p>
-            <a href="#TODO">Learn how to withdraw money from your newsroom wallet and exchange ETH for fiat</a>
+            <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>Learn how to withdraw money from your newsroom wallet and exchange ETH for fiat</a>
           </p>
         </>
       ) : (
@@ -24,10 +25,7 @@ export const BoostCompleted: React.FunctionComponent<BoostCompletedProps> = prop
             from your contributors. Here are some next steps for you to take:
           </p>
           <p>
-            <a href="#TODO">Learn how to withdraw money from your newsroom wallet and exchange ETH for fiat</a>
-          </p>
-          <p>
-            <a href="#TODO">Re-Launch your Boost</a>
+            <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>Learn how to withdraw money from your newsroom wallet and exchange ETH for fiat</a>
           </p>
         </>
       )}

@@ -52,6 +52,7 @@ storiesOf("Boosts", module)
           amount={20}
           paymentAddr={"0x"}
           walletConnected={true}
+          handleBackToListing={handlePaymentSuccess}
           handlePaymentSuccess={handlePaymentSuccess}
         />
       </>

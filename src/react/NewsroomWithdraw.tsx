@@ -14,6 +14,7 @@ import {
   TransactionButton,
 } from "@joincivil/components";
 import { BoostButton } from "./boosts/BoostStyledComponents";
+import { urlConstants } from "./urlConstants";
 
 const ethPriceQuery = gql`
   query {
@@ -119,7 +120,7 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
             exchange ETH for fiat currency. Reminder: only Newsroom Officers can access the Newsroom Wallet.
           </p>
           <p>
-            <a href="#TODO">Learn More &gt;</a>
+            <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>Learn More &gt;</a>
           </p>
         </Copy>
         <BalanceAndButton>

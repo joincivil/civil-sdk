@@ -153,7 +153,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           <span>{etherToSpend + " ETH"}</span> {"($" + usdToSpend.toFixed(2) + ")"}
         </BoostAmount>
         <BoostEthConfirm>
-          <HollowGreenCheck height={15} width={15} /> You have enough ETH in your connected Wallet.
+          <HollowGreenCheck height={15} width={15} /> You have enough ETH in your connected wallet.
         </BoostEthConfirm>
       </BoostPayCardDetails>
     );

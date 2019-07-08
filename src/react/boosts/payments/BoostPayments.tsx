@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { colors, fonts, mediaQueries, QuestionToolTip } from "@joincivil/components";
 import { BoostPayOptions } from "./BoostPayOptions";
-import { BoostWrapper, BoostTitle, BoostSmallPrint } from "../BoostStyledComponents";
+import { BoostWrapper, BoostTitle, BoostSmallPrint, BoostTextButton, BoostBack } from "../BoostStyledComponents";
 import { EthAddress } from "@joincivil/core";
 
 const BoostHeaderWrap = styled.div`
@@ -55,6 +55,7 @@ export interface BoostPaymentsProps {
   title: string;
   newsroomName: string;
   amount: number;
+  handleBackToListing(): void;
   handlePaymentSuccess(): void;
 }
 
@@ -62,6 +63,9 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
   return (
     <BoostWrapper open={true}>
       <BoostHeaderWrap>
+        <BoostBack>
+          <BoostTextButton onClick={props.handleBackToListing}>&laquo; Back to Boost listing</BoostTextButton>
+        </BoostBack>
         <BoostHeader>Complete your Boost payment</BoostHeader>
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>

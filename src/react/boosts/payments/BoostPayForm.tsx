@@ -15,6 +15,7 @@ import {
 import { EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
 import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalText } from "../BoostTextComponents";
 import { MutationFunc } from "react-apollo";
+import { urlConstants } from "../../urlConstants";
 
 export interface BoostPayFormProps {
   boostId: string;
@@ -134,8 +135,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
           </BoostPayFormContain>*/}
           <BoostFlexStart>
             <SubmitInstructions>
-              Once your Boost is sent, we’ll be sending you a confirmation email if selected of your completed
-              transaction. All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the
+              All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the
               proceeds will still go to fund the selected newsroom. Refunds are not possible.
             </SubmitInstructions>
             <div>
@@ -151,9 +151,8 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
                 Support this Boost
               </TransactionButton>
               <SubmitWarning>
-                By sending a Boost, you agree to Civil’s <a href="#TODO">Terms of Use and Privacy Policy</a>. Civil does
+                By sending a Boost, you agree to Civil’s <a href={urlConstants.TERMS}>Terms of Use</a> and <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>. Civil does
                 not charge any fees for this transaction. There are small fees charged by the Ethereum network.
-                Depending on your selection, your email and comment may be visible to the newsroom.
               </SubmitWarning>
             </div>
           </BoostFlexStart>

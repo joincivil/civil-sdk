@@ -11,6 +11,7 @@ import { EthAddress, NewsroomInstance } from "@joincivil/core";
 import { LoadingMessage, CivilContext, ICivilContext } from "@joincivil/components";
 
 export interface BoostProps {
+  history?: any;
   boostId: string;
   open: boolean;
   disableOwnerCheck?: boolean;
@@ -68,8 +69,8 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     const id = this.props.boostId;
 
     return (
-      <Query query={boostQuery} variables={{ id }}>
-        {({ loading, error, data }) => {
+      <Query query={boostQuery} variables={{ id }} pollInterval={2000}>
+        {({ loading, error, data, refetch }) => {
           if (loading) {
             return (
               <BoostWrapper open={this.props.open}>
@@ -84,6 +85,11 @@ export class Boost extends React.Component<BoostProps, BoostState> {
               </BoostWrapper>
             );
           }
+
+          if (this.state.paymentSuccess) {
+            void refetch();
+          }
+
           const boostData = data.postsGet as BoostData;
           const newsroomAddress = boostData.channelID;
 
@@ -131,6 +137,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                       newsroomName={newsroomData.name}
                       paymentAddr={newsroomData.owner}
                       walletConnected={this.state.walletConnected}
+                      handleBackToListing={this.handleBackToListing}
                       handlePaymentSuccess={this.handlePaymentSuccess}
                     />
                   );
@@ -223,6 +230,10 @@ export class Boost extends React.Component<BoostProps, BoostState> {
 
   private handlePaymentSuccess = () => {
     this.setState({ payment: false, paymentSuccess: true });
+  };
+
+  private handleBackToListing = () => {
+    this.setState({ payment: false });
   };
 
   private async getUserEthAddress(): Promise<void> {

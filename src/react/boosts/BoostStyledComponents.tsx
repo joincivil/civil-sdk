@@ -4,6 +4,7 @@ import { colors, fonts, mediaQueries, Button, ButtonProps, InvertedButton } from
 export interface BoostStyleProps {
   open?: boolean;
   margin?: string;
+  textAlign?: string;
 }
 
 export const MobileStyle = styled.span`
@@ -92,6 +93,10 @@ export const BoostLinkBtn = styled.a`
   }
 `;
 
+export const BoostBack = styled.div`
+  margin: 0 0 30px;
+`;
+
 export const BoostTitle = styled.h2`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-size: 20px;
@@ -115,6 +120,7 @@ export const BoostTitle = styled.h2`
     }
   }
 `;
+
 export const BoostImgDiv = styled.div`
   left: 30px;
   position: absolute;
@@ -174,7 +180,7 @@ export const BoostNewsroomInfo = styled.div`
   }
 `;
 
-export const BoostNewsroom = styled.div`
+export const BoostNewsroomName = styled.div`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-family: ${fonts.SANS_SERIF};
   font-size: 18px;
@@ -492,7 +498,7 @@ export const BoostModalContent = styled.p`
   color: ${colors.primary.BLACK};
   font-size: 14px;
   line-height: 24px;
-  text-align: center;
+  text-align: ${(props: BoostStyleProps) => (props.textAlign ? props.textAlign : "left")};
 }`;
 
 export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = styled(InvertedButton)`
