@@ -2,25 +2,19 @@ import * as React from "react";
 import { BoostProgress } from "./BoostProgress";
 import { BoostData, BoostNewsroomData } from "./types";
 import {
-  BoostImgDiv,
-  BoostImgDivMobile,
   BoostButton,
   BoostFlexStart,
   BoostWrapper,
   BoostTitle,
-  BoostNewsroomInfo,
-  BoostNewsroom,
   BoostDescription,
   BoostDescriptionWhy,
   BoostDescriptionTable,
   BoostProgressCol,
   BoostNotice,
-  BoostFlexStartMobile,
-  MobileStyle,
   BoostNotificationContain,
 } from "./BoostStyledComponents";
 import { BoostPaymentSuccess } from "./BoostTextComponents";
-import { BoostImg } from "./BoostImg";
+import { BoostNewsroom } from "./BoostNewsroom";
 import { BoostCompleted } from "./BoostCompleted";
 import { QuestionToolTip } from "@joincivil/components";
 
@@ -63,34 +57,14 @@ export class BoostCard extends React.Component<BoostCardProps> {
             )}
           </BoostTitle>
 
-          <BoostImgDiv>
-            <BoostImg charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri} />
-          </BoostImgDiv>
-          <BoostFlexStartMobile>
-            <BoostImgDivMobile>
-              <BoostImg charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri} />
-            </BoostImgDivMobile>
-            <BoostNewsroomInfo>
-              <BoostNewsroom>{this.props.newsroomData.name}</BoostNewsroom>
-              {this.props.open && (
-                <>
-                  {this.props.boostOwner && (
-                    <a href={`/boosts/${this.props.boostId}/edit?feature-flag=boosts-mvp`}>
-                      <b>
-                        Edit Boost <MobileStyle>&raquo;</MobileStyle>
-                      </b>
-                    </a>
-                  )}
-                  <a href={this.props.newsroomData.url} target="_blank">
-                    Visit Newsroom <MobileStyle>&raquo;</MobileStyle>
-                  </a>
-                  <a href={"https://registry.civil.co/listing/" + newsroomAddress} target="_blank">
-                    Visit Civil Registry <MobileStyle>&raquo;</MobileStyle>
-                  </a>
-                </>
-              )}
-            </BoostNewsroomInfo>
-          </BoostFlexStartMobile>
+          <BoostNewsroom
+            open={this.props.open}
+            boostOwner={this.props.boostOwner}
+            boostId={this.props.boostId}
+            newsroomAddress={newsroomAddress}
+            charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri}
+            newsroomData={this.props.newsroomData}
+          />
 
           <BoostFlexStart>
             <BoostProgressCol open={this.props.open}>

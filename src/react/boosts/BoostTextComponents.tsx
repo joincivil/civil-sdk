@@ -73,12 +73,12 @@ export const BoostMobileWalletModalText: React.FunctionComponent = props => (
       In order to support a Civil Boosts, please install a secure cryptocurrency wallet such as{" "}
       <a href="https://www.coinbase.com/mobile" target="_blank">
         Coinbase Wallet
-      </a>{" "}
-      or
+      </a>
+      {/*or
       <a href="https://alphawallet.com/" target="_blank">
         Alpha Wallet
-      </a>
-      . If you'd like help getting a wallet, take a look at our{" "}
+      </a>*/}. If you'd like
+      help getting a wallet, take a look at our{" "}
       <a href="#TODO" target="_blank">
         FAQ Guide
       </a>
@@ -88,9 +88,9 @@ export const BoostMobileWalletModalText: React.FunctionComponent = props => (
       <BoostLinkBtn href={"https://www.coinbase.com/mobile"} target="_blank">
         Coinbase Wallet
       </BoostLinkBtn>
-      <BoostLinkBtn href={"https://alphawallet.com/"} target="_blank">
+      {/*<BoostLinkBtn href={"https://alphawallet.com/"} target="_blank">
         Alpha Wallet
-      </BoostLinkBtn>
+      </BoostLinkBtn>*/}
     </BoostWalletOptions>
     <BoostCopyAddress>
       <span>Already use a wallet?</span>

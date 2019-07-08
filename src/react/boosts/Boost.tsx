@@ -68,8 +68,8 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     const id = this.props.boostId;
 
     return (
-      <Query query={boostQuery} variables={{ id }}>
-        {({ loading, error, data }) => {
+      <Query query={boostQuery} variables={{ id }} pollInterval={2000}>
+        {({ loading, error, data, refetch }) => {
           if (loading) {
             return (
               <BoostWrapper open={this.props.open}>
@@ -84,6 +84,11 @@ export class Boost extends React.Component<BoostProps, BoostState> {
               </BoostWrapper>
             );
           }
+
+          if (this.state.paymentSuccess) {
+            refetch();
+          }
+
           const boostData = data.postsGet as BoostData;
           const newsroomAddress = boostData.channelID;
 

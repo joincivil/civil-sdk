@@ -134,8 +134,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
           </BoostPayFormContain>*/}
           <BoostFlexStart>
             <SubmitInstructions>
-              Once your Boost is sent, we’ll be sending you a confirmation email if selected of your completed
-              transaction. All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the
+              All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the
               proceeds will still go to fund the selected newsroom. Refunds are not possible.
             </SubmitInstructions>
             <div>

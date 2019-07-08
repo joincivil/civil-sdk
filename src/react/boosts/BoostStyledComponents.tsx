@@ -174,7 +174,7 @@ export const BoostNewsroomInfo = styled.div`
   }
 `;
 
-export const BoostNewsroom = styled.div`
+export const BoostNewsroomName = styled.div`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-family: ${fonts.SANS_SERIF};
   font-size: 18px;
