@@ -1,13 +1,5 @@
 import * as React from "react";
-import {
-  ModalHeading,
-  ModalContent,
-  ClipLoader,
-  ErrorIcon,
-  CopyURL,
-  TokenWalletIcon,
-  HollowGreenCheck,
-} from "@joincivil/components";
+import { ModalHeading, ClipLoader, ErrorIcon, CopyURL, TokenWalletIcon, HollowGreenCheck } from "@joincivil/components";
 import {
   BoostButton,
   BoostLinkBtn,
@@ -25,43 +17,43 @@ import { urlConstants } from "../urlConstants";
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Why ETH?</ModalHeading>
-    <ModalContent>
+    <BoostModalContent>
       100% of your ETH will go right into the newsroom’s wallet. This way, the Newsroom gets your full support.
-    </ModalContent>
-    <ModalContent>
+    </BoostModalContent>
+    <BoostModalContent>
       You’ll have to use Ethereum cryptocurrency (ETH) in a digital wallet like MetaMask in order to continue. Currently
       it’s not possible to use other cryptocurrencies, dollars or other fiat currencies.
-    </ModalContent>
-    <ModalContent>
+    </BoostModalContent>
+    <BoostModalContent>
       There is a very small network transaction cost for sending Ethereum out of your wallet, usually it’s a matter of a
       few cents. This cost goes to the Ethereum miners who perform the computational work for your content to be
       included on the Ethereum blockchain.
-    </ModalContent>
-    <ModalContent>
+    </BoostModalContent>
+    <BoostModalContent>
       <a href={urlConstants.FAQ_BOOST_SUPPORTERS}>Learn more about how to get ETH and support Boosts on our FAQ.</a>
-    </ModalContent>
+    </BoostModalContent>
   </>
 );
 
 export const WhatIsEthModalText: React.FunctionComponent = props => (
   <>
     <ModalHeading>What is ETH?</ModalHeading>
-    <ModalContent>
+    <BoostModalContent>
       Ether (ETH) is the cryptocurrency for the Ethereum blockchain. You’ll be paying in ETH to support and pay Boosts.
-    </ModalContent>
-    <ModalContent>
+    </BoostModalContent>
+    <BoostModalContent>
       You can purchase or exchange for ETH using a cryptocurrency exchange such as Coinbase or Gemini and fund a digital
       wallet such as MetaMask. Don’t worry, both Coinbase and Gemini are regulated and in compliance with all applicable
       laws in each jurisdiction in which they operate. Buying ETH with a debit or certain credit cards is instant, once
       your account is verified.
-    </ModalContent>
-    <ModalContent>
+    </BoostModalContent>
+    <BoostModalContent>
       Each transaction includes a small transaction cost, called gas, which is usually a few cents. These fees go to the
       Ethereum miners who perform the computational work for your content to be included on the Ethereum blockchain.
-    </ModalContent>
-    <ModalContent>
+    </BoostModalContent>
+    <BoostModalContent>
       <a href={urlConstants.FAQ_BOOST_SUPPORTERS}>Learn more about how to get ETH and support Boosts on our FAQ.</a>
-    </ModalContent>
+    </BoostModalContent>
   </>
 );
 
@@ -70,7 +62,7 @@ export const BoostMobileWalletModalText: React.FunctionComponent = props => (
     <BoostModalHeader>
       <TokenWalletIcon width={48} height={42} />A Web3 enabled browser and secure digital wallet required.
     </BoostModalHeader>
-    <BoostModalContent>
+    <BoostModalContent textAlign="center">
       In order to support a Civil Boosts, please install a secure cryptocurrency wallet such as{" "}
       <a href="https://www.coinbase.com/mobile" target="_blank">
         Coinbase Wallet
@@ -103,15 +95,15 @@ export const BoostMobileWalletModalText: React.FunctionComponent = props => (
 export const CanUseCVLText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Can I use CVL to support a Boost?</ModalHeading>
-    <ModalContent>
+    <BoostModalContent>
       Civil tokens (CVL) are intended as a governance token to be used on the Civil Registry. You can use them to
       participate in and contribute to Civil’s community. Civil tokens unlock specific activities on the Civil platform,
       including launching a newsroom on the Registry, challenging and voting for/against Newsrooms for ethics violations
       or appealing the outcome of a community vote to the Civil Council.
-    </ModalContent>
-    <ModalContent>
+    </BoostModalContent>
+    <BoostModalContent>
       <a href={urlConstants.FAQ_CVL_TOKENS}>Learn more about Civil tokens</a>
-    </ModalContent>
+    </BoostModalContent>
   </>
 );
 
@@ -130,7 +122,9 @@ export const PaymentFAQText: React.FunctionComponent = props => (
     <h3>Frequently Asked Questions</h3>
     <a href={urlConstants.FAQ_BOOST_HOW_TO_SUPPORT}>How do I support a Boost?</a>
     <a href={urlConstants.FAQ_BOOST_WHEN_CHARGED}>When is my payment charged?</a>
-    <a href={urlConstants.FAQ_BOOST_CHARGED_IF_BOOST_FAILS}>Am I still charged even if the Boost does not hit its target date?</a>
+    <a href={urlConstants.FAQ_BOOST_CHARGED_IF_BOOST_FAILS}>
+      Am I still charged even if the Boost does not hit its target date?
+    </a>
     <a href={urlConstants.FAQ_BOOST_WHAT_PAYMENT_DATA}>What information can others see about my payment?</a>
   </>
 );
@@ -138,7 +132,7 @@ export const PaymentFAQText: React.FunctionComponent = props => (
 export const PaymentConfirmTransactionText: React.FunctionComponent = props => (
   <>
     <h3>Let's Boost</h3>
-    <p>Your Wallet has popped up a new window. Confirm the transaction in the Wallet to complete the Boost.</p>
+    <p>Your wallet has popped up a new window. Confirm the transaction in your wallet to complete the Boost.</p>
   </>
 );
 
@@ -156,7 +150,7 @@ export const PaymentSuccessText: React.FunctionComponent = props => <ModalHeadin
 export const PaymentErrorText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Payment Failed</ModalHeading>
-    <ModalContent>Your transaction failed. Please try again.</ModalContent>
+    <BoostModalContent>Your transaction failed. Please try again.</BoostModalContent>
   </>
 );
 
@@ -212,7 +206,7 @@ export const PaymentErrorModalText: React.FunctionComponent<BoostPaymentTextProp
 export const BoostPayWalletText: React.FunctionComponent = props => (
   <>
     <BoostPayWallet>
-      You will be paying using a digital wallet such as{" "}
+      You will be paying using a wallet such as{" "}
       <a href="https://metamask.io/" target="_blank">
         MetaMask
       </a>
