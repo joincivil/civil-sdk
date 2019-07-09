@@ -14,6 +14,8 @@ export const urlConstants = {
   FAQ_CVL_TOKENS: FAQ_BASE_URL + "/hc/en-us/articles/360016409251-What-are-Civil-tokens-CVL-",
   FAQ_BOOST_HOW_TO_SUPPORT: FAQ_BASE_URL + "/hc/en-us/articles/360030520791-How-do-I-support-a-Boost-",
   FAQ_BOOST_WHEN_CHARGED: FAQ_BASE_URL + "/hc/en-us/articles/360030521331-When-will-my-payment-be-charged-",
-  FAQ_BOOST_CHARGED_IF_BOOST_FAILS: FAQ_BASE_URL + "/hc/en-us/articles/360030521471-Will-I-be-charged-if-the-Boost-does-not-hit-its-target-goal-date-",
-  FAQ_BOOST_WHAT_PAYMENT_DATA: FAQ_BASE_URL + "/hc/en-us/articles/360030521711-What-information-can-others-see-about-my-payment-",
+  FAQ_BOOST_CHARGED_IF_BOOST_FAILS:
+    FAQ_BASE_URL + "/hc/en-us/articles/360030521471-Will-I-be-charged-if-the-Boost-does-not-hit-its-target-goal-date-",
+  FAQ_BOOST_WHAT_PAYMENT_DATA:
+    FAQ_BASE_URL + "/hc/en-us/articles/360030521711-What-information-can-others-see-about-my-payment-",
 };

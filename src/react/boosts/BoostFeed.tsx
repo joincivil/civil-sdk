@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Query } from "react-apollo";
+import { HelmetHelper } from "@joincivil/components";
 import { Boost } from "./Boost";
 import { boostFeedQuery } from "./queries";
+import * as boostCardImage from "../../../images/boost-card.png";
 
 export const BoostFeed: React.FunctionComponent = () => {
   const search = {
@@ -10,6 +12,16 @@ export const BoostFeed: React.FunctionComponent = () => {
 
   return (
     <>
+      <HelmetHelper
+        title={"Civil Boosts - The Civil Registry"}
+        description={"Civil Boosts are mini-fundraisers that build community around journalists' work."}
+        image={boostCardImage}
+        meta={{
+          "og:site_name": "Civil Registry",
+          "og:type": "website",
+          "twitter:card": "summary",
+        }}
+      />
       <Query query={boostFeedQuery} variables={{ search }}>
         {({ loading, error, data }) => {
           if (loading) {
