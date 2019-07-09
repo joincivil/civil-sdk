@@ -28,7 +28,7 @@ import {
 } from "./BoostStyledComponents";
 import { BoostImg } from "./BoostImg";
 import { urlConstants } from "../urlConstants";
-import * as boostCardImage from "../../../images/boost-card.png";
+import * as boostCardImage from "../../images/boost-card.png";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};

@@ -17,7 +17,7 @@ import { BoostPaymentSuccess } from "./BoostTextComponents";
 import { BoostNewsroom } from "./BoostNewsroom";
 import { BoostCompleted } from "./BoostCompleted";
 import { QuestionToolTip, HelmetHelper } from "@joincivil/components";
-import * as boostCardImage from "../../../images/boost-card.png";
+import * as boostCardImage from "../../images/boost-card.png";
 import { urlConstants } from "../urlConstants";
 
 export interface BoostCardProps {

@@ -3,7 +3,7 @@ import { Query } from "react-apollo";
 import { HelmetHelper } from "@joincivil/components";
 import { Boost } from "./Boost";
 import { boostFeedQuery } from "./queries";
-import * as boostCardImage from "../../../images/boost-card.png";
+import * as boostCardImage from "../../images/boost-card.png";
 
 export const BoostFeed: React.FunctionComponent = () => {
   const search = {
