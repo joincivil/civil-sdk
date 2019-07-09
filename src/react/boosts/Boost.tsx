@@ -15,6 +15,7 @@ export interface BoostProps {
   boostId: string;
   open: boolean;
   disableOwnerCheck?: boolean;
+  disableHelmet?: boolean;
   editMode?: boolean;
 }
 
@@ -155,6 +156,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                       boostOwner={this.state.boostOwner}
                       open={this.props.open}
                       boostId={id}
+                      disableHelmet={this.props.disableHelmet}
                       handlePayments={this.startPayment}
                       paymentSuccess={this.state.paymentSuccess}
                     />

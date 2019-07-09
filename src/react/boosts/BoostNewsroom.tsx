@@ -1,5 +1,6 @@
 import * as React from "react";
-import { defaultNewsroomImgUrl } from "@joincivil/components";
+import { defaultNewsroomImgUrl, HelmetHelper } from "@joincivil/components";
+import { CharterData } from "@joincivil/core";
 import * as IPFS from "ipfs-http-client";
 import { promisify } from "@joincivil/utils";
 import { BoostNewsroomData } from "./types";
@@ -35,7 +36,7 @@ export interface BoostNewsroomProps {
 
 export interface BoostNewsroomState {
   fetchInProgress: boolean;
-  charter?: any;
+  charter?: CharterData;
 }
 
 export class BoostNewsroom extends React.Component<BoostNewsroomProps, BoostNewsroomState> {
@@ -59,13 +60,14 @@ export class BoostNewsroom extends React.Component<BoostNewsroomProps, BoostNews
   public render(): JSX.Element {
     return (
       <>
-        <BoostImgDiv>
-          {this.renderImage()}
-        </BoostImgDiv>
+        {/*data URIs are invalid for fb/twitter cards, so only put image in there if http URL:*/}
+        {this.state.charter && this.state.charter.logoUrl && this.state.charter.logoUrl.indexOf("http") === 0 && (
+          <HelmetHelper image={this.state.charter.logoUrl} />
+        )}
+
+        <BoostImgDiv>{this.renderImage()}</BoostImgDiv>
         <BoostFlexStartMobile>
-          <BoostImgDivMobile>
-            {this.renderImage()}
-          </BoostImgDivMobile>
+          <BoostImgDivMobile>{this.renderImage()}</BoostImgDivMobile>
           <BoostNewsroomInfo>
             <BoostNewsroomName>{this.props.newsroomData.name}</BoostNewsroomName>
             {this.props.open && (

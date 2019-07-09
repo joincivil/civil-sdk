@@ -10,9 +10,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "outDir": "build/static/js/",
+    "outDir": "build/package/",
     "declaration": true,
-    "declarationDir": "build/static/js/",
+    "declarationDir": "build/package/",
     "jsx": "react",
     "typeRoots": ["node_modules/@types"]
   },

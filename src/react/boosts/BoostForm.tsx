@@ -12,6 +12,7 @@ import {
   QuestionToolTip,
   defaultNewsroomImgUrl,
   LoadingMessage,
+  HelmetHelper,
 } from "@joincivil/components";
 import { Query, Mutation, MutationFunc } from "react-apollo";
 import { boostNewsroomQuery, boostMutation, editBoostMutation } from "./queries";
@@ -27,6 +28,7 @@ import {
 } from "./BoostStyledComponents";
 import { BoostImg } from "./BoostImg";
 import { urlConstants } from "../urlConstants";
+import * as boostCardImage from "../../images/boost-card.png";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};
@@ -190,6 +192,19 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
   public render(): JSX.Element {
     return (
       <PageWrapper>
+        <HelmetHelper
+          title={"Create Boost - The Civil Registry"}
+          description={
+            "Connect with the Civil community eager to fund your projects. Boosts are mini-fundraisers that build community around your work. Your Newsroom can use Boosts to let your audience know about what you’d like to do and engage supporters in making the project a reality."
+          }
+          image={boostCardImage}
+          meta={{
+            "og:site_name": "Civil Registry",
+            "og:type": "website",
+            "twitter:card": "summary",
+          }}
+        />
+
         {this.renderHeader()}
 
         <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
@@ -352,7 +367,8 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
               <LaunchDisclaimer>
                 By {this.props.editMode ? "using Boosts" : "creating a Boost"}, you agree to Civil’s{" "}
-                <a href={urlConstants.TERMS}>Terms of Use</a> and <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>.
+                <a href={urlConstants.TERMS}>Terms of Use</a> and{" "}
+                <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>.
               </LaunchDisclaimer>
               <LaunchButton
                 size={buttonSizes.MEDIUM}
