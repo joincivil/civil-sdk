@@ -13,6 +13,7 @@ import {
   defaultNewsroomImgUrl,
   LoadingMessage,
   HelmetHelper,
+  LoadUser,
 } from "@joincivil/components";
 import { Query, Mutation, MutationFunc } from "react-apollo";
 import { boostNewsroomQuery, createBoostMutation, editBoostMutation } from "./queries";
@@ -209,44 +210,62 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
         {this.renderHeader()}
 
-        <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
-          {({ loading, error, data }) => {
-            if (loading) {
+        <LoadUser>
+          {({ loading: userLoading, user }) => {
+            if (!userLoading && !user) {
               return (
                 <BoostWrapper>
-                  <LoadingMessage />
-                </BoostWrapper>
-              );
-            } else if (error || !data) {
-              console.error(`error querying newsroom data for ${this.props.newsroomAddress}:`, error, data);
-              return (
-                <Error>Error retrieving newsroom data: {error ? JSON.stringify(error) : "no listing data found"}</Error>
-              );
-            }
-
-            if (!data.listing) {
-              return (
-                <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomData.name}</b> has not yet applied to the Civil Registry. Please{" "}
-                  <a href="/apply-to-registry">continue your newsroom application</a> and then, once you have applied
-                  and your newsroom has been approved, you can return to create a Boost.
+                  {/*@TODO/auth Add redirect param when we one day implement that.*/}
+                  You must <a href="/auth/login">login</a> to edit a Boost.
                 </BoostWrapper>
               );
             }
 
-            if (!data.listing.whitelisted) {
-              return (
-                <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomData.name}</b> is not currently approved on the Civil Registry.
-                  Please <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on the status of your
-                  application. Once your newsroom is approved, you can return to create a Boost.
-                </BoostWrapper>
-              );
-            }
+            return (
+              <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
+                {({ loading, error, data }) => {
+                  if (loading) {
+                    return (
+                      <BoostWrapper>
+                        <LoadingMessage />
+                      </BoostWrapper>
+                    );
+                  } else if (error || !data) {
+                    console.error(`error querying newsroom data for ${this.props.newsroomAddress}:`, error, data);
+                    return (
+                      <Error>
+                        Error retrieving newsroom data: {error ? JSON.stringify(error) : "no listing data found"}
+                      </Error>
+                    );
+                  }
 
-            return this.renderForm();
+                  if (!data.listing) {
+                    return (
+                      <BoostWrapper>
+                        Your newsroom <b>{this.props.newsroomData.name}</b> has not yet applied to the Civil Registry.
+                        Please <a href="/apply-to-registry">continue your newsroom application</a> and then, once you
+                        have applied and your newsroom has been approved, you can return to create a Boost.
+                      </BoostWrapper>
+                    );
+                  }
+
+                  if (!data.listing.whitelisted) {
+                    return (
+                      <BoostWrapper>
+                        Your newsroom <b>{this.props.newsroomData.name}</b> is not currently approved on the Civil
+                        Registry. Please <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on
+                        the status of your application. Once your newsroom is approved, you can return to create a
+                        Boost.
+                      </BoostWrapper>
+                    );
+                  }
+
+                  return this.renderForm();
+                }}
+              </Query>
+            );
           }}
-        </Query>
+        </LoadUser>
       </PageWrapper>
     );
   }
