@@ -173,6 +173,7 @@ export interface BoostFormProps {
 }
 export interface BoostFormState {
   boost: Partial<BoostData>;
+  changesMade?: boolean;
   createdBoostId?: string;
   loading?: boolean;
   success?: boolean;
@@ -190,6 +191,18 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             items: [{ item: "", cost: undefined }],
           },
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    // If changes have been made, and boost create/update is not complete, show "are you sure you want to leave?" prompt
+    window.onbeforeunload = () => {
+      return this.state.changesMade && !this.state.success;
+    };
+  }
+
+  public componentWillUnmount(): void {
+    // Remove "are you sure you want to leave?" prompt
+    window.onbeforeunload = null;
   }
 
   public render(): JSX.Element {
@@ -514,6 +527,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         ...this.state.boost,
         [name]: val,
       },
+      changesMade: true,
     });
   };
 
@@ -546,6 +560,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         goalAmount,
         items,
       },
+      changesMade: true,
     });
   };
 
