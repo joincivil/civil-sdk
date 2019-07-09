@@ -15,7 +15,7 @@ import {
   HelmetHelper,
 } from "@joincivil/components";
 import { Query, Mutation, MutationFunc } from "react-apollo";
-import { boostNewsroomQuery, boostMutation, editBoostMutation } from "./queries";
+import { boostNewsroomQuery, createBoostMutation, editBoostMutation } from "./queries";
 import { BoostData, BoostNewsroomData } from "./types";
 import {
   BoostWrapper,
@@ -168,11 +168,13 @@ export interface BoostFormProps {
   newsroomTagline?: string;
   initialBoostData?: BoostData;
   editMode?: boolean;
+  boostId?: string;
 }
 export interface BoostFormState {
   boost: Partial<BoostData>;
-  boostId?: string;
+  createdBoostId?: string;
   loading?: boolean;
+  success?: boolean;
   error?: string;
 }
 
@@ -275,7 +277,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
   private renderForm(): JSX.Element {
     return (
-      <Mutation mutation={this.props.editMode ? editBoostMutation : boostMutation}>
+      <Mutation mutation={this.props.editMode ? editBoostMutation : createBoostMutation}>
         {mutation => {
           return (
             <form onSubmit={async event => this.handleSubmit(event, mutation)}>
@@ -370,22 +372,22 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                 <a href={urlConstants.TERMS}>Terms of Use</a> and{" "}
                 <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>.
               </LaunchDisclaimer>
-              <LaunchButton
-                size={buttonSizes.MEDIUM}
-                type="submit"
-                disabled={this.state.loading || !!this.state.boostId}
-              >
-                {this.props.editMode ? "Save Changes" : "Launch Boost"}
+              <LaunchButton size={buttonSizes.MEDIUM} type="submit" disabled={this.state.loading || this.state.success}>
+                {this.props.editMode ? "Update Boost" : "Launch Boost"}
               </LaunchButton>
 
               {/*@TODO/tobek Temporary feedback until we implement success modal*/}
               <div style={{ clear: "both", float: "right", marginTop: 10 }}>
                 {this.state.loading && "loading..."}
                 {this.state.error && <Error>{this.state.error}</Error>}
-                {this.state.boostId && (
+                {this.state.success && (
                   <>
-                    Boost created successfully!{" "}
-                    <a href={"/boosts/" + this.state.boostId + "?feature-flag=boosts-mvp"}>View boost.</a>
+                    Boost {this.props.editMode ? "updated" : "created"} successfully!{" "}
+                    <a
+                      href={"/boosts/" + (this.props.boostId || this.state.createdBoostId) + "?feature-flag=boosts-mvp"}
+                    >
+                      View boost.
+                    </a>
                   </>
                 )}
               </div>
@@ -548,12 +550,6 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
     event.preventDefault();
     // @TODO/toby Implement success modal from designs.
 
-    if (this.props.editMode) {
-      // @TODO/toby Update when endpoint is launched.
-      alert("Edit Boost not yet implemented in backend");
-      return;
-    }
-
     const boost = this.state.boost;
     this.setState({ loading: true, error: undefined });
     try {
@@ -570,11 +566,17 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             items: boost.items,
             dateEnd: boost.dateEnd,
           },
+          postID: this.props.editMode && this.props.boostId,
         },
       });
       if (response && response.data && response.data.postsCreateBoost) {
         this.setState({
-          boostId: response.data.postsCreateBoost.id,
+          success: true,
+          createdBoostId: response.data.postsCreateBoost.id,
+        });
+      } else if (response && response.data && response.data.postsUpdateBoost) {
+        this.setState({
+          success: true,
         });
       } else {
         this.setState({ error: "Error: Unexpected or missing response data" });

@@ -49,41 +49,18 @@ export const boostNewsroomQuery = gql`
   }
 `;
 
-export const boostMutation = gql`
+export const createBoostMutation = gql`
   mutation($input: PostCreateBoostInput!) {
     postsCreateBoost(input: $input) {
       id
-      channelID
-      goalAmount
-      title
-      why
-      what
-      about
-      dateEnd
-      items {
-        item
-        cost
-      }
     }
   }
 `;
 
-// @TODO/toby Change this over when edit mutation is live
 export const editBoostMutation = gql`
-  mutation($input: PostCreateBoostInput!) {
-    postsCreateBoost(input: $input) {
+  mutation($postID: String!, $input: PostCreateBoostInput!) {
+    postsUpdateBoost(postID: $postID, input: $input) {
       id
-      channelID
-      goalAmount
-      title
-      why
-      what
-      about
-      dateEnd
-      items {
-        item
-        cost
-      }
     }
   }
 `;
