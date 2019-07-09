@@ -30,7 +30,6 @@ export const BoostFeed: React.FunctionComponent = () => {
         {({ loading: feedQueryLoading, error: feedQueryError, data: feedQueryData }) => {
           if (feedQueryLoading) {
             return <LoadingMessage>Loading Boosts</LoadingMessage>;
-
           } else if (feedQueryError || !feedQueryData || !feedQueryData.postsSearch) {
             console.error("error loading Boost feed data. error:", feedQueryError, "data:", feedQueryData);
             return "Error loading Boosts.";
