@@ -70,7 +70,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     const id = this.props.boostId;
 
     return (
-      <Query query={boostQuery} variables={{ id }} pollInterval={2000}>
+      <Query query={boostQuery} variables={{ id }}>
         {({ loading, error, data, refetch }) => {
           if (loading) {
             return (
