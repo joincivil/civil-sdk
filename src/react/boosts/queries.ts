@@ -6,6 +6,12 @@ export const boostFeedQuery = gql`
       posts {
         ... on PostBoost {
           id
+          channelID
+          currencyCode
+          goalAmount
+          paymentsTotal(currencyCode: "USD")
+          title
+          dateEnd
         }
       }
     }
