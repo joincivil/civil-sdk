@@ -79,6 +79,7 @@
     "package:watch": "tsc -w",
     "prepublishOnly": "yarn package:build",
     "prettier": "prettier --config .prettierrc.yaml --write --list-different './**/*.{ts,tsx,json,md}'",
+    "prettier:lint": "prettier --config .prettierrc.yaml --list-different './**/*.{ts,tsx,json,md}'",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "release": "semantic-release",
     "commit": "commit",
