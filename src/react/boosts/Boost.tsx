@@ -218,6 +218,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
     return (
       <BoostForm
         editMode={true}
+        boostId={this.props.boostId}
         initialBoostData={boostData}
         newsroomData={newsroomData}
         newsroomAddress={boostData.channelID}

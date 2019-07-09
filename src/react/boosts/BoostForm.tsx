@@ -13,9 +13,10 @@ import {
   defaultNewsroomImgUrl,
   LoadingMessage,
   HelmetHelper,
+  LoadUser,
 } from "@joincivil/components";
 import { Query, Mutation, MutationFunc } from "react-apollo";
-import { boostNewsroomQuery, boostMutation, editBoostMutation } from "./queries";
+import { boostNewsroomQuery, createBoostMutation, editBoostMutation } from "./queries";
 import { BoostData, BoostNewsroomData } from "./types";
 import {
   BoostWrapper,
@@ -168,11 +169,13 @@ export interface BoostFormProps {
   newsroomTagline?: string;
   initialBoostData?: BoostData;
   editMode?: boolean;
+  boostId?: string;
 }
 export interface BoostFormState {
   boost: Partial<BoostData>;
-  boostId?: string;
+  createdBoostId?: string;
   loading?: boolean;
+  success?: boolean;
   error?: string;
 }
 
@@ -207,44 +210,62 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
         {this.renderHeader()}
 
-        <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
-          {({ loading, error, data }) => {
-            if (loading) {
+        <LoadUser>
+          {({ loading: userLoading, user }) => {
+            if (!userLoading && !user) {
               return (
                 <BoostWrapper>
-                  <LoadingMessage />
-                </BoostWrapper>
-              );
-            } else if (error || !data) {
-              console.error(`error querying newsroom data for ${this.props.newsroomAddress}:`, error, data);
-              return (
-                <Error>Error retrieving newsroom data: {error ? JSON.stringify(error) : "no listing data found"}</Error>
-              );
-            }
-
-            if (!data.listing) {
-              return (
-                <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomData.name}</b> has not yet applied to the Civil Registry. Please{" "}
-                  <a href="/apply-to-registry">continue your newsroom application</a> and then, once you have applied
-                  and your newsroom has been approved, you can return to create a Boost.
+                  {/*@TODO/auth Add redirect param when we one day implement that.*/}
+                  You must <a href="/auth/login">login</a> to edit a Boost.
                 </BoostWrapper>
               );
             }
 
-            if (!data.listing.whitelisted) {
-              return (
-                <BoostWrapper>
-                  Your newsroom <b>{this.props.newsroomData.name}</b> is not currently approved on the Civil Registry.
-                  Please <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on the status of your
-                  application. Once your newsroom is approved, you can return to create a Boost.
-                </BoostWrapper>
-              );
-            }
+            return (
+              <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
+                {({ loading, error, data }) => {
+                  if (loading) {
+                    return (
+                      <BoostWrapper>
+                        <LoadingMessage />
+                      </BoostWrapper>
+                    );
+                  } else if (error || !data) {
+                    console.error(`error querying newsroom data for ${this.props.newsroomAddress}:`, error, data);
+                    return (
+                      <Error>
+                        Error retrieving newsroom data: {error ? JSON.stringify(error) : "no listing data found"}
+                      </Error>
+                    );
+                  }
 
-            return this.renderForm();
+                  if (!data.listing) {
+                    return (
+                      <BoostWrapper>
+                        Your newsroom <b>{this.props.newsroomData.name}</b> has not yet applied to the Civil Registry.
+                        Please <a href="/apply-to-registry">continue your newsroom application</a> and then, once you
+                        have applied and your newsroom has been approved, you can return to create a Boost.
+                      </BoostWrapper>
+                    );
+                  }
+
+                  if (!data.listing.whitelisted) {
+                    return (
+                      <BoostWrapper>
+                        Your newsroom <b>{this.props.newsroomData.name}</b> is not currently approved on the Civil
+                        Registry. Please <a href="/dashboard/newsrooms">visit your newsroom dashboard</a> to check on
+                        the status of your application. Once your newsroom is approved, you can return to create a
+                        Boost.
+                      </BoostWrapper>
+                    );
+                  }
+
+                  return this.renderForm();
+                }}
+              </Query>
+            );
           }}
-        </Query>
+        </LoadUser>
       </PageWrapper>
     );
   }
@@ -275,7 +296,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
   private renderForm(): JSX.Element {
     return (
-      <Mutation mutation={this.props.editMode ? editBoostMutation : boostMutation}>
+      <Mutation mutation={this.props.editMode ? editBoostMutation : createBoostMutation}>
         {mutation => {
           return (
             <form onSubmit={async event => this.handleSubmit(event, mutation)}>
@@ -370,22 +391,22 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                 <a href={urlConstants.TERMS}>Terms of Use</a> and{" "}
                 <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>.
               </LaunchDisclaimer>
-              <LaunchButton
-                size={buttonSizes.MEDIUM}
-                type="submit"
-                disabled={this.state.loading || !!this.state.boostId}
-              >
-                {this.props.editMode ? "Save Changes" : "Launch Boost"}
+              <LaunchButton size={buttonSizes.MEDIUM} type="submit" disabled={this.state.loading || this.state.success}>
+                {this.props.editMode ? "Update Boost" : "Launch Boost"}
               </LaunchButton>
 
               {/*@TODO/tobek Temporary feedback until we implement success modal*/}
               <div style={{ clear: "both", float: "right", marginTop: 10 }}>
                 {this.state.loading && "loading..."}
                 {this.state.error && <Error>{this.state.error}</Error>}
-                {this.state.boostId && (
+                {this.state.success && (
                   <>
-                    Boost created successfully!{" "}
-                    <a href={"/boosts/" + this.state.boostId + "?feature-flag=boosts-mvp"}>View boost.</a>
+                    Boost {this.props.editMode ? "updated" : "created"} successfully!{" "}
+                    <a
+                      href={"/boosts/" + (this.props.boostId || this.state.createdBoostId) + "?feature-flag=boosts-mvp"}
+                    >
+                      View boost.
+                    </a>
                   </>
                 )}
               </div>
@@ -548,12 +569,6 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
     event.preventDefault();
     // @TODO/toby Implement success modal from designs.
 
-    if (this.props.editMode) {
-      // @TODO/toby Update when endpoint is launched.
-      alert("Edit Boost not yet implemented in backend");
-      return;
-    }
-
     const boost = this.state.boost;
     this.setState({ loading: true, error: undefined });
     try {
@@ -570,11 +585,17 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
             items: boost.items,
             dateEnd: boost.dateEnd,
           },
+          postID: this.props.editMode && this.props.boostId,
         },
       });
       if (response && response.data && response.data.postsCreateBoost) {
         this.setState({
-          boostId: response.data.postsCreateBoost.id,
+          success: true,
+          createdBoostId: response.data.postsCreateBoost.id,
+        });
+      } else if (response && response.data && response.data.postsUpdateBoost) {
+        this.setState({
+          success: true,
         });
       } else {
         this.setState({ error: "Error: Unexpected or missing response data" });
