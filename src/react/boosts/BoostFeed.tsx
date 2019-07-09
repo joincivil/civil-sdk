@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Query } from "react-apollo";
-import { HelmetHelper } from "@joincivil/components";
-import { Boost } from "./Boost";
-import { boostFeedQuery } from "./queries";
+import { HelmetHelper, LoadingMessage } from "@joincivil/components";
+import { BoostCard } from "./BoostCard";
+import { boostFeedQuery, boostNewsroomQuery } from "./queries";
+import { BoostNewsroomData } from "./types";
+import { BoostWrapper } from "./BoostStyledComponents";
 import * as boostCardImage from "../../images/boost-card.png";
 
 export const BoostFeed: React.FunctionComponent = () => {
@@ -25,16 +27,44 @@ export const BoostFeed: React.FunctionComponent = () => {
         }}
       />
       <Query query={boostFeedQuery} variables={{ search }}>
-        {({ loading, error, data }) => {
-          if (loading) {
-            return "Loading...";
-          } else if (error) {
-            return "Error: " + JSON.stringify(error);
+        {({ loading: feedQueryLoading, error: feedQueryError, data: feedQueryData }) => {
+          if (feedQueryLoading) {
+            return <LoadingMessage>Loading Boosts</LoadingMessage>;
+          } else if (feedQueryError || !feedQueryData || !feedQueryData.postsSearch) {
+            console.error("error loading Boost feed data. error:", feedQueryError, "data:", feedQueryData);
+            return "Error loading Boosts.";
           }
 
-          return data.postsSearch.posts.map((boost: any, i: number) => (
-            // `disableOwnerCheck` true because it would be slow to pull up newsroom from web3 for every single boost
-            <Boost key={i} boostId={boost.id} open={false} disableOwnerCheck={true} disableHelmet={true} />
+          return feedQueryData.postsSearch.posts.map((boostData: any, i: number) => (
+            <Query key={i} query={boostNewsroomQuery} variables={{ addr: boostData.channelID }}>
+              {({ loading: newsroomQueryLoading, error: newsroomQueryError, data: newsroomQueryData }) => {
+                if (newsroomQueryLoading) {
+                  return (
+                    <BoostWrapper open={false}>
+                      <LoadingMessage>Loading Boost</LoadingMessage>
+                    </BoostWrapper>
+                  );
+                } else if (newsroomQueryError || !newsroomQueryData || !newsroomQueryData.listing) {
+                  console.error("error loading newsroom data. error:", newsroomQueryError, "data:", newsroomQueryData);
+                  return <></>;
+                }
+
+                const newsroomData = newsroomQueryData.listing as BoostNewsroomData;
+
+                return (
+                  <BoostCard
+                    boostData={boostData}
+                    newsroomData={newsroomData}
+                    boostOwner={false}
+                    open={false}
+                    boostId={boostData.id}
+                    disableHelmet={true}
+                    handlePayments={() => null}
+                    paymentSuccess={false}
+                  />
+                );
+              }}
+            </Query>
           ));
         }}
       </Query>
