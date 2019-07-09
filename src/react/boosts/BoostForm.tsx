@@ -352,7 +352,8 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
               <LaunchDisclaimer>
                 By {this.props.editMode ? "using Boosts" : "creating a Boost"}, you agree to Civil’s{" "}
-                <a href={urlConstants.TERMS}>Terms of Use</a> and <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>.
+                <a href={urlConstants.TERMS}>Terms of Use</a> and{" "}
+                <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>.
               </LaunchDisclaimer>
               <LaunchButton
                 size={buttonSizes.MEDIUM}

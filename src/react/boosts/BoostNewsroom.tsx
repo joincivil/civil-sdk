@@ -59,13 +59,9 @@ export class BoostNewsroom extends React.Component<BoostNewsroomProps, BoostNews
   public render(): JSX.Element {
     return (
       <>
-        <BoostImgDiv>
-          {this.renderImage()}
-        </BoostImgDiv>
+        <BoostImgDiv>{this.renderImage()}</BoostImgDiv>
         <BoostFlexStartMobile>
-          <BoostImgDivMobile>
-            {this.renderImage()}
-          </BoostImgDivMobile>
+          <BoostImgDivMobile>{this.renderImage()}</BoostImgDivMobile>
           <BoostNewsroomInfo>
             <BoostNewsroomName>{this.props.newsroomData.name}</BoostNewsroomName>
             {this.props.open && (
