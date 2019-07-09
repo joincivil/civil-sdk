@@ -187,7 +187,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         ? { ...props.initialBoostData }
         : {
             about: props.newsroomTagline,
-            items: [{ item: "", cost: 0 }],
+            items: [{ item: "", cost: undefined }],
           },
     };
   }
@@ -450,7 +450,11 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                       icon={<>$</>}
                       name="cost"
                       type="number"
-                      value={"" + (this.state.boost.items![i].cost || "")}
+                      value={
+                        typeof this.state.boost.items![i].cost === "undefined"
+                          ? ""
+                          : "" + this.state.boost.items![i].cost
+                      }
                       onChange={this.onItemInputChange.bind(this, i)}
                       disabled={this.props.editMode}
                     />
@@ -528,9 +532,10 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
     let goalAmount = this.state.boost.goalAmount || 0;
     if (name === "cost") {
-      const oldVal = items[i][name] || 0;
-      items[i][name] = parseFloat(val);
-      goalAmount = goalAmount - oldVal + items[i][name];
+      const oldCost = items[i][name] || 0;
+      const newCost = parseFloat(val || "0");
+      items[i][name] = newCost;
+      goalAmount = goalAmount - oldCost + newCost;
     } else {
       items[i][name] = val;
     }
