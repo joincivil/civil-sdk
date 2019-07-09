@@ -25,8 +25,9 @@ export interface BoostCardProps {
   newsroomData: BoostNewsroomData;
   open: boolean;
   boostId: string;
-  boostOwner?: boolean;
   paymentSuccess: boolean;
+  boostOwner?: boolean;
+  disableHelmet?: boolean;
   handlePayments(): void;
 }
 
@@ -39,16 +40,18 @@ export class BoostCard extends React.Component<BoostCardProps> {
 
     return (
       <>
-        <HelmetHelper
-          title={`${this.props.boostData.title} - ${this.props.newsroomData.name} - The Civil Registry`}
-          description={this.props.boostData.about}
-          image={boostCardImage}
-          meta={{
-            "og:site_name": "Civil Registry",
-            "og:type": "website",
-            "twitter:card": "summary",
-          }}
-        />
+        {!this.props.disableHelmet && (
+          <HelmetHelper
+            title={`${this.props.boostData.title} - ${this.props.newsroomData.name} - The Civil Registry`}
+            description={this.props.boostData.about}
+            image={boostCardImage}
+            meta={{
+              "og:site_name": "Civil Registry",
+              "og:type": "website",
+              "twitter:card": "summary",
+            }}
+          />
+        )}
 
         {this.props.boostOwner && timeEnded && (
           <BoostNotificationContain>
