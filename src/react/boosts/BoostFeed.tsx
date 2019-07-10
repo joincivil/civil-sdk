@@ -5,12 +5,15 @@ import { BoostCard } from "./BoostCard";
 import { boostFeedQuery, boostNewsroomQuery } from "./queries";
 import { BoostNewsroomData } from "./types";
 import { BoostWrapper } from "./BoostStyledComponents";
+import { NoBoostsText } from "./BoostTextComponents";
 import * as boostCardImage from "../../images/boost-card.png";
 
-export const BoostFeed: React.FunctionComponent = () => {
-  const search = {
-    postType: "boost",
-  };
+export interface BoostFeedProps {
+  search?: any;
+}
+
+export const BoostFeed: React.FunctionComponent<BoostFeedProps> = props => {
+  const search = props.search || { postType: "boost" };
 
   return (
     <>
@@ -33,6 +36,10 @@ export const BoostFeed: React.FunctionComponent = () => {
           } else if (feedQueryError || !feedQueryData || !feedQueryData.postsSearch) {
             console.error("error loading Boost feed data. error:", feedQueryError, "data:", feedQueryData);
             return "Error loading Boosts.";
+          }
+
+          if (!feedQueryData.postsSearch.posts.length) {
+            return <NoBoostsText />;
           }
 
           return feedQueryData.postsSearch.posts.map((boostData: any, i: number) => (

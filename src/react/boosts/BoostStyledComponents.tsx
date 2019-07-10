@@ -642,3 +642,10 @@ export const BoostNotification = styled.div`
     vertical-align: sub;
   }
 `;
+
+export const NoBoostsTextStyled = styled.p`
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 33px;
+  text-align: center;
+`;
