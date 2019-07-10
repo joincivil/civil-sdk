@@ -11,8 +11,13 @@ import {
   BoostModalHeader,
   BoostModalContent,
   BoostNotification,
+  NoBoostsTextStyled,
 } from "./BoostStyledComponents";
 import { urlConstants } from "../urlConstants";
+
+export const NoBoostsText: React.FunctionComponent = props => (
+  <NoBoostsTextStyled>There are no Boosts at this time.</NoBoostsTextStyled>
+);
 
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>
