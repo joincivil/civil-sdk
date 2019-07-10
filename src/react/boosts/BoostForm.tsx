@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Prompt } from "react-router";
 import styled from "styled-components";
 import {
   colors,
@@ -194,15 +195,13 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
   }
 
   public async componentDidMount(): Promise<void> {
-    // If changes have been made, and boost create/update is not complete, show "are you sure you want to leave?" prompt
-    window.onbeforeunload = () => {
-      return this.state.changesMade && !this.state.success;
-    };
+    // If changes have been made, and boost create/update is not complete, show "are you sure you want to leave?" prompt. See also <Prompt> component with same check for react router below.
+    window.addEventListener("beforeunload", this.beforeUnloadHandler);
   }
 
   public componentWillUnmount(): void {
-    // Remove "are you sure you want to leave?" prompt
-    window.onbeforeunload = null;
+    // Remove "are you sure you want to leave?" prompt.
+    window.removeEventListener("beforeunload", this.beforeUnloadHandler);
   }
 
   public render(): JSX.Element {
@@ -313,6 +312,10 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         {mutation => {
           return (
             <form onSubmit={async event => this.handleSubmit(event, mutation)}>
+              <Prompt
+                when={!!this.beforeUnloadHandler()}
+                message={"Are you sure you want to leave this page? Your Boost will not be saved."}
+              />
               <BoostWrapper>
                 <BoostImgDiv>
                   {this.props.newsroomLogoUrl ? (
@@ -626,4 +629,14 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
     this.setState({ loading: false });
   }
+
+  private beforeUnloadHandler = (event?: BeforeUnloadEvent): boolean | undefined => {
+    if (this.state.changesMade && !this.state.success) {
+      if (event) {
+        event.preventDefault(); // specification
+        event.returnValue = ""; // some Chrome
+      }
+      return true; // what most browsers actually use
+    }
+  };
 }
