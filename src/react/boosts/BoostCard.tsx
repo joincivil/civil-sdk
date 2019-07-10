@@ -158,7 +158,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
     let timeRemaining;
 
     if (timeRemainingSeconds <= 0) {
-      return timeRemaining = "Boost Ended";
+      return (timeRemaining = "Boost Ended");
     }
 
     const days = Math.floor(timeRemainingSeconds / (3600 * 24));
