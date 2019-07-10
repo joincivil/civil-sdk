@@ -7,10 +7,10 @@ import { BoostForm } from "./BoostForm";
 import { BoostPayments } from "./payments/BoostPayments";
 import { BoostWrapper } from "./BoostStyledComponents";
 import { NewsroomWithdraw } from "../NewsroomWithdraw";
-import { EthAddress, NewsroomInstance } from "@joincivil/core";
-import { LoadingMessage, CivilContext, ICivilContext } from "@joincivil/components";
+import { withBoostPermissions, BoostPermissionsInjectedProps } from "./BoostPermissionsHOC";
+import { LoadingMessage } from "@joincivil/components";
 
-export interface BoostProps {
+export interface BoostInternalProps {
   history?: any;
   boostId: string;
   open: boolean;
@@ -19,51 +19,20 @@ export interface BoostProps {
   editMode?: boolean;
 }
 
+export type BoostProps = BoostInternalProps & BoostPermissionsInjectedProps;
+
 export interface BoostState {
   payment: boolean;
   paymentSuccess: boolean;
-  boostOwner?: boolean;
-  walletConnected: boolean;
-  checkingIfOwner?: boolean;
-  newsroomAddress?: EthAddress;
-  userEthAddress?: EthAddress;
-  newsroomOwners?: EthAddress[];
-  newsroom?: NewsroomInstance;
 }
 
-export class Boost extends React.Component<BoostProps, BoostState> {
-  public static contextType: React.Context<ICivilContext> = CivilContext;
-  public context!: React.ContextType<typeof CivilContext>;
-
+class BoostComponent extends React.Component<BoostProps, BoostState> {
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
       payment: false,
       paymentSuccess: false,
-      checkingIfOwner: props.editMode, // don't need to display loading state for owner checking if not edit mode, because view only changes slightly in that case
-      walletConnected: false,
     };
-  }
-
-  public async componentDidMount(): Promise<void> {
-    // @TODO/loginV2 migrate away from window.ethereum
-    if ((window as any).ethereum) {
-      await (window as any).ethereum.enable();
-      await this.getUserEthAddress();
-    } else {
-      this.setState({
-        checkingIfOwner: false,
-      });
-    }
-  }
-
-  public async componentDidUpdate(prevProps: BoostProps, prevState: BoostState): Promise<void> {
-    if (
-      prevState.userEthAddress !== this.state.userEthAddress ||
-      prevState.newsroomAddress !== this.state.newsroomAddress
-    ) {
-      await this.checkIfBoostOwner();
-    }
   }
 
   public render(): JSX.Element {
@@ -94,14 +63,8 @@ export class Boost extends React.Component<BoostProps, BoostState> {
           const boostData = data.postsGet as BoostData;
           const newsroomAddress = boostData.channelID;
 
-          // @HACK/tobek: Bad form to call setState from render (putting in setImmediate to remove React warning) but the conditional prevents an infinite loop, and the only alternative is to use `withApollo` and get apollo client as prop and call this query on `componentDidMount` or something, which is an annoying refactor right now.
-          if (this.state.newsroomAddress !== newsroomAddress) {
-            setImmediate(() => {
-              this.setState({
-                newsroomAddress,
-              });
-            });
-          }
+          // Set up boost permissions checks HOC:
+          this.props.setNewsroomAddress(newsroomAddress);
 
           return (
             <Query query={boostNewsroomQuery} variables={{ addr: newsroomAddress }}>
@@ -137,7 +100,7 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                       amount={20}
                       newsroomName={newsroomData.name}
                       paymentAddr={newsroomData.owner}
-                      walletConnected={this.state.walletConnected}
+                      walletConnected={!!this.props.walletConnected}
                       handleBackToListing={this.handleBackToListing}
                       handlePaymentSuccess={this.handlePaymentSuccess}
                     />
@@ -147,13 +110,13 @@ export class Boost extends React.Component<BoostProps, BoostState> {
                 return (
                   <>
                     {/*@TODO/tobek Move to Newsroom Boosts page when we have that.*/}
-                    {this.props.open && this.state.newsroom && this.state.boostOwner && (
-                      <NewsroomWithdraw newsroom={this.state.newsroom} />
+                    {this.props.open && this.props.newsroom && this.props.boostOwner && (
+                      <NewsroomWithdraw newsroom={this.props.newsroom} />
                     )}
                     <BoostCard
                       boostData={boostData}
                       newsroomData={newsroomData}
-                      boostOwner={this.state.boostOwner}
+                      boostOwner={this.props.boostOwner}
                       open={this.props.open}
                       boostId={id}
                       disableHelmet={this.props.disableHelmet}
@@ -172,49 +135,6 @@ export class Boost extends React.Component<BoostProps, BoostState> {
 
   private renderEditMode(boostData: BoostData, newsroomData: BoostNewsroomData): JSX.Element {
     const listingUrl = "https://registry.civil.co/listing/" + boostData.channelID;
-
-    if (this.state.checkingIfOwner) {
-      return (
-        <BoostWrapper open={this.props.open}>
-          <LoadingMessage>Loading Permissions</LoadingMessage>
-        </BoostWrapper>
-      );
-    }
-    if (!this.state.boostOwner) {
-      if (!this.state.userEthAddress) {
-        return (
-          <BoostWrapper open={this.props.open}>
-            Please connect your Ethereum account via a browser wallet such as MetaMask so that we can verify your
-            ability to edit this Boost.
-          </BoostWrapper>
-        );
-      }
-      return (
-        <BoostWrapper open={this.props.open}>
-          <p>
-            Your ETH address <code>{this.state.userEthAddress}</code> doesn't have permissions to edit this newsroom's
-            Boost, which is owned by the following address(es):
-          </p>
-          {this.state.newsroomOwners && (
-            <ul>
-              {this.state.newsroomOwners.map(owner => (
-                <li key={owner}>
-                  <code>{owner}</code>
-                </li>
-              ))}
-            </ul>
-          )}
-          <p>
-            If you own one of these wallets, please switch to it. Otherwise, please request that one of these officers
-            add you to the newsroom contract.
-          </p>
-          <p>
-            <a href={listingUrl}>View newsroom information.</a>
-          </p>
-        </BoostWrapper>
-      );
-    }
-
     return (
       <BoostForm
         editMode={true}
@@ -238,51 +158,6 @@ export class Boost extends React.Component<BoostProps, BoostState> {
   private handleBackToListing = () => {
     this.setState({ payment: false });
   };
-
-  private async getUserEthAddress(): Promise<void> {
-    if (this.props.disableOwnerCheck) {
-      return;
-    }
-
-    let user;
-    if (this.context.civil) {
-      user = await this.context.civil.accountStream.first().toPromise();
-
-      if (user) {
-        this.setState({
-          walletConnected: true,
-          userEthAddress: user,
-        });
-      } else {
-        this.setState({
-          walletConnected: true,
-        });
-      }
-    }
-
-    if (!user) {
-      this.setState({
-        checkingIfOwner: false,
-        boostOwner: false,
-      });
-    }
-  }
-
-  private async checkIfBoostOwner(): Promise<void> {
-    if (this.props.disableOwnerCheck) {
-      return;
-    }
-
-    if (this.state.userEthAddress && this.state.newsroomAddress && this.context.civil) {
-      const newsroom = await this.context.civil.newsroomAtUntrusted(this.state.newsroomAddress);
-      const newsroomOwners = (await newsroom.getNewsroomData()).owners;
-
-      this.setState({
-        checkingIfOwner: false,
-        boostOwner: newsroomOwners && newsroomOwners.indexOf(this.state.userEthAddress) !== -1,
-        newsroomOwners,
-        newsroom,
-      });
-    }
-  }
 }
+
+export const Boost = withBoostPermissions(BoostComponent);
