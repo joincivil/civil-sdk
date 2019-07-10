@@ -155,13 +155,17 @@ export class BoostCard extends React.Component<BoostCardProps> {
     const endDate = Date.parse(dateEnd);
     const currentDate = Date.now();
     let timeRemainingSeconds = (endDate - currentDate) / 1000;
+    let timeRemaining;
+
+    if (timeRemainingSeconds <= 0) {
+      return timeRemaining = "Boost Ended";
+    }
 
     const days = Math.floor(timeRemainingSeconds / (3600 * 24));
     timeRemainingSeconds -= days * 3600 * 24;
     const hours = Math.floor(timeRemainingSeconds / 3600);
     timeRemainingSeconds -= hours * 3600;
     const mins = Math.floor(timeRemainingSeconds / 60);
-    let timeRemaining;
 
     if (days >= 1) {
       timeRemaining = days === 1 ? "1 day left" : days + " days left";
