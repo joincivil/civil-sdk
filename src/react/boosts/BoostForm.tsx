@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Prompt } from "react-router";
 import styled from "styled-components";
 import {
   colors,
@@ -173,6 +174,7 @@ export interface BoostFormProps {
 }
 export interface BoostFormState {
   boost: Partial<BoostData>;
+  changesMade?: boolean;
   createdBoostId?: string;
   loading?: boolean;
   success?: boolean;
@@ -187,9 +189,19 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         ? { ...props.initialBoostData }
         : {
             about: props.newsroomTagline,
-            items: [{ item: "", cost: 0 }],
+            items: [{ item: "", cost: undefined }],
           },
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    // If changes have been made, and boost create/update is not complete, show "are you sure you want to leave?" prompt. See also <Prompt> component with same check for react router below.
+    window.addEventListener("beforeunload", this.beforeUnloadHandler);
+  }
+
+  public componentWillUnmount(): void {
+    // Remove "are you sure you want to leave?" prompt.
+    window.removeEventListener("beforeunload", this.beforeUnloadHandler);
   }
 
   public render(): JSX.Element {
@@ -300,6 +312,10 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         {mutation => {
           return (
             <form onSubmit={async event => this.handleSubmit(event, mutation)}>
+              <Prompt
+                when={!!this.beforeUnloadHandler()}
+                message={"Are you sure you want to leave this page? Your Boost will not be saved."}
+              />
               <BoostWrapper>
                 <BoostImgDiv>
                   {this.props.newsroomLogoUrl ? (
@@ -450,7 +466,11 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
                       icon={<>$</>}
                       name="cost"
                       type="number"
-                      value={"" + (this.state.boost.items![i].cost || "")}
+                      value={
+                        typeof this.state.boost.items![i].cost === "undefined"
+                          ? ""
+                          : "" + this.state.boost.items![i].cost
+                      }
                       onChange={this.onItemInputChange.bind(this, i)}
                       disabled={this.props.editMode}
                     />
@@ -510,6 +530,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         ...this.state.boost,
         [name]: val,
       },
+      changesMade: true,
     });
   };
 
@@ -528,9 +549,10 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
     let goalAmount = this.state.boost.goalAmount || 0;
     if (name === "cost") {
-      const oldVal = items[i][name] || 0;
-      items[i][name] = parseFloat(val);
-      goalAmount = goalAmount - oldVal + items[i][name];
+      const oldCost = items[i][name] || 0;
+      const newCost = parseFloat(val || "0");
+      items[i][name] = newCost;
+      goalAmount = goalAmount - oldCost + newCost;
     } else {
       items[i][name] = val;
     }
@@ -541,6 +563,7 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
         goalAmount,
         items,
       },
+      changesMade: true,
     });
   };
 
@@ -606,4 +629,14 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
 
     this.setState({ loading: false });
   }
+
+  private beforeUnloadHandler = (event?: BeforeUnloadEvent): boolean | undefined => {
+    if (this.state.changesMade && !this.state.success) {
+      if (event) {
+        event.preventDefault(); // specification
+        event.returnValue = ""; // some Chrome
+      }
+      return true; // what most browsers actually use
+    }
+  };
 }

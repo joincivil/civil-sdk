@@ -80,6 +80,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
             newsroomAddress={newsroomAddress}
             charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri}
             newsroomData={this.props.newsroomData}
+            disableHelmet={this.props.disableHelmet}
           />
 
           <BoostFlexStart>

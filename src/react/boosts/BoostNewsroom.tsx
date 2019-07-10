@@ -32,6 +32,7 @@ export interface BoostNewsroomProps {
   charterUri?: string;
   newsroomAddress: string;
   newsroomData: BoostNewsroomData;
+  disableHelmet?: boolean;
 }
 
 export interface BoostNewsroomState {
@@ -61,9 +62,10 @@ export class BoostNewsroom extends React.Component<BoostNewsroomProps, BoostNews
     return (
       <>
         {/*data URIs are invalid for fb/twitter cards, so only put image in there if http URL:*/}
-        {this.state.charter && this.state.charter.logoUrl && this.state.charter.logoUrl.indexOf("http") === 0 && (
-          <HelmetHelper image={this.state.charter.logoUrl} />
-        )}
+        {!this.props.disableHelmet &&
+          this.state.charter &&
+          this.state.charter.logoUrl &&
+          this.state.charter.logoUrl.indexOf("http") === 0 && <HelmetHelper image={this.state.charter.logoUrl} />}
 
         <BoostImgDiv>{this.renderImage()}</BoostImgDiv>
         <BoostFlexStartMobile>

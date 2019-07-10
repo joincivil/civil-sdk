@@ -12,7 +12,7 @@ export interface BoostData {
 
 export interface BoostCostItem {
   item: string;
-  cost: number;
+  cost?: number;
 }
 
 export interface BoostNewsroomData {
