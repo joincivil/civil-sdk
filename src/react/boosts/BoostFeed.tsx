@@ -10,12 +10,10 @@ import * as boostCardImage from "../../images/boost-card.png";
 
 export interface BoostFeedProps {
   search?: any;
-  noBoostText?: string | JSX.Element;
 }
 
 export const BoostFeed: React.FunctionComponent<BoostFeedProps> = props => {
   const search = props.search || { postType: "boost" };
-  const noBoostText = props.noBoostText || <NoBoostsText />;
 
   return (
     <>
@@ -41,7 +39,7 @@ export const BoostFeed: React.FunctionComponent<BoostFeedProps> = props => {
           }
 
           if (!feedQueryData.postsSearch.posts.length) {
-            return { noBoostText };
+            return <NoBoostsText />;
           }
 
           return feedQueryData.postsSearch.posts.map((boostData: any, i: number) => (
