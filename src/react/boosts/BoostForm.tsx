@@ -31,6 +31,7 @@ import {
 import { BoostImg } from "./BoostImg";
 import { urlConstants } from "../urlConstants";
 import * as boostCardImage from "../../images/boost-card.png";
+import { withBoostPermissions, BoostPermissionsInjectedProps } from "./BoostPermissionsHOC";
 
 const PageWrapper = styled.div`
   color: ${colors.primary.CIVIL_GRAY_0};
@@ -162,7 +163,7 @@ const LaunchButton = styled(Button)`
   width: 190px;
 `;
 
-export interface BoostFormProps {
+export interface BoostFormInnerProps {
   newsroomData: BoostNewsroomData;
   newsroomAddress: string;
   newsroomListingUrl: string;
@@ -172,6 +173,8 @@ export interface BoostFormProps {
   editMode?: boolean;
   boostId?: string;
 }
+export type BoostFormProps = BoostFormInnerProps & BoostPermissionsInjectedProps;
+
 export interface BoostFormState {
   boost: Partial<BoostData>;
   changesMade?: boolean;
@@ -181,7 +184,7 @@ export interface BoostFormState {
   error?: string;
 }
 
-export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
+class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState> {
   constructor(props: BoostFormProps) {
     super(props);
     this.state = {
@@ -195,6 +198,9 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
   }
 
   public async componentDidMount(): Promise<void> {
+    // Set up boost permissions checks HOC:
+    this.props.setNewsroomAddress(this.props.newsroomAddress);
+
     // If changes have been made, and boost create/update is not complete, show "are you sure you want to leave?" prompt. See also <Prompt> component with same check for react router below.
     window.addEventListener("beforeunload", this.beforeUnloadHandler);
   }
@@ -640,3 +646,5 @@ export class BoostForm extends React.Component<BoostFormProps, BoostFormState> {
     }
   };
 }
+
+export const BoostForm = withBoostPermissions(BoostFormComponent, true);
