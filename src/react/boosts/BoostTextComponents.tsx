@@ -35,7 +35,9 @@ export const WhyEthModalText: React.FunctionComponent = props => (
       included on the Ethereum blockchain.
     </BoostModalContent>
     <BoostModalContent>
-      <a href={urlConstants.FAQ_BOOST_SUPPORTERS}>Learn more about how to get ETH and support Boosts on our FAQ.</a>
+      <a target="_blank" href={urlConstants.FAQ_BOOST_SUPPORTERS}>
+        Learn more about how to get ETH and support Boosts on our FAQ.
+      </a>
     </BoostModalContent>
   </>
 );
@@ -57,7 +59,9 @@ export const WhatIsEthModalText: React.FunctionComponent = props => (
       Ethereum miners who perform the computational work for your content to be included on the Ethereum blockchain.
     </BoostModalContent>
     <BoostModalContent>
-      <a href={urlConstants.FAQ_BOOST_SUPPORTERS}>Learn more about how to get ETH and support Boosts on our FAQ.</a>
+      <a target="_blank" href={urlConstants.FAQ_BOOST_SUPPORTERS}>
+        Learn more about how to get ETH and support Boosts on our FAQ.
+      </a>
     </BoostModalContent>
   </>
 );
@@ -77,7 +81,7 @@ export const BoostMobileWalletModalText: React.FunctionComponent = props => (
         Alpha Wallet
       </a>*/}. If you'd like
       help getting a wallet, take a look at our{" "}
-      <a href={urlConstants.FAQ_WALLETS} target="_blank">
+      <a target="_blank" href={urlConstants.FAQ_WALLETS}>
         FAQ Guide
       </a>
       .
@@ -107,7 +111,9 @@ export const CanUseCVLText: React.FunctionComponent = props => (
       or appealing the outcome of a community vote to the Civil Council.
     </BoostModalContent>
     <BoostModalContent>
-      <a href={urlConstants.FAQ_CVL_TOKENS}>Learn more about Civil tokens</a>
+      <a target="_blank" href={urlConstants.FAQ_CVL_TOKENS}>
+        Learn more about Civil tokens
+      </a>
     </BoostModalContent>
   </>
 );
@@ -125,12 +131,18 @@ export const PaymentInfoText: React.FunctionComponent = props => (
 export const PaymentFAQText: React.FunctionComponent = props => (
   <>
     <h3>Frequently Asked Questions</h3>
-    <a href={urlConstants.FAQ_BOOST_HOW_TO_SUPPORT}>How do I support a Boost?</a>
-    <a href={urlConstants.FAQ_BOOST_WHEN_CHARGED}>When is my payment charged?</a>
-    <a href={urlConstants.FAQ_BOOST_CHARGED_IF_BOOST_FAILS}>
+    <a target="_blank" href={urlConstants.FAQ_BOOST_HOW_TO_SUPPORT}>
+      How do I support a Boost?
+    </a>
+    <a target="_blank" href={urlConstants.FAQ_BOOST_WHEN_CHARGED}>
+      When is my payment charged?
+    </a>
+    <a target="_blank" href={urlConstants.FAQ_BOOST_CHARGED_IF_BOOST_FAILS}>
       Am I still charged even if the Boost does not hit its target date?
     </a>
-    <a href={urlConstants.FAQ_BOOST_WHAT_PAYMENT_DATA}>What information can others see about my payment?</a>
+    <a target="_blank" href={urlConstants.FAQ_BOOST_WHAT_PAYMENT_DATA}>
+      What information can others see about my payment?
+    </a>
   </>
 );
 

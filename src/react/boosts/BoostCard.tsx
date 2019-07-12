@@ -141,7 +141,9 @@ export class BoostCard extends React.Component<BoostCardProps> {
               <BoostDescription>
                 <h3>Questions about Boosts?</h3>
                 <p>
-                  <a href={urlConstants.FAQ_BOOSTS}>Learn more in our FAQ</a>
+                  <a target="_blank" href={urlConstants.FAQ_BOOSTS}>
+                    Learn more in our FAQ
+                  </a>
                 </p>
               </BoostDescription>
             </>

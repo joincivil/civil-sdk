@@ -14,7 +14,7 @@ export const BoostCompleted: React.FunctionComponent<BoostCompletedProps> = prop
           <h3>Congratulations!</h3>
           <p>Your Boost reached its goal. Here are some next steps for you to take:</p>
           <p>
-            <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>
+            <a target="_blank" href={urlConstants.FAQ_BOOST_WITHDRAWL}>
               Learn how to withdraw money from your newsroom wallet and exchange ETH for fiat
             </a>
           </p>
@@ -27,7 +27,7 @@ export const BoostCompleted: React.FunctionComponent<BoostCompletedProps> = prop
             from your contributors. Here are some next steps for you to take:
           </p>
           <p>
-            <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>
+            <a target="_blank" href={urlConstants.FAQ_BOOST_WITHDRAWL}>
               Learn how to withdraw money from your newsroom wallet and exchange ETH for fiat
             </a>
           </p>
