@@ -120,7 +120,9 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
             exchange ETH for fiat currency. Reminder: only Newsroom Officers can access the Newsroom Wallet.
           </p>
           <p>
-            <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>Learn More &gt;</a>
+            <a target="_blank" href={urlConstants.FAQ_BOOST_WITHDRAWL}>
+              Learn&nbsp;More&nbsp;&gt;
+            </a>
           </p>
         </Copy>
         <BalanceAndButton>

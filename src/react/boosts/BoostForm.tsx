@@ -362,7 +362,9 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                 <p>
                   Funds from your Boost will be deposited into the Newsroom Wallet. A Newsroom Officer will be able to
                   widthdraw from the newsroom wallet and either deposit or exchange them into other currencies.{" "}
-                  <a href={urlConstants.FAQ_BOOST_WITHDRAWL}>Learn more</a>
+                  <a target="_blank" href={urlConstants.FAQ_BOOST_WITHDRAWL}>
+                    Learn&nbsp;more
+                  </a>
                 </p>
 
                 <BoostWrapperFullWidthHr />
