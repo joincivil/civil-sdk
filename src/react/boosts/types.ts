@@ -19,6 +19,7 @@ export interface BoostNewsroomData {
   name: string;
   url: string;
   owner: string;
+  whitelisted: boolean;
   charter?: {
     uri: string;
   };
