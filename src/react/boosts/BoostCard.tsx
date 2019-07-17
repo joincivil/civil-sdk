@@ -37,6 +37,11 @@ export class BoostCard extends React.Component<BoostCardProps> {
     const timeEnded = timeRemaining === "Boost Ended";
     const goalReached = this.props.boostData.paymentsTotal >= this.props.boostData.goalAmount;
     const newsroomAddress = this.props.boostData.channelID;
+    let btnText = "Support";
+    if (timeEnded) {
+      btnText = "Boost Ended";
+    }
+    const btnDisabled = timeEnded || !this.props.newsroomData.whitelisted;
 
     return (
       <>
@@ -93,11 +98,19 @@ export class BoostCard extends React.Component<BoostCardProps> {
               />
             </BoostProgressCol>
             {this.props.open && (
-              <BoostButton disabled={timeEnded} onClick={() => this.props.handlePayments()}>
-                {timeEnded ? "Boost Ended" : "Support"}
+              <BoostButton disabled={btnDisabled} onClick={() => this.props.handlePayments()}>
+                {btnText}
               </BoostButton>
             )}
           </BoostFlexStart>
+          {this.props.open && !this.props.newsroomData.whitelisted && (
+            <>
+              <BoostNotice>
+                The newsroom that created this boost has been removed from the registry, so users can no longer support
+                it via this boost.
+              </BoostNotice>
+            </>
+          )}
           {this.props.open && (
             <>
               <BoostNotice>
