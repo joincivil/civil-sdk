@@ -7,7 +7,8 @@ Getting Started
 .. toctree::
    :maxdepth: 2
 
-   install/getting_started 
+   install/getting_started
+   civil_sdk_package
 
 Lockbox
 ==================
