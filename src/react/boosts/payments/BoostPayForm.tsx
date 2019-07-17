@@ -143,7 +143,7 @@ export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFor
                 transactions={[
                   {
                     transaction: this.sendPayment,
-                    postTransaction: this.handleTransactionHash,
+                    handleTransactionHash: this.handleTransactionHash,
                   },
                 ]}
                 modalContentComponents={PAY_MODAL_COMPONENTS}
