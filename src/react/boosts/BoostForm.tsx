@@ -165,7 +165,7 @@ const LaunchButton = styled(Button)`
 
 export interface BoostFormInnerProps {
   newsroomData: BoostNewsroomData;
-  newsroomAddress: string;
+  newsroomContractAddress: string;
   newsroomListingUrl: string;
   newsroomLogoUrl?: string;
   newsroomTagline?: string;
@@ -199,7 +199,7 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
 
   public async componentDidMount(): Promise<void> {
     // Set up boost permissions checks HOC:
-    this.props.setNewsroomAddress(this.props.newsroomAddress);
+    this.props.setNewsroomContractAddress(this.props.newsroomContractAddress);
 
     // If changes have been made, and boost create/update is not complete, show "are you sure you want to leave?" prompt. See also <Prompt> component with same check for react router below.
     window.addEventListener("beforeunload", this.beforeUnloadHandler);
@@ -240,7 +240,7 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
             }
 
             return (
-              <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomAddress }}>
+              <Query query={boostNewsroomQuery} variables={{ addr: this.props.newsroomContractAddress }}>
                 {({ loading, error, data }) => {
                   if (loading) {
                     return (
@@ -249,7 +249,11 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                       </BoostWrapper>
                     );
                   } else if (error || !data) {
-                    console.error(`error querying newsroom data for ${this.props.newsroomAddress}:`, error, data);
+                    console.error(
+                      `error querying newsroom data for ${this.props.newsroomContractAddress}:`,
+                      error,
+                      data,
+                    );
                     return (
                       <Error>
                         Error retrieving newsroom data: {error ? JSON.stringify(error) : "no listing data found"}
@@ -606,7 +610,7 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
       const response = await mutation({
         variables: {
           input: {
-            channelID: this.props.newsroomAddress,
+            channelID: this.props.newsroomContractAddress, // @TODO(sruddy) channelID will need to be updated when mutation is ready
             currencyCode: "usd", // @TODO/tobek Is this right? Why is it required, should endpoint default to usd?
             title: boost.title,
             why: boost.why,
