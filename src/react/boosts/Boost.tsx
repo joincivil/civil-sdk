@@ -148,17 +148,22 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
     );
   }
 
-  private startPayment = (boostId: string) => {
-    this.setState({ payment: true });
-    this.props.history.push(`/boosts/${boostId}/payment`);
+  private startPayment = () => {
+    this.props.history.push("/boosts/" + this.props.boostId + "/payment");
   };
 
   private handlePaymentSuccess = () => {
-    this.setState({ payment: false, paymentSuccess: true });
+    this.props.history.push({
+      pathname: "/boosts/" + this.props.boostId,
+      state: { payment: false, paymentSuccess: true },
+    });
   };
 
   private handleBackToListing = () => {
-    this.setState({ payment: false });
+    this.props.history.push({
+      pathname: "/boosts/" + this.props.boostId,
+      state: { payment: false },
+    });
   };
 }
 

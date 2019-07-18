@@ -28,7 +28,7 @@ export interface BoostCardProps {
   paymentSuccess: boolean;
   boostOwner?: boolean;
   disableHelmet?: boolean;
-  handlePayments(boostId: string): void;
+  handlePayments(): void;
 }
 
 export class BoostCard extends React.Component<BoostCardProps> {
@@ -98,7 +98,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
               />
             </BoostProgressCol>
             {this.props.open && (
-              <BoostButton disabled={btnDisabled} onClick={() => this.props.handlePayments(this.props.boostId)}>
+              <BoostButton disabled={btnDisabled} onClick={() => this.props.handlePayments()}>
                 {btnText}
               </BoostButton>
             )}
