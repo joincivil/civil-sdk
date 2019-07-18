@@ -12,8 +12,8 @@ export interface BoostData {
     channelType: string;
     newsroom: {
       contractAddress: string;
-    }
-  }
+    };
+  };
   items: BoostCostItem[];
 }
 

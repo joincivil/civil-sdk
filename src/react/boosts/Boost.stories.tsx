@@ -27,8 +27,8 @@ const boost = {
     channelType: "",
     newsroom: {
       contractAddress: "0xabc123",
-    }
-  }
+    },
+  },
 };
 
 const typeDefs = `
