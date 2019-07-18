@@ -17,6 +17,7 @@ export interface BoostInternalProps {
   disableOwnerCheck?: boolean;
   disableHelmet?: boolean;
   editMode?: boolean;
+  payment?: boolean;
 }
 
 export type BoostProps = BoostInternalProps & BoostPermissionsInjectedProps;
@@ -30,7 +31,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
-      payment: false,
+      payment: this.props.payment || false,
       paymentSuccess: false,
     };
   }
@@ -147,8 +148,9 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
     );
   }
 
-  private startPayment = () => {
+  private startPayment = (boostId: string) => {
     this.setState({ payment: true });
+    this.props.history.push(`/boosts/${boostId}/payment`);
   };
 
   private handlePaymentSuccess = () => {
