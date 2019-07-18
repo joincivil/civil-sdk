@@ -50,6 +50,7 @@ export interface BoostPayEthStates {
   modalContent: string;
   etherToSpend: number;
   usdToSpend: number;
+  notEnoughEthError: boolean;
 }
 
 export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthStates> {
@@ -61,6 +62,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
       modalContent: "",
       etherToSpend: this.props.etherToSpend || 0,
       usdToSpend: this.props.usdToSpend || 0,
+      notEnoughEthError: false,
     };
   }
 
@@ -104,7 +106,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
 
   private getPaymentAmount = () => {
     let disableBtn;
-    if (!this.props.walletConnected || this.state.usdToSpend <= 0) {
+    if (!this.props.walletConnected || this.state.usdToSpend <= 0 || this.state.notEnoughEthError) {
       disableBtn = true;
     } else {
       disableBtn = false;
@@ -122,7 +124,10 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           </LearnMore>
           <h3>Boost Amount</h3>
           <BoostFlexEth>
-            <UsdEthConverter onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)} />
+            <UsdEthConverter
+              onNotEnoughEthError={(error: boolean) => this.notEnoughEthError(error)}
+              onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)}
+            />
             <BoostButton
               disabled={disableBtn}
               onClick={() => this.props.handleNext(this.state.etherToSpend, this.state.usdToSpend)}
@@ -157,6 +162,10 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
         </BoostEthConfirm>
       </BoostPayCardDetails>
     );
+  };
+
+  private notEnoughEthError = (error: boolean) => {
+    this.setState({ notEnoughEthError: error });
   };
 
   private showMobileWalletModal = () => {
