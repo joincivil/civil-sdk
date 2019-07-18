@@ -7,6 +7,13 @@ export interface BoostData {
   what: string;
   about: string;
   channelID: string;
+  channel: {
+    id: string;
+    channelType: string;
+    newsroom: {
+      contractAddress: string;
+    };
+  };
   items: BoostCostItem[];
 }
 

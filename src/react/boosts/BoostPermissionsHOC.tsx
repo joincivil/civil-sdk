@@ -12,7 +12,7 @@ export interface BoostPermissionsInjectedProps {
   boostOwner?: boolean;
   walletConnected?: boolean;
   newsroom?: NewsroomInstance;
-  setNewsroomAddress(address: EthAddress): void;
+  setNewsroomContractAddress(address: EthAddress): void;
 }
 
 export interface BoostPermissionsState {
@@ -23,10 +23,10 @@ export interface BoostPermissionsState {
   userEthAddress?: EthAddress;
   newsroomOwners?: EthAddress[];
   newsroom?: NewsroomInstance;
-  newsroomAddress?: EthAddress;
+  newsroomContractAddress?: EthAddress;
 }
 
-/** Usage: Wrap component with this HOC and make sure to call the injected prop `setNewsroomAddress` with the newsroom address once that is loaded. */
+/** Usage: Wrap component with this HOC and make sure to call the injected prop `setNewsroomContractAddress` with the newsroom address once that is loaded. */
 export const withBoostPermissions = <TOriginalProps extends {}>(
   WrappedComponent: React.ComponentType<TOriginalProps & BoostPermissionsInjectedProps>,
   requirePermissions?: boolean,
@@ -69,7 +69,7 @@ export const withBoostPermissions = <TOriginalProps extends {}>(
     ): Promise<void> {
       if (
         prevState.userEthAddress !== this.state.userEthAddress ||
-        prevState.newsroomAddress !== this.state.newsroomAddress
+        prevState.newsroomContractAddress !== this.state.newsroomContractAddress
       ) {
         await this.checkIfBoostOwner();
       }
@@ -77,7 +77,7 @@ export const withBoostPermissions = <TOriginalProps extends {}>(
 
     public render(): JSX.Element {
       // If editMode/requirePermissions then entire view depends on if user is owner, so block everything and show loading or permissions messages:
-      if ((this.props.editMode || requirePermissions) && this.state.newsroomAddress) {
+      if ((this.props.editMode || requirePermissions) && this.state.newsroomContractAddress) {
         if (this.state.waitingForEthEnable) {
           return this.renderNotConnected();
         }
@@ -99,7 +99,7 @@ export const withBoostPermissions = <TOriginalProps extends {}>(
           boostOwner={this.state.boostOwner}
           walletConnected={this.state.walletConnected}
           newsroom={this.state.newsroom}
-          setNewsroomAddress={this.setNewsroomAddress}
+          setNewsroomContractAddress={this.setNewsroomContractAddress}
           {...this.props}
         />
       );
@@ -145,7 +145,9 @@ export const withBoostPermissions = <TOriginalProps extends {}>(
             add you to the newsroom contract.
           </p>
           <p>
-            <a href={"https://registry.civil.co/listing/" + this.state.newsroomAddress}>View newsroom information.</a>
+            <a href={"https://registry.civil.co/listing/" + this.state.newsroomContractAddress}>
+              View newsroom information.
+            </a>
           </p>
         </BoostWrapper>
       );
@@ -185,8 +187,8 @@ export const withBoostPermissions = <TOriginalProps extends {}>(
         return;
       }
 
-      if (this.state.userEthAddress && this.state.newsroomAddress && this.context.civil) {
-        const newsroom = await this.context.civil.newsroomAtUntrusted(this.state.newsroomAddress);
+      if (this.state.userEthAddress && this.state.newsroomContractAddress && this.context.civil) {
+        const newsroom = await this.context.civil.newsroomAtUntrusted(this.state.newsroomContractAddress);
         const newsroomOwners = (await newsroom.getNewsroomData()).owners;
 
         this.setState({
@@ -198,12 +200,12 @@ export const withBoostPermissions = <TOriginalProps extends {}>(
       }
     }
 
-    public setNewsroomAddress = (newsroomAddress: EthAddress) => {
+    public setNewsroomContractAddress = (newsroomContractAddress: EthAddress) => {
       // @HACK/tobek: This gets called from `render()` function of wrapped component because we pick it up from apollo `<Query>` component. Bad form to call setState from render (putting in setImmediate to remove React warning) but the conditional prevents an infinite loop, and the only alternative is to use `withApollo` and get apollo client as prop and call this query on `componentDidMount` in wrapped component or something, which is an annoying refactor right now.
-      if (this.state.newsroomAddress !== newsroomAddress) {
+      if (this.state.newsroomContractAddress !== newsroomContractAddress) {
         setImmediate(() => {
           this.setState({
-            newsroomAddress,
+            newsroomContractAddress,
           });
         });
       }

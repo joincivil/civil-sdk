@@ -61,13 +61,13 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
           }
 
           const boostData = data.postsGet as BoostData;
-          const newsroomAddress = boostData.channelID;
+          const newsroomContractAddress = boostData.channel.newsroom.contractAddress;
 
           // Set up boost permissions checks HOC:
-          this.props.setNewsroomAddress(newsroomAddress);
+          this.props.setNewsroomContractAddress(newsroomContractAddress);
 
           return (
-            <Query query={boostNewsroomQuery} variables={{ addr: newsroomAddress }}>
+            <Query query={boostNewsroomQuery} variables={{ addr: newsroomContractAddress }}>
               {({ loading: newsroomQueryLoading, error: newsroomQueryError, data: newsroomQueryData }) => {
                 if (newsroomQueryLoading) {
                   return (
@@ -82,7 +82,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
                       Error loading Boost newsroom data:{" "}
                       {newsroomQueryError
                         ? JSON.stringify(newsroomQueryError)
-                        : `No newsroom listing found at ${newsroomAddress}`}
+                        : `No newsroom listing found at ${newsroomContractAddress}`}
                     </BoostWrapper>
                   );
                 }
@@ -134,14 +134,14 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
   }
 
   private renderEditMode(boostData: BoostData, newsroomData: BoostNewsroomData): JSX.Element {
-    const listingUrl = "https://registry.civil.co/listing/" + boostData.channelID;
+    const listingUrl = "https://registry.civil.co/listing/" + boostData.channel.newsroom.contractAddress;
     return (
       <BoostForm
         editMode={true}
         boostId={this.props.boostId}
         initialBoostData={boostData}
         newsroomData={newsroomData}
-        newsroomAddress={boostData.channelID}
+        newsroomContractAddress={boostData.channel.newsroom.contractAddress}
         newsroomListingUrl={listingUrl}
       />
     );

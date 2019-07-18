@@ -22,6 +22,13 @@ const boost = {
   channelID: "0xabc123",
   goalAmount: 325,
   paymentsTotal: 25,
+  channel: {
+    id: "",
+    channelType: "",
+    newsroom: {
+      contractAddress: "0xabc123",
+    },
+  },
 };
 
 const typeDefs = `

@@ -43,7 +43,7 @@ export const BoostFeed: React.FunctionComponent<BoostFeedProps> = props => {
           }
 
           return feedQueryData.postsSearch.posts.map((boostData: any, i: number) => (
-            <Query key={i} query={boostNewsroomQuery} variables={{ addr: boostData.channelID }}>
+            <Query key={i} query={boostNewsroomQuery} variables={{ addr: boostData.channel.newsroom.contractAddress }}>
               {({ loading: newsroomQueryLoading, error: newsroomQueryError, data: newsroomQueryData }) => {
                 if (newsroomQueryLoading) {
                   return (

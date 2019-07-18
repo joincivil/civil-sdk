@@ -6,6 +6,13 @@ export const boostFeedQuery = gql`
       posts {
         ... on PostBoost {
           id
+          channel {
+            id
+            channelType
+            newsroom {
+              contractAddress
+            }
+          }
           channelID
           currencyCode
           goalAmount
@@ -23,6 +30,13 @@ export const boostQuery = gql`
     postsGet(id: $id) {
       channelID
       ... on PostBoost {
+        channel {
+          id
+          channelType
+          newsroom {
+            contractAddress
+          }
+        }
         currencyCode
         goalAmount
         paymentsTotal(currencyCode: "USD")

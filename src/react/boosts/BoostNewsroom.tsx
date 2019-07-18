@@ -30,7 +30,7 @@ export interface BoostNewsroomProps {
   boostOwner?: boolean;
   boostId: string;
   charterUri?: string;
-  newsroomAddress: string;
+  newsroomContractAddress: string;
   newsroomData: BoostNewsroomData;
   disableHelmet?: boolean;
 }
@@ -82,7 +82,7 @@ export class BoostNewsroom extends React.Component<BoostNewsroomProps, BoostNews
                   </a>
                 )}
                 {this.renderNewsroomURL()}
-                <a href={"https://registry.civil.co/listing/" + this.props.newsroomAddress} target="_blank">
+                <a href={"https://registry.civil.co/listing/" + this.props.newsroomContractAddress} target="_blank">
                   Visit Civil Registry <MobileStyle>&raquo;</MobileStyle>
                 </a>
               </>

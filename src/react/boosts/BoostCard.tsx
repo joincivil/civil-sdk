@@ -36,7 +36,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
     const timeRemaining = this.timeRemaining(this.props.boostData.dateEnd);
     const timeEnded = timeRemaining === "Boost Ended";
     const goalReached = this.props.boostData.paymentsTotal >= this.props.boostData.goalAmount;
-    const newsroomAddress = this.props.boostData.channelID;
+    const newsroomContractAddress = this.props.boostData.channel.newsroom.contractAddress;
     let btnText = "Support";
     if (timeEnded) {
       btnText = "Boost Ended";
@@ -82,7 +82,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
             open={this.props.open}
             boostOwner={this.props.boostOwner}
             boostId={this.props.boostId}
-            newsroomAddress={newsroomAddress}
+            newsroomContractAddress={newsroomContractAddress}
             charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri}
             newsroomData={this.props.newsroomData}
             disableHelmet={this.props.disableHelmet}
