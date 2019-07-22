@@ -19,6 +19,7 @@ import { BoostCompleted } from "./BoostCompleted";
 import { QuestionToolTip, HelmetHelper } from "@joincivil/components";
 import * as boostCardImage from "../../images/boost-card.png";
 import { urlConstants } from "../urlConstants";
+import { renderPTagsFromLineBreaks } from "@joincivil/utils";
 
 export interface BoostCardProps {
   boostData: BoostData;
@@ -121,16 +122,14 @@ export class BoostCard extends React.Component<BoostCardProps> {
                   }
                 />
               </BoostNotice>
-              <BoostDescriptionWhy>
-                <p>{this.props.boostData.why}</p>
-              </BoostDescriptionWhy>
+              <BoostDescriptionWhy>{renderPTagsFromLineBreaks(this.props.boostData.why)}</BoostDescriptionWhy>
               <BoostDescription>
                 <h3>What the outcome will be</h3>
-                <p>{this.props.boostData.what}</p>
+                {renderPTagsFromLineBreaks(this.props.boostData.what)}
               </BoostDescription>
               <BoostDescription>
                 <h3>About the newsroom</h3>
-                <p>{this.props.boostData.about}</p>
+                {renderPTagsFromLineBreaks(this.props.boostData.about)}
               </BoostDescription>
               <BoostDescriptionTable>
                 <h3>Where your support goes</h3>
