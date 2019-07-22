@@ -164,6 +164,7 @@ const LaunchButton = styled(Button)`
 `;
 
 export interface BoostFormInnerProps {
+  channelID: string;
   newsroomData: BoostNewsroomData;
   newsroomContractAddress: string;
   newsroomListingUrl: string;
@@ -610,7 +611,7 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
       const response = await mutation({
         variables: {
           input: {
-            channelID: this.props.newsroomContractAddress, // @TODO(sruddy) channelID will need to be updated when mutation is ready
+            channelID: this.props.channelID,
             currencyCode: "usd", // @TODO/tobek Is this right? Why is it required, should endpoint default to usd?
             title: boost.title,
             why: boost.why,
