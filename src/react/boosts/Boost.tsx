@@ -138,6 +138,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
     const listingUrl = "https://registry.civil.co/listing/" + boostData.channel.newsroom.contractAddress;
     return (
       <BoostForm
+        channelID={boostData.channel.id}
         editMode={true}
         boostId={this.props.boostId}
         initialBoostData={boostData}
