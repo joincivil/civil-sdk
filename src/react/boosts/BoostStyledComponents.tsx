@@ -649,3 +649,61 @@ export const NoBoostsTextStyled = styled.p`
   line-height: 33px;
   text-align: center;
 `;
+
+export const BoostPayFormWrapper = styled.div`
+  display: block;
+  font-family: ${fonts.SANS_SERIF};
+  margin: 0 0 0 20px;
+
+  button {
+    margin-bottom: 20px;
+
+    ${mediaQueries.MOBILE} {
+      width: 100%;
+    }
+  }
+
+  ${mediaQueries.MOBILE} {
+    margin: 0;
+  }
+`;
+
+export const SubmitInstructions = styled.p`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  margin: 0 30px 0 0;
+
+  ${mediaQueries.MOBILE} {
+    border-bottom: 1px solid ${colors.accent.CIVIL_GRAY_4};
+    font-size: 14px;
+    line-height: 24px;
+    margin: 0 0 30px;
+    padding: 0 0 30px;
+  }
+}`;
+
+export const SubmitWarning = styled.p`
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  text-decoration: none;
+
+  a {
+    color: ${colors.accent.CIVIL_BLUE};
+    text-decoration: underline;
+  }
+
+  ${mediaQueries.MOBILE} {
+    font-size: 12px;
+    line-height: 22px;
+  }
+}`;
+
+export const BoostPayFormContain = styled.div`
+  margin-bottom: 30px;
+}`;
+
+export const CheckboxLabel = styled.span`
+  margin-left: 10px;
+}`;

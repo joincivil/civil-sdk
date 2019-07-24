@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RadioInput, colors, fonts, mediaQueries } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
-// import { BoostPayStripe } from "./BoostPayStripe";
+import { BoostPayStripe } from "./BoostPayStripe";
 import styled from "styled-components";
 import { BoostFlexCenter, BoostTextButton } from "../BoostStyledComponents";
 import { PaymentInfoText, PaymentFAQText } from "../BoostTextComponents";
@@ -140,12 +140,8 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             handlePaymentSuccess={this.props.handlePaymentSuccess}
           />
         );
-        {
-          /* case PAYMENT_TYPE.STRIPE:
-        return (
-          <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={true} />
-        );*/
-        }
+      case PAYMENT_TYPE.STRIPE:
+        return <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={true} />;
       default:
         return (
           <>
@@ -159,7 +155,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               walletConnected={this.props.walletConnected}
               handlePaymentSuccess={this.props.handlePaymentSuccess}
             />
-            {/* <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} /> */}
+            <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} />
           </>
         );
     }

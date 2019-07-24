@@ -10,15 +10,16 @@ export interface BoostPayStripeProps {
 export const BoostPayStripe: React.FunctionComponent<BoostPayStripeProps> = props => {
   return (
     <BoostPayOption>
-      <BoostPayRadioBtn value={props.value} defaultChecked={props.defaultChecked} disabled={true}>
-        Pay using card
+      <BoostPayRadioBtn value={props.value} defaultChecked={props.defaultChecked}>
+        Pay with card
       </BoostPayRadioBtn>
       <BoostPayCardDetails>
         <p>
-          Coming Soon{" "}
-          <a href="#TODO" target="_blank">
-            Why only ETH?
+          Continue with adding your payment information. Your payment information will be processed through{" "}
+          <a href="https://stripe.com/" target="_blank">
+            Stripe
           </a>
+          .
         </p>
       </BoostPayCardDetails>
     </BoostPayOption>

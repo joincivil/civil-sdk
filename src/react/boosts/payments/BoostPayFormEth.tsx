@@ -1,11 +1,7 @@
 import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
-import { BoostFlexStart } from "../BoostStyledComponents";
-import styled from "styled-components";
+import { BoostFlexStart, BoostPayFormWrapper, SubmitInstructions, SubmitWarning } from "../BoostStyledComponents";
 import {
-  colors,
-  fonts,
-  mediaQueries,
   TransactionButton,
   TransactionButtonModalContentComponentsProps,
   progressModalStates,
@@ -17,7 +13,7 @@ import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalT
 import { MutationFunc } from "react-apollo";
 import { urlConstants } from "../../urlConstants";
 
-export interface BoostPayFormProps {
+export interface BoostPayFormEthProps {
   boostId: string;
   etherToSpend: number;
   usdToSpend: number;
@@ -28,78 +24,18 @@ export interface BoostPayFormProps {
   handlePaymentSuccess(): void;
 }
 
-export interface BoostPayFormState {
+export interface BoostPayFormEthState {
   name?: string;
   comment?: string;
   checked: boolean;
   error?: string;
 }
 
-const BoostPayFormWrapper = styled.div`
-  display: block;
-  font-family: ${fonts.SANS_SERIF};
-  margin: 0 0 0 20px;
-
-  button {
-    margin-bottom: 20px;
-
-    ${mediaQueries.MOBILE} {
-      width: 100%;
-    }
-  }
-
-  ${mediaQueries.MOBILE} {
-    margin: 0;
-  }
-`;
-
-const SubmitInstructions = styled.p`
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 22px;
-  margin: 0 30px 0 0;
-
-  ${mediaQueries.MOBILE} {
-    border-bottom: 1px solid ${colors.accent.CIVIL_GRAY_4};
-    font-size: 14px;
-    line-height: 24px;
-    margin: 0 0 30px;
-    padding: 0 0 30px;
-  }
-}`;
-
-const SubmitWarning = styled.p`
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 16px;
-  text-decoration: none;
-
-  a {
-    color: ${colors.accent.CIVIL_BLUE};
-    text-decoration: underline;
-  }
-
-  ${mediaQueries.MOBILE} {
-    font-size: 12px;
-    line-height: 22px;
-  }
-}`;
-
-/*
-const BoostPayFormContain = styled.div`
-  margin-bottom: 30px;
-}`;
-
-const CheckboxLabel = styled.span`
-  margin-left: 10px;
-}`;
-*/
-
-export class BoostPayForm extends React.Component<BoostPayFormProps, BoostPayFormState> {
+export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, BoostPayFormEthState> {
   public static contextType: React.Context<ICivilContext> = CivilContext;
   public context!: React.ContextType<typeof CivilContext>;
 
-  constructor(props: BoostPayFormProps) {
+  constructor(props: BoostPayFormEthProps) {
     super(props);
     this.state = {
       name: "",

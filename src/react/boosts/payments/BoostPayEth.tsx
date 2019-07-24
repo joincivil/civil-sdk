@@ -18,7 +18,7 @@ import {
   BoostMobileWalletModalText,
 } from "../BoostTextComponents";
 import { BoostModal } from "../BoostModal";
-import { BoostPayForm } from "./BoostPayForm";
+import { BoostPayFormEth } from "./BoostPayFormEth";
 import { UsdEthConverter, HollowGreenCheck } from "@joincivil/components";
 import { EthAddress } from "@joincivil/core";
 import { Mutation, MutationFunc } from "react-apollo";
@@ -82,7 +82,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
           <Mutation mutation={boostPayEthMutation}>
             {(paymentsCreateEtherPayment: MutationFunc) => {
               return (
-                <BoostPayForm
+                <BoostPayFormEth
                   boostId={this.props.boostId}
                   paymentAddr={this.props.paymentAddr}
                   amount={this.state.etherToSpend}
