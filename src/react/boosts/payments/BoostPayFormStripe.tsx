@@ -21,7 +21,7 @@ export interface BoostPayFormStripeState {
   error?: string;
 }
 
-export class BoostPayForm extends React.Component<BoostPayFormStripeProps, BoostPayFormStripeState> {
+export class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostPayFormStripeState> {
   constructor(props: BoostPayFormStripeProps) {
     super(props);
     this.state = {
