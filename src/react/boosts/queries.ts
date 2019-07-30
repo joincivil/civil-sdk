@@ -94,3 +94,15 @@ export const boostPayEthMutation = gql`
     }
   }
 `;
+
+export const boostPayStripeMutation = gql`
+  mutation($postID: String!, $input: PaymentsCreateStripePaymentInput!) {
+    PaymentsCreateStripePayment(postID: $postID, input: $input) {
+      reaction
+      comment
+      currencyCode
+      amount
+      paymentToken
+    }
+  }
+`;

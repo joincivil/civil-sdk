@@ -1,12 +1,17 @@
 import * as React from "react";
 import makeAsyncScriptLoader from "react-async-script";
+import { Mutation, MutationFunc } from "react-apollo";
+import { boostPayStripeMutation } from "../queries";
 import { BoostPayCardDetails, BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
 import { StripeProvider, Elements } from "react-stripe-elements";
 import BoostStripe from "./BoostStripeFormElements";
 import { LoadingMessage } from "@joincivil/components";
 import { BoostPayOption } from "./BoostPayOption";
+import { BoostPayFormStripe } from "./BoostPayFormStripe";
 
 export interface BoostPayStripeProps {
+  boostId: string;
+  newsroomName: string;
   amount: number;
   selected: boolean;
   paymentType: string;
@@ -14,6 +19,7 @@ export interface BoostPayStripeProps {
   paymentStarted?: boolean;
   handleNext(): void;
   handlePaymentSelected?(paymentType: string): void;
+  handlePaymentSuccess(): void;
 }
 
 export interface BoostPayStripeStates {
@@ -64,13 +70,29 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
 
   private renderPaymentForm = (): JSX.Element => {
     return (
-      <BoostPayOption
-        paymentType={this.props.paymentType}
-        optionLabel={this.props.optionLabel}
-        selected={this.props.selected}
-      >
-        {this.renderStripeComponent()}
-      </BoostPayOption>
+      <>
+        <BoostPayOption
+          paymentType={this.props.paymentType}
+          optionLabel={this.props.optionLabel}
+          selected={this.props.selected}
+        >
+          {this.renderStripeComponent()}
+        </BoostPayOption>
+
+        <Mutation mutation={boostPayStripeMutation}>
+          {(paymentsCreateStripePayment: MutationFunc) => {
+            return (
+              <BoostPayFormStripe
+                boostId={this.props.boostId}
+                savePayment={paymentsCreateStripePayment}
+                amount={this.props.amount}
+                newsroomName={this.props.newsroomName}
+                handlePaymentSuccess={this.props.handlePaymentSuccess}
+              />
+            );
+          }}
+        </Mutation>
+      </>
     );
   };
 

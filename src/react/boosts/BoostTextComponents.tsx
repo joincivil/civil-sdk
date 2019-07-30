@@ -19,13 +19,9 @@ export const NoBoostsText: React.FunctionComponent = props => (
   <NoBoostsTextStyled>There are no Boosts at this time.</NoBoostsTextStyled>
 );
 
-export const PaymentLabelCardText: React.FunctionComponent = props => (
-  <>Pay with card</>
-);
+export const PaymentLabelCardText: React.FunctionComponent = props => <>Pay with card</>;
 
-export const PaymentLabelEthText: React.FunctionComponent = props => (
-  <>Pay using ETH</>
-);
+export const PaymentLabelEthText: React.FunctionComponent = props => <>Pay using ETH</>;
 
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>

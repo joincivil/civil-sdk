@@ -144,12 +144,15 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
       case PAYMENT_TYPE.STRIPE:
         return (
           <BoostPayStripe
+            boostId={this.props.boostId}
             amount={this.props.amount}
             selected={true}
+            newsroomName={this.props.newsroomName}
             optionLabel={<PaymentLabelCardText />}
             paymentType={PAYMENT_TYPE.STRIPE}
             paymentStarted={true}
             handleNext={this.handleStripeNext}
+            handlePaymentSuccess={this.props.handlePaymentSuccess}
           />
         );
       default:
@@ -168,11 +171,14 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               handlePaymentSelected={this.handlePaymentSelected}
             />
             <BoostPayStripe
+              boostId={this.props.boostId}
               amount={this.props.amount}
               selected={this.state.selectedStripe}
+              newsroomName={this.props.newsroomName}
               optionLabel={<PaymentLabelCardText />}
               paymentType={PAYMENT_TYPE.STRIPE}
               handleNext={this.handleStripeNext}
+              handlePaymentSuccess={this.props.handlePaymentSuccess}
               handlePaymentSelected={this.handlePaymentSelected}
             />
           </>

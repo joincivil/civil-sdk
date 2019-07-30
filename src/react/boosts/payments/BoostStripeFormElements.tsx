@@ -1,7 +1,8 @@
 import * as React from "react";
 import { injectStripe, CardNumberElement, CardExpiryElement, CardCvcElement } from "react-stripe-elements";
 import styled from "styled-components";
-import { colors, fonts, Button } from "@joincivil/components";
+import { colors, fonts } from "@joincivil/components";
+import { BoostButton } from "../BoostStyledComponents";
 
 const StripeWrapper = styled.div`
   color: ${colors.accent.CIVIL_GRAY_1};
@@ -79,7 +80,7 @@ class BoostStripe extends React.Component {
           <label>Zip/Postal Code</label>
           <input id="zip" name="zip" />
         </StripeUserInfoWrap>
-        <Button onClick={() => this.handleSubmit()}>Send</Button>
+        <BoostButton onClick={() => this.handleSubmit()}>Send</BoostButton>
       </StripeWrapper>
     );
   }

@@ -1,13 +1,11 @@
 import * as React from "react";
 // import { TextInput, Checkbox } from "@joincivil/components";
-import { BoostFlexStart, BoostPayFormWrapper, SubmitInstructions, SubmitWarning } from "../BoostStyledComponents";
-import { Button } from "@joincivil/components";
+import { BoostFlexStart, BoostPayFormWrapper, SubmitInstructions, SubmitWarning, BoostButton } from "../BoostStyledComponents";
 import { MutationFunc } from "react-apollo";
 import { urlConstants } from "../../urlConstants";
 
 export interface BoostPayFormStripeProps {
   boostId: string;
-  usdToSpend: number;
   newsroomName: string;
   amount: number;
   savePayment: MutationFunc;
@@ -49,11 +47,11 @@ export class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps,
               met, the proceeds will still go to fund the selected newsroom.
             </SubmitInstructions>
             <div>
-              <Button>Support this Boost</Button>
+              <BoostButton>Support this Boost</BoostButton>
               <SubmitWarning>
-                transaction. There are small fees charged by the Ethereum network. Refunds are not possible. Civil does
-                not charge any fees for this transaction. There are small fees charged by Stripe. By sending a Boost,
-                you agree to Civil’s <a href={urlConstants.TERMS}>Terms of Use</a> and{" "}
+                Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees
+                charged by Stripe. By sending a Boost, you agree to Civil’s{" "}
+                <a href={urlConstants.TERMS}>Terms of Use</a> and{" "}
                 <a href={urlConstants.PRIVACY_POLICY}>Privacy Policy</a>. Depending on your selection, your email and
                 comment may be visible to the newsroom.
               </SubmitWarning>
@@ -64,11 +62,11 @@ export class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps,
     );
   }
 
-  private sendPayment = () => {
+  /*private sendPayment = () => {
     console.log("send payment");
   };
 
-  /*private onClick = (): void => {
+  private onClick = (): void => {
     this.setState({ checked: !this.state.checked });
   };*/
 }

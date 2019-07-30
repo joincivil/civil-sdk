@@ -191,7 +191,7 @@ export class BoostCard extends React.Component<BoostCardProps, BoostCardStates> 
       amount = 0;
     }
     this.setState({ amount });
-  }
+  };
 
   // TODO(sruddy) add to util
   private timeRemaining = (dateEnd: string) => {
