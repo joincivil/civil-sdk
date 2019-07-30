@@ -81,6 +81,8 @@ export interface BoostPayOptionsStates {
   paymentType: string;
   etherToSpend: number;
   usdToSpend: number;
+  selectedEth: boolean;
+  selectedStripe: boolean;
 }
 
 export class BoostPayOptions extends React.Component<BoostPayOptionsProps, BoostPayOptionsStates> {
@@ -88,6 +90,8 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
     super(props);
     this.state = {
       paymentType: PAYMENT_TYPE.DEFAULT,
+      selectedEth: false,
+      selectedStripe: false,
       etherToSpend: 0,
       usdToSpend: 0,
     };
@@ -105,7 +109,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             </BoostFlexCenter>
           </BoostInstructions>
         )}
-        <RadioInput name={"BoostPayments"} label={""}>
+        <RadioInput name={"BoostPayments"} label={""} onChange={this.handlePaymentChange}>
           {this.getPaymentTypes()}
         </RadioInput>
         {this.state.paymentType === PAYMENT_TYPE.DEFAULT && (
@@ -127,9 +131,11 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
       case PAYMENT_TYPE.ETH:
         return (
           <BoostPayEth
+            selected={true}
             boostId={this.props.boostId}
             newsroomName={this.props.newsroomName}
             value={PAYMENT_TYPE.ETH}
+            name={"BoostPayments"}
             handleNext={() => this.handleEthNext(this.state.etherToSpend, this.state.usdToSpend)}
             defaultChecked={true}
             paymentStarted={true}
@@ -138,31 +144,63 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             paymentAddr={this.props.paymentAddr}
             walletConnected={this.props.walletConnected}
             handlePaymentSuccess={this.props.handlePaymentSuccess}
+            onPaymentChange={() => this.handlePaymentChange}
           />
         );
       case PAYMENT_TYPE.STRIPE:
-        return <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={true} />;
+        return (
+          <BoostPayStripe
+            selected={true}
+            name={"BoostPayments"}
+            value={PAYMENT_TYPE.STRIPE}
+            defaultChecked={true}
+            paymentStarted={true}
+            onPaymentChange={() => this.handlePaymentChange}
+          />
+        );
       default:
         return (
           <>
             <BoostPayEth
+              selected={this.state.selectedEth}
+              name={"BoostPayments"}
               boostId={this.props.boostId}
               newsroomName={this.props.newsroomName}
               value={PAYMENT_TYPE.ETH}
               handleNext={this.handleEthNext}
-              defaultChecked={true}
+              defaultChecked={false}
               paymentAddr={this.props.paymentAddr}
               walletConnected={this.props.walletConnected}
               handlePaymentSuccess={this.props.handlePaymentSuccess}
+              onPaymentChange={() => this.handlePaymentChange}
             />
-            <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} />
+            <BoostPayStripe
+              selected={this.state.selectedStripe}
+              name={"BoostPayments"}
+              value={PAYMENT_TYPE.STRIPE}
+              defaultChecked={false}
+              onPaymentChange={() => this.handlePaymentChange}
+            />
           </>
         );
     }
   };
 
+  private handlePaymentChange = (name: string, value: any) => {
+    console.log(value);
+    if (value === PAYMENT_TYPE.ETH) {
+      this.setState({ selectedEth: true, selectedStripe: false });
+    } else if (value === PAYMENT_TYPE.STRIPE) {
+      this.setState({ selectedEth: false, selectedStripe: true });
+    }
+  };
+
   private handleEthNext = (etherToSpend: number, usdToSpend: number) => {
     this.setState({ paymentType: PAYMENT_TYPE.ETH, etherToSpend, usdToSpend });
+  };
+
+  private handleStripeNext = () => {
+    this.setState({ paymentType: PAYMENT_TYPE.STRIPE });
   };
 
   private handleEdit = () => {

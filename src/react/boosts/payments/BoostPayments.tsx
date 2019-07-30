@@ -39,14 +39,14 @@ const BoostDetails = styled.div`
   margin: 0 0 50px;
 `;
 
-/*const BoostAmount = styled.p`
+const BoostAmount = styled.p`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-family: ${fonts.SANS_SERIF};
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
   margin-bottom: 20px;
-`;*/
+`;
 
 export interface BoostPaymentsProps {
   walletConnected: boolean;
@@ -70,7 +70,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
           <BoostPayNewsroom>{props.newsroomName}</BoostPayNewsroom>
-          {/* <BoostAmount>{"$" + props.amount}</BoostAmount> */}
+          <BoostAmount>{"$" + props.amount}</BoostAmount>
           <BoostSmallPrint margin={"0 0 20px"}>
             All funds raised will go directly to the newsroom even if this goal is not met.
             <QuestionToolTip

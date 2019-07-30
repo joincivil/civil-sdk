@@ -23,6 +23,7 @@ export interface BoostInternalProps {
 export type BoostProps = BoostInternalProps & BoostPermissionsInjectedProps;
 
 export interface BoostState {
+  amount: number;
   payment: boolean;
   paymentSuccess: boolean;
 }
@@ -31,6 +32,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
+      amount: 0,
       payment: this.props.payment || false,
       paymentSuccess: false,
     };
@@ -38,6 +40,10 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
 
   public render(): JSX.Element {
     const id = this.props.boostId;
+
+    if (this.state.payment && this.state.amount === 0) {
+      this.handleBackToListing();
+    }
 
     return (
       <Query query={boostQuery} variables={{ id }}>
@@ -98,7 +104,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
                     <BoostPayments
                       boostId={id}
                       title={boostData.title}
-                      amount={20}
+                      amount={this.state.amount}
                       newsroomName={newsroomData.name}
                       paymentAddr={newsroomData.owner}
                       walletConnected={!!this.props.walletConnected}
@@ -149,8 +155,14 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
     );
   }
 
-  private startPayment = () => {
-    this.props.history.push("/boosts/" + this.props.boostId + "/payment");
+  private startPayment = (amount: number) => {
+    this.setState({ amount, payment: true });
+    /*this.props.history.push({
+      pathname: "/boosts/" + this.props.boostId + "/payment",
+      state: { amount, payment: true },
+    });*/
+
+    // this.props.history.push("/boosts/" + this.props.boostId + "/payment");
   };
 
   private handlePaymentSuccess = () => {

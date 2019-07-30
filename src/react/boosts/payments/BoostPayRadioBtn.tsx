@@ -21,6 +21,7 @@ const BoostPayRadioWrapper = styled.div`
 
   input:checked + button {
     background-color: ${colors.basic.WHITE};
+    border: none;
     color: ${colors.accent.CIVIL_BLUE};
 
     ${RadioBtnCircle} {
@@ -70,8 +71,10 @@ export const BoostPayRadioBtn: React.FunctionComponent<BoostPayRadioBtnProps> = 
   let input: any;
   const { onChange, children, value, name, disabled, defaultChecked } = props;
   const clickHandler = () => {
+    console.log("clicked");
     input.checked = true;
     if (onChange) {
+      console.log("onChange");
       onChange(name, input.value);
     }
   };

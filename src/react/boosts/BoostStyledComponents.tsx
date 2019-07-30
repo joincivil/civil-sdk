@@ -324,7 +324,7 @@ export const BoostPayOption = styled.div`
     border-radius: 0;
     padding: 15px;
   }
-}`;
+`;
 
 export const BoostPayCardDetails = styled.div`
   margin-top: 5px;
@@ -347,7 +347,7 @@ export const BoostPayCardDetails = styled.div`
       text-decoration: underline;
     }
   }
-}`;
+`;
 
 export const BoostPayWallet = styled.p`
   display: block;
@@ -357,7 +357,7 @@ export const BoostPayWallet = styled.p`
   ${mediaQueries.MOBILE} {
     display: none;
   }
-}`;
+`;
 
 export const BoostPayWalletMobile = styled.p`
   display: none;
@@ -367,7 +367,7 @@ export const BoostPayWalletMobile = styled.p`
     font-size: 14px;
     line-height: 21px;
   }
-}`;
+`;
 
 export const LearnMore = styled.div`
   border: 1px solid ${colors.accent.CIVIL_GRAY_4};
@@ -395,7 +395,7 @@ export const LearnMore = styled.div`
       margin-right: 0;
     }
   }
-}`;
+`;
 
 export const BoostFormTitle = styled.div`
   font-size: 16px;
@@ -438,7 +438,7 @@ export const BoostFlexCenter = styled.div`
       margin: 0;
     }
   }
-}`;
+`;
 
 export const BoostFlexEnd = styled.div`
   align-items: flex-end;
@@ -448,7 +448,7 @@ export const BoostFlexEnd = styled.div`
   ${mediaQueries.MOBILE} {
     display: block;
   }
-}`;
+`;
 
 export const BoostFlexEth = styled.div`
   align-items: flex-start;
@@ -478,7 +478,7 @@ export const BoostModalContain = styled.div`
   ${mediaQueries.MOBILE} {
     width: 100%;
   }
-}`;
+`;
 
 export const BoostModalHeader = styled.div`
   color: ${colors.primary.BLACK};
@@ -492,14 +492,14 @@ export const BoostModalHeader = styled.div`
     display: block;
     margin: 15px auto 20px;
   }
-}`;
+`;
 
 export const BoostModalContent = styled.p`
   color: ${colors.primary.BLACK};
   font-size: 14px;
   line-height: 24px;
   text-align: ${(props: BoostStyleProps) => (props.textAlign ? props.textAlign : "left")};
-}`;
+`;
 
 export const BoostModalCloseBtn: StyledComponentClass<ButtonProps, "button"> = styled(InvertedButton)`
   border: none;
@@ -681,7 +681,7 @@ export const SubmitInstructions = styled.p`
     margin: 0 0 30px;
     padding: 0 0 30px;
   }
-}`;
+`;
 
 export const SubmitWarning = styled.p`
   font-size: 12px;
@@ -698,12 +698,46 @@ export const SubmitWarning = styled.p`
     font-size: 12px;
     line-height: 22px;
   }
-}`;
+`;
 
 export const BoostPayFormContain = styled.div`
   margin-bottom: 30px;
-}`;
+`;
 
 export const CheckboxLabel = styled.span`
   margin-left: 10px;
-}`;
+`;
+
+export const BoostAmountInputWrap = styled.div`
+  align-items: center;
+  display: flex;
+  margin-bottom: 22px;
+  padding-left: 20px;
+`;
+
+export const BoostAmountInput = styled.div`
+  margin-right: 10px;
+  position: relative;
+  width: 100px;
+
+  &::before {
+    content: "$";
+    left: 10px;
+    position: absolute;
+    top: 10px;
+  }
+
+  > div {
+    margin: 0;
+  }
+
+  input {
+    margin: 0;
+    padding: 10px 10px 10px 20px;
+  }
+
+  label,
+  span {
+    display: none;
+  }
+`;

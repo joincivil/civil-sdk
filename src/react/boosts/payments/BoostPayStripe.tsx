@@ -4,11 +4,15 @@ import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
 import { BoostPayOption, BoostPayCardDetails } from "../BoostStyledComponents";
 import { StripeProvider, Elements } from "react-stripe-elements";
 import BoostStripe from "./BoostStripeFormElements";
-import { LoadingMessage } from "@joincivil/components";
+import { LoadingMessage, Button } from "@joincivil/components";
 
 export interface BoostPayStripeProps {
+  selected: boolean;
   defaultChecked: boolean;
   value: string;
+  name: string;
+  paymentStarted?: boolean;
+  onPaymentChange(): void;
 }
 
 export interface BoostPayStripeStates {
@@ -28,7 +32,12 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
   public render(): JSX.Element {
     return (
       <BoostPayOption>
-        <BoostPayRadioBtn value={this.props.value} defaultChecked={this.props.defaultChecked}>
+        <BoostPayRadioBtn
+          name={this.props.name}
+          value={this.props.value}
+          defaultChecked={this.props.defaultChecked}
+          onChange={this.props.onPaymentChange}
+        >
           Pay with card
         </BoostPayRadioBtn>
         <BoostPayCardDetails>
@@ -39,8 +48,9 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
             </a>
             .
           </p>
+          {this.props.selected && <Button>Next</Button>}
         </BoostPayCardDetails>
-        {this.renderStripeComponent()}
+        {this.props.paymentStarted && this.renderStripeComponent()}
       </BoostPayOption>
     );
   }
@@ -48,19 +58,19 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
   private renderStripeComponent = (): JSX.Element => {
     const AsyncScriptLoader = makeAsyncScriptLoader("https://js.stripe.com/v3/")(LoadingMessage);
     if (this.state.stripeLoaded) {
-       return (
+      return (
         <StripeProvider apiKey={"pk_test_TYooMQauvdEDq54NiTphI7jx"}>
           <Elements>
             <BoostStripe />
           </Elements>
         </StripeProvider>
-       )
+      );
     }
 
     return (
       <AsyncScriptLoader
         asyncScriptOnLoad={() => {
-          this.setState({stripeLoaded: true});
+          this.setState({ stripeLoaded: true });
         }}
       />
     );

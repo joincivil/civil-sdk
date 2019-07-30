@@ -31,15 +31,18 @@ export enum MODEL_CONTENT {
 }
 
 export interface BoostPayEthProps {
+  selected: boolean;
   boostId: string;
   newsroomName: string;
   paymentAddr: EthAddress;
   paymentStarted?: boolean;
   defaultChecked: boolean;
   value: string;
+  name: string;
   etherToSpend?: number;
   usdToSpend?: number;
   walletConnected: boolean;
+  onPaymentChange(): void;
   handleNext(etherToSpend: number, usdToSpend: number): void;
   handlePaymentSuccess(): void;
 }
@@ -70,7 +73,12 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     return (
       <>
         <BoostPayOption>
-          <BoostPayRadioBtn value={this.props.value} defaultChecked={this.props.defaultChecked}>
+          <BoostPayRadioBtn
+            name={this.props.name}
+            value={this.props.value}
+            defaultChecked={this.props.defaultChecked}
+            onChange={this.props.onPaymentChange}
+          >
             Pay with ETH
           </BoostPayRadioBtn>
           {this.props.paymentStarted
