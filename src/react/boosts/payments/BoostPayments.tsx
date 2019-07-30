@@ -64,7 +64,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
     <BoostWrapper open={true}>
       <BoostHeaderWrap>
         <BoostBack>
-          <BoostTextButton onClick={props.handleBackToListing}>&laquo; Back to Boost listing</BoostTextButton>
+          <BoostTextButton onClick={() => props.handleBackToListing()}>&laquo; Back to Boost listing</BoostTextButton>
         </BoostBack>
         <BoostHeader>Complete your Boost payment</BoostHeader>
         <BoostDetails>
@@ -82,11 +82,12 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         </BoostDetails>
       </BoostHeaderWrap>
       <BoostPayOptions
+        amount={props.amount}
         paymentAddr={props.paymentAddr}
         newsroomName={props.newsroomName}
         boostId={props.boostId}
         walletConnected={props.walletConnected}
-        handlePaymentSuccess={props.handlePaymentSuccess}
+        handlePaymentSuccess={() => props.handlePaymentSuccess()}
       />
     </BoostWrapper>
   );

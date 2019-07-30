@@ -79,7 +79,7 @@ class BoostStripe extends React.Component {
           <label>Zip/Postal Code</label>
           <input id="zip" name="zip" />
         </StripeUserInfoWrap>
-        <Button onClick={this.handleSubmit}>Send</Button>
+        <Button onClick={() => this.handleSubmit()}>Send</Button>
       </StripeWrapper>
     );
   }
@@ -97,6 +97,7 @@ class BoostStripe extends React.Component {
           name: "Jenny Rosen",
         },
       })
+      // @ts-ignore
       .then(({ paymentMethod }) => {
         console.log("Received Stripe PaymentMethod:", paymentMethod);
       });

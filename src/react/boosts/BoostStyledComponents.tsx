@@ -308,24 +308,6 @@ export const BoostProgressCol = styled.div`
   }
 `;
 
-export const BoostPayOption = styled.div`
-  box-sizing: border-box;
-  border: 1px solid ${colors.accent.CIVIL_GRAY_3};
-  border-radius: 5px;
-  font-family: ${fonts.SANS_SERIF};
-  font-weight: normal;
-  font-size: 14px;
-  margin: 0 auto 40px;
-  padding: 20px;
-  position: relative;
-  width: 100%;
-
-  ${mediaQueries.MOBILE} {
-    border-radius: 0;
-    padding: 15px;
-  }
-`;
-
 export const BoostPayCardDetails = styled.div`
   margin-top: 5px;
   padding-left: 35px;

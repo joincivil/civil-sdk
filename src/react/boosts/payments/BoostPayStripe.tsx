@@ -1,18 +1,19 @@
 import * as React from "react";
 import makeAsyncScriptLoader from "react-async-script";
-import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
-import { BoostPayOption, BoostPayCardDetails } from "../BoostStyledComponents";
+import { BoostPayCardDetails, BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
 import { StripeProvider, Elements } from "react-stripe-elements";
 import BoostStripe from "./BoostStripeFormElements";
-import { LoadingMessage, Button } from "@joincivil/components";
+import { LoadingMessage } from "@joincivil/components";
+import { BoostPayOption } from "./BoostPayOption";
 
 export interface BoostPayStripeProps {
+  amount: number;
   selected: boolean;
-  defaultChecked: boolean;
-  value: string;
-  name: string;
+  paymentType: string;
+  optionLabel: string | JSX.Element;
   paymentStarted?: boolean;
-  onPaymentChange(): void;
+  handleNext(): void;
+  handlePaymentSelected?(paymentType: string): void;
 }
 
 export interface BoostPayStripeStates {
@@ -30,30 +31,48 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
   }
 
   public render(): JSX.Element {
+    if (this.props.paymentStarted) {
+      return <>{this.renderPaymentForm()}</>;
+    }
+
+    return <>{this.renderDefaultOption()}</>;
+  }
+
+  private renderDefaultOption = (): JSX.Element => {
     return (
-      <BoostPayOption>
-        <BoostPayRadioBtn
-          name={this.props.name}
-          value={this.props.value}
-          defaultChecked={this.props.defaultChecked}
-          onChange={this.props.onPaymentChange}
-        >
-          Pay with card
-        </BoostPayRadioBtn>
+      <BoostPayOption
+        paymentType={this.props.paymentType}
+        optionLabel={this.props.optionLabel}
+        selected={this.props.selected}
+        handlePaymentSelected={this.props.handlePaymentSelected}
+      >
         <BoostPayCardDetails>
-          <p>
-            Continue with adding your payment information. Your payment information will be processed through{" "}
-            <a href="https://stripe.com/" target="_blank">
-              Stripe
-            </a>
-            .
-          </p>
-          {this.props.selected && <Button>Next</Button>}
+          <BoostFlexCenter>
+            <p>
+              Continue with adding your payment information. Your payment information will be processed through{" "}
+              <a href="https://stripe.com/" target="_blank">
+                Stripe
+              </a>
+              .
+            </p>
+            {this.props.selected && <BoostButton onClick={() => this.props.handleNext()}>Next</BoostButton>}
+          </BoostFlexCenter>
         </BoostPayCardDetails>
-        {this.props.paymentStarted && this.renderStripeComponent()}
       </BoostPayOption>
     );
-  }
+  };
+
+  private renderPaymentForm = (): JSX.Element => {
+    return (
+      <BoostPayOption
+        paymentType={this.props.paymentType}
+        optionLabel={this.props.optionLabel}
+        selected={this.props.selected}
+      >
+        {this.renderStripeComponent()}
+      </BoostPayOption>
+    );
+  };
 
   private renderStripeComponent = (): JSX.Element => {
     const AsyncScriptLoader = makeAsyncScriptLoader("https://js.stripe.com/v3/")(LoadingMessage);

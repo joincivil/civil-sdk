@@ -1,7 +1,5 @@
 import * as React from "react";
-import { BoostPayRadioBtn } from "./BoostPayRadioBtn";
 import {
-  BoostPayOption,
   BoostPayCardDetails,
   LearnMore,
   BoostFlexEth,
@@ -23,6 +21,7 @@ import { UsdEthConverter, HollowGreenCheck } from "@joincivil/components";
 import { EthAddress } from "@joincivil/core";
 import { Mutation, MutationFunc } from "react-apollo";
 import { boostPayEthMutation } from "../queries";
+import { BoostPayOption } from "./BoostPayOption";
 
 export enum MODEL_CONTENT {
   WHY_ETH = "why eth",
@@ -36,13 +35,12 @@ export interface BoostPayEthProps {
   newsroomName: string;
   paymentAddr: EthAddress;
   paymentStarted?: boolean;
-  defaultChecked: boolean;
-  value: string;
-  name: string;
+  optionLabel: string | JSX.Element;
+  paymentType: string;
   etherToSpend?: number;
   usdToSpend?: number;
   walletConnected: boolean;
-  onPaymentChange(): void;
+  handlePaymentSelected?(paymentType: string): void;
   handleNext(etherToSpend: number, usdToSpend: number): void;
   handlePaymentSuccess(): void;
 }
@@ -70,49 +68,36 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
   }
 
   public render(): JSX.Element {
+    if (this.props.paymentStarted) {
+      return <>{this.renderPaymentForm(this.state.etherToSpend, this.state.usdToSpend)}</>;
+    }
+
+    return <>{this.renderDefaultOption()}</>;
+  }
+
+  private renderDefaultOption = (): JSX.Element => {
     return (
       <>
-        <BoostPayOption>
-          <BoostPayRadioBtn
-            name={this.props.name}
-            value={this.props.value}
-            defaultChecked={this.props.defaultChecked}
-            onChange={this.props.onPaymentChange}
-          >
-            Pay with ETH
-          </BoostPayRadioBtn>
-          {this.props.paymentStarted
-            ? this.getPaymentForm(this.state.etherToSpend, this.state.usdToSpend)
-            : this.getPaymentAmount()}
+        <BoostPayOption
+          paymentType={this.props.paymentType}
+          optionLabel={this.props.optionLabel}
+          selected={this.props.selected}
+          handlePaymentSelected={this.props.handlePaymentSelected}
+        >
+          <BoostPayCardDetails>
+            <BoostPayWalletText />
+            {this.props.selected ? this.renderEthCheck() : <></>}
+          </BoostPayCardDetails>
         </BoostPayOption>
 
-        {this.props.paymentStarted && (
-          <Mutation mutation={boostPayEthMutation}>
-            {(paymentsCreateEtherPayment: MutationFunc) => {
-              return (
-                <BoostPayFormEth
-                  boostId={this.props.boostId}
-                  paymentAddr={this.props.paymentAddr}
-                  amount={this.state.etherToSpend}
-                  savePayment={paymentsCreateEtherPayment}
-                  etherToSpend={this.state.etherToSpend}
-                  usdToSpend={this.state.usdToSpend}
-                  newsroomName={this.props.newsroomName}
-                  handlePaymentSuccess={this.props.handlePaymentSuccess}
-                />
-              );
-            }}
-          </Mutation>
-        )}
-
-        <BoostModal open={this.state.isMobileWalletModalOpen} handleClose={this.handleClose}>
-          <BoostMobileWalletModalText />
+        <BoostModal open={this.state.isInfoModalOpen} handleClose={this.handleClose}>
+          {this.renderInfoModal()}
         </BoostModal>
       </>
     );
-  }
+  };
 
-  private getPaymentAmount = () => {
+  private renderEthCheck = () => {
     let disableBtn;
     if (!this.props.walletConnected || this.state.usdToSpend <= 0 || this.state.notEnoughEthError) {
       disableBtn = true;
@@ -122,31 +107,68 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
 
     return (
       <>
-        <BoostPayCardDetails>
-          <BoostPayWalletText />
-          {!this.props.walletConnected && <BoostConnectWalletWarningText />}
-          <LearnMore>
-            <a onClick={() => this.openInfoModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
-            <a onClick={() => this.openInfoModal(MODEL_CONTENT.WHY_ETH)}>Why ETH?</a>
-            <a onClick={() => this.openInfoModal(MODEL_CONTENT.CAN_USE_CVL)}>Can I use CVL?</a>
-          </LearnMore>
-          <h3>Boost Amount</h3>
-          <BoostFlexEth>
-            <UsdEthConverter
-              onNotEnoughEthError={(error: boolean) => this.notEnoughEthError(error)}
-              onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)}
-            />
-            <BoostButton
-              disabled={disableBtn}
-              onClick={() => this.props.handleNext(this.state.etherToSpend, this.state.usdToSpend)}
-            >
-              Continue
-            </BoostButton>
-          </BoostFlexEth>
-        </BoostPayCardDetails>
+        {!this.props.walletConnected && <BoostConnectWalletWarningText />}
+        <LearnMore>
+          <a onClick={() => this.openInfoModal(MODEL_CONTENT.WHAT_IS_ETH)}>What is ETH?</a>
+          <a onClick={() => this.openInfoModal(MODEL_CONTENT.WHY_ETH)}>Why ETH?</a>
+          <a onClick={() => this.openInfoModal(MODEL_CONTENT.CAN_USE_CVL)}>Can I use CVL?</a>
+        </LearnMore>
+        <h3>Boost Amount</h3>
+        <BoostFlexEth>
+          <UsdEthConverter
+            onNotEnoughEthError={(error: boolean) => this.notEnoughEthError(error)}
+            onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)}
+          />
+          <BoostButton
+            disabled={disableBtn}
+            onClick={() => this.props.handleNext(this.state.etherToSpend, this.state.usdToSpend)}
+          >
+            Next
+          </BoostButton>
+        </BoostFlexEth>
+      </>
+    );
+  };
 
-        <BoostModal open={this.state.isInfoModalOpen} handleClose={this.handleClose}>
-          {this.renderInfoModal()}
+  private renderPaymentForm = (etherToSpend: number, usdToSpend: number): JSX.Element => {
+    return (
+      <>
+        <BoostPayOption
+          paymentType={this.props.paymentType}
+          optionLabel={this.props.optionLabel}
+          selected={this.props.selected}
+        >
+          <BoostPayCardDetails>
+            <BoostPayWalletText />
+            <h3>Boost Amount</h3>
+            <BoostAmount>
+              <span>{etherToSpend + " ETH"}</span> {"($" + usdToSpend.toFixed(2) + ")"}
+            </BoostAmount>
+            <BoostEthConfirm>
+              <HollowGreenCheck height={15} width={15} /> You have enough ETH in your connected wallet.
+            </BoostEthConfirm>
+          </BoostPayCardDetails>
+        </BoostPayOption>
+
+        <Mutation mutation={boostPayEthMutation}>
+          {(paymentsCreateEtherPayment: MutationFunc) => {
+            return (
+              <BoostPayFormEth
+                boostId={this.props.boostId}
+                paymentAddr={this.props.paymentAddr}
+                amount={this.state.etherToSpend}
+                savePayment={paymentsCreateEtherPayment}
+                etherToSpend={this.state.etherToSpend}
+                usdToSpend={this.state.usdToSpend}
+                newsroomName={this.props.newsroomName}
+                handlePaymentSuccess={this.props.handlePaymentSuccess}
+              />
+            );
+          }}
+        </Mutation>
+
+        <BoostModal open={this.state.isMobileWalletModalOpen} handleClose={this.handleClose}>
+          <BoostMobileWalletModalText />
         </BoostModal>
       </>
     );
@@ -156,21 +178,6 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
     const eth = parseFloat(etherToSpend.toFixed(6));
     this.setState({ usdToSpend, etherToSpend: eth });
   }
-
-  private getPaymentForm = (etherToSpend: number, usdToSpend: number) => {
-    return (
-      <BoostPayCardDetails>
-        <BoostPayWalletText />
-        <h3>Boost Amount</h3>
-        <BoostAmount>
-          <span>{etherToSpend + " ETH"}</span> {"($" + usdToSpend.toFixed(2) + ")"}
-        </BoostAmount>
-        <BoostEthConfirm>
-          <HollowGreenCheck height={15} width={15} /> You have enough ETH in your connected wallet.
-        </BoostEthConfirm>
-      </BoostPayCardDetails>
-    );
-  };
 
   private notEnoughEthError = (error: boolean) => {
     this.setState({ notEnoughEthError: error });

@@ -1,10 +1,10 @@
 import * as React from "react";
-import { RadioInput, colors, fonts, mediaQueries } from "@joincivil/components";
+import { colors, fonts, mediaQueries } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
 import { BoostPayStripe } from "./BoostPayStripe";
 import styled from "styled-components";
 import { BoostFlexCenter, BoostTextButton } from "../BoostStyledComponents";
-import { PaymentInfoText, PaymentFAQText } from "../BoostTextComponents";
+import { PaymentInfoText, PaymentFAQText, PaymentLabelCardText, PaymentLabelEthText } from "../BoostTextComponents";
 import { EthAddress } from "@joincivil/core";
 
 export enum PAYMENT_TYPE {
@@ -15,10 +15,8 @@ export enum PAYMENT_TYPE {
 
 export interface BoostPayOptionsProps {
   boostId: string;
+  amount: number;
   newsroomName: string;
-  onChange?: any;
-  value?: any;
-  name?: string;
   paymentAddr: EthAddress;
   walletConnected: boolean;
   handlePaymentSuccess(): void;
@@ -109,9 +107,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             </BoostFlexCenter>
           </BoostInstructions>
         )}
-        <RadioInput name={"BoostPayments"} label={""} onChange={this.handlePaymentChange}>
-          {this.getPaymentTypes()}
-        </RadioInput>
+        {this.getPaymentTypes()}
         {this.state.paymentType === PAYMENT_TYPE.DEFAULT && (
           <BoostPayFooter>
             <BoostPayFooterSection>
@@ -134,28 +130,26 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             selected={true}
             boostId={this.props.boostId}
             newsroomName={this.props.newsroomName}
-            value={PAYMENT_TYPE.ETH}
-            name={"BoostPayments"}
+            paymentType={PAYMENT_TYPE.ETH}
+            optionLabel={<PaymentLabelEthText />}
             handleNext={() => this.handleEthNext(this.state.etherToSpend, this.state.usdToSpend)}
-            defaultChecked={true}
             paymentStarted={true}
             etherToSpend={this.state.etherToSpend}
             usdToSpend={this.state.usdToSpend}
             paymentAddr={this.props.paymentAddr}
             walletConnected={this.props.walletConnected}
             handlePaymentSuccess={this.props.handlePaymentSuccess}
-            onPaymentChange={() => this.handlePaymentChange}
           />
         );
       case PAYMENT_TYPE.STRIPE:
         return (
           <BoostPayStripe
+            amount={this.props.amount}
             selected={true}
-            name={"BoostPayments"}
-            value={PAYMENT_TYPE.STRIPE}
-            defaultChecked={true}
+            optionLabel={<PaymentLabelCardText />}
+            paymentType={PAYMENT_TYPE.STRIPE}
             paymentStarted={true}
-            onPaymentChange={() => this.handlePaymentChange}
+            handleNext={this.handleStripeNext}
           />
         );
       default:
@@ -163,34 +157,33 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
           <>
             <BoostPayEth
               selected={this.state.selectedEth}
-              name={"BoostPayments"}
+              optionLabel={<PaymentLabelEthText />}
               boostId={this.props.boostId}
               newsroomName={this.props.newsroomName}
-              value={PAYMENT_TYPE.ETH}
+              paymentType={PAYMENT_TYPE.ETH}
               handleNext={this.handleEthNext}
-              defaultChecked={false}
               paymentAddr={this.props.paymentAddr}
               walletConnected={this.props.walletConnected}
               handlePaymentSuccess={this.props.handlePaymentSuccess}
-              onPaymentChange={() => this.handlePaymentChange}
+              handlePaymentSelected={this.handlePaymentSelected}
             />
             <BoostPayStripe
+              amount={this.props.amount}
               selected={this.state.selectedStripe}
-              name={"BoostPayments"}
-              value={PAYMENT_TYPE.STRIPE}
-              defaultChecked={false}
-              onPaymentChange={() => this.handlePaymentChange}
+              optionLabel={<PaymentLabelCardText />}
+              paymentType={PAYMENT_TYPE.STRIPE}
+              handleNext={this.handleStripeNext}
+              handlePaymentSelected={this.handlePaymentSelected}
             />
           </>
         );
     }
   };
 
-  private handlePaymentChange = (name: string, value: any) => {
-    console.log(value);
-    if (value === PAYMENT_TYPE.ETH) {
+  private handlePaymentSelected = (paymentType: string) => {
+    if (paymentType === PAYMENT_TYPE.ETH) {
       this.setState({ selectedEth: true, selectedStripe: false });
-    } else if (value === PAYMENT_TYPE.STRIPE) {
+    } else if (paymentType === PAYMENT_TYPE.STRIPE) {
       this.setState({ selectedEth: false, selectedStripe: true });
     }
   };
