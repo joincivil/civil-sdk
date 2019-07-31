@@ -12,6 +12,7 @@ const BoostPayOptionWrapper = styled.div`
   margin: 0 auto 40px;
   padding: 20px;
   position: relative;
+  transition: border .2s ease;
   width: 100%;
 
   ${mediaQueries.MOBILE} {
@@ -29,6 +30,7 @@ const BoostPayOptionHeader = styled.div`
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 15px;
+  transition: color .2s ease;
 `;
 
 const BoostPayOptionCircle = styled.div`
@@ -55,7 +57,11 @@ const BoostPayOptionBtn = styled.button`
 
   &:hover {
     ${BoostPayOptionWrapper} {
-      border-color: ${colors.accent.CIVIL_BLUE};
+      border: 1px solid ${colors.accent.CIVIL_BLUE};
+    }
+
+    ${BoostPayOptionHeader} {
+      color: ${colors.accent.CIVIL_BLUE};
     }
   }
 `;
