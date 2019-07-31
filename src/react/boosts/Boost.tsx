@@ -110,6 +110,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
                       walletConnected={!!this.props.walletConnected}
                       handleBackToListing={this.handleBackToListing}
                       handlePaymentSuccess={this.handlePaymentSuccess}
+                      isStripeConnected={boostData.channel.isStripeConnected}
                     />
                   );
                 }
@@ -157,12 +158,11 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
 
   private startPayment = (amount: number) => {
     this.setState({ amount, payment: true });
+    // TODO(sruddy) temporarily removing history till updates on monorepo are made
     /*this.props.history.push({
       pathname: "/boosts/" + this.props.boostId + "/payment",
       state: { amount, payment: true },
     });*/
-
-    // this.props.history.push("/boosts/" + this.props.boostId + "/payment");
   };
 
   private handlePaymentSuccess = () => {

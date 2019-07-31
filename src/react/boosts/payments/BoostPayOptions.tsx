@@ -19,6 +19,7 @@ export interface BoostPayOptionsProps {
   newsroomName: string;
   paymentAddr: EthAddress;
   walletConnected: boolean;
+  isStripeConnected: boolean;
   handlePaymentSuccess(): void;
 }
 
@@ -123,64 +124,82 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
   }
 
   private getPaymentTypes = () => {
+    const {
+      isStripeConnected,
+      boostId,
+      amount,
+      newsroomName,
+      paymentAddr,
+      walletConnected,
+      handlePaymentSuccess,
+    } = this.props;
+    const { selectedEth, selectedStripe, etherToSpend, usdToSpend } = this.state;
+    let isEthSelected = false;
+
+    if (!isStripeConnected || selectedEth) {
+      isEthSelected = true;
+    }
+
     switch (this.state.paymentType) {
       case PAYMENT_TYPE.ETH:
         return (
           <BoostPayEth
             selected={true}
-            boostId={this.props.boostId}
-            newsroomName={this.props.newsroomName}
+            boostId={boostId}
+            newsroomName={newsroomName}
             paymentType={PAYMENT_TYPE.ETH}
             optionLabel={<PaymentLabelEthText />}
-            handleNext={() => this.handleEthNext(this.state.etherToSpend, this.state.usdToSpend)}
+            handleNext={() => this.handleEthNext(etherToSpend, usdToSpend)}
             paymentStarted={true}
-            etherToSpend={this.state.etherToSpend}
-            usdToSpend={this.state.usdToSpend}
-            paymentAddr={this.props.paymentAddr}
-            walletConnected={this.props.walletConnected}
-            handlePaymentSuccess={this.props.handlePaymentSuccess}
+            etherToSpend={etherToSpend}
+            usdToSpend={usdToSpend}
+            paymentAddr={paymentAddr}
+            walletConnected={walletConnected}
+            handlePaymentSuccess={handlePaymentSuccess}
           />
         );
       case PAYMENT_TYPE.STRIPE:
         return (
           <BoostPayStripe
-            boostId={this.props.boostId}
-            amount={this.props.amount}
+            boostId={boostId}
+            amount={amount}
             selected={true}
-            newsroomName={this.props.newsroomName}
+            newsroomName={newsroomName}
             optionLabel={<PaymentLabelCardText />}
             paymentType={PAYMENT_TYPE.STRIPE}
             paymentStarted={true}
             handleNext={this.handleStripeNext}
-            handlePaymentSuccess={this.props.handlePaymentSuccess}
+            handlePaymentSuccess={handlePaymentSuccess}
           />
         );
       default:
         return (
           <>
             <BoostPayEth
-              selected={this.state.selectedEth}
+              selected={isEthSelected}
               optionLabel={<PaymentLabelEthText />}
-              boostId={this.props.boostId}
-              newsroomName={this.props.newsroomName}
+              boostId={boostId}
+              newsroomName={newsroomName}
               paymentType={PAYMENT_TYPE.ETH}
               handleNext={this.handleEthNext}
-              paymentAddr={this.props.paymentAddr}
-              walletConnected={this.props.walletConnected}
-              handlePaymentSuccess={this.props.handlePaymentSuccess}
+              paymentAddr={paymentAddr}
+              walletConnected={walletConnected}
+              handlePaymentSuccess={handlePaymentSuccess}
               handlePaymentSelected={this.handlePaymentSelected}
             />
-            <BoostPayStripe
-              boostId={this.props.boostId}
-              amount={this.props.amount}
-              selected={this.state.selectedStripe}
-              newsroomName={this.props.newsroomName}
-              optionLabel={<PaymentLabelCardText />}
-              paymentType={PAYMENT_TYPE.STRIPE}
-              handleNext={this.handleStripeNext}
-              handlePaymentSuccess={this.props.handlePaymentSuccess}
-              handlePaymentSelected={this.handlePaymentSelected}
-            />
+            {isStripeConnected && (
+              <BoostPayStripe
+                boostId={boostId}
+                amount={amount}
+                selected={selectedStripe}
+                newsroomName={newsroomName}
+                optionLabel={<PaymentLabelCardText />}
+                paymentType={PAYMENT_TYPE.STRIPE}
+                handleNext={this.handleStripeNext}
+                handlePaymentSuccess={handlePaymentSuccess}
+                handlePaymentSelected={this.handlePaymentSelected}
+              />
+            )}
           </>
         );
     }

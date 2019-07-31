@@ -54,6 +54,7 @@ storiesOf("Boosts", module)
           walletConnected={true}
           handleBackToListing={handlePaymentSuccess}
           handlePaymentSuccess={handlePaymentSuccess}
+          isStripeConnected={true}
         />
       </>
     );

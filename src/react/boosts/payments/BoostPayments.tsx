@@ -49,6 +49,7 @@ const BoostAmount = styled.p`
 `;
 
 export interface BoostPaymentsProps {
+  isStripeConnected: boolean;
   walletConnected: boolean;
   paymentAddr: EthAddress;
   boostId: string;
@@ -87,6 +88,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         newsroomName={props.newsroomName}
         boostId={props.boostId}
         walletConnected={props.walletConnected}
+        isStripeConnected={props.isStripeConnected}
         handlePaymentSuccess={() => props.handlePaymentSuccess()}
       />
     </BoostWrapper>

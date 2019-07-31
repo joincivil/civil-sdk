@@ -33,6 +33,7 @@ export const boostQuery = gql`
         channel {
           id
           channelType
+          isStripeConnected
           newsroom {
             contractAddress
           }

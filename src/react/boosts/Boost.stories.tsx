@@ -25,6 +25,7 @@ const boost = {
   channel: {
     id: "",
     channelType: "",
+    isStripeConnected: true,
     newsroom: {
       contractAddress: "0xabc123",
     },
