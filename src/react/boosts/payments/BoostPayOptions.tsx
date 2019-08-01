@@ -1,5 +1,5 @@
 import * as React from "react";
-import { colors, fonts, mediaQueries } from "@joincivil/components";
+import { colors, fonts, mediaQueries, FeatureFlag } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
 import { BoostPayStripe } from "./BoostPayStripe";
 import styled from "styled-components";
@@ -179,19 +179,21 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               handlePaymentSuccess={handlePaymentSuccess}
               handlePaymentSelected={this.handlePaymentSelected}
             />
-            {isStripeConnected && (
-              <BoostPayStripe
-                boostId={boostId}
-                usdToSpend={usdToSpend}
-                selected={selectedStripe}
-                newsroomName={newsroomName}
-                optionLabel={<PaymentLabelCardText />}
-                paymentType={PAYMENT_TYPE.STRIPE}
-                handleNext={this.handleStripeNext}
-                handlePaymentSuccess={handlePaymentSuccess}
-                handlePaymentSelected={this.handlePaymentSelected}
-              />
-            )}
+            <FeatureFlag feature={"boost-stripe"}>
+              {!isStripeConnected && (
+                <BoostPayStripe
+                  boostId={boostId}
+                  usdToSpend={usdToSpend}
+                  selected={selectedStripe}
+                  newsroomName={newsroomName}
+                  optionLabel={<PaymentLabelCardText />}
+                  paymentType={PAYMENT_TYPE.STRIPE}
+                  handleNext={this.handleStripeNext}
+                  handlePaymentSuccess={handlePaymentSuccess}
+                  handlePaymentSelected={this.handlePaymentSelected}
+                />
+              )}
+            </FeatureFlag>
           </>
         );
     }

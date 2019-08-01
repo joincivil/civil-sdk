@@ -68,11 +68,11 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
   };
 
   private renderPaymentForm = (): JSX.Element => {
+    // TODO(sruddy) TEST API KEY >> add util for test key, prod keys and js
     const AsyncScriptLoader = makeAsyncScriptLoader("https://js.stripe.com/v3/")(LoadingMessage);
     if (this.state.stripeLoaded) {
       return (
-        // TODO(sruddy) remove test api key
-        <StripeProvider apiKey={"pk_test_TYooMQauvdEDq54NiTphI7jx"}>
+        <StripeProvider apiKey={"pk_test_3a5qmy1MuBEcooDr5wL8bRz9"}>
           <Elements>
             <Mutation mutation={boostPayStripeMutation}>
               {(paymentsCreateStripePayment: MutationFunc) => {
