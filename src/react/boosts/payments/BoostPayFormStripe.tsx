@@ -65,7 +65,7 @@ const StripeUserInfoWrap = styled.div`
 export interface BoostPayFormStripeProps {
   boostId: string;
   newsroomName: string;
-  amount: number;
+  usdToSpend: number;
   selected: boolean;
   paymentType: string;
   optionLabel: string | JSX.Element;
@@ -135,27 +135,23 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps> {
 
   private async handleSubmit(): Promise<void> {
     // @ts-ignore
-    this.props.stripe
-      .createPaymentMethod("card", {
-        billing_details: {
-          address: {
-            country: null,
-            postal_code: null,
-          },
-          email: null,
-          name: "Jenny Rosen",
-        },
-      })
+    if (this.props.stripe) {
       // @ts-ignore
-      .then(({ paymentMethod }) => {
-        console.log("Received Stripe PaymentMethod:", paymentMethod);
-        this.props.savePayment({
-          variables: {
-            postID: this.props.boostId,
-            input: { paymentToken: "", amount: this.props.amount, currencyCode: "usd" },
-          },
+      this.props.stripe
+        .createToken()
+        // @ts-ignore
+        .then(({ token }) => {
+          this.props.savePayment({
+            variables: {
+              postID: this.props.boostId,
+              input: { paymentToken: token, amount: this.props.usdToSpend, currencyCode: "usd" },
+            },
+          });
+        })
+        .catch((err: any) => {
+          console.error(err)
         });
-      });
+    }
   }
 }
 

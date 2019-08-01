@@ -19,7 +19,6 @@ export interface BoostPayFormEthProps {
   usdToSpend: number;
   newsroomName: string;
   paymentAddr: EthAddress;
-  amount: number;
   savePayment: MutationFunc;
   handlePaymentSuccess(): void;
 }
@@ -101,7 +100,7 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
     // @TODO/loginV2 migrate away from window.ethereum
     if (this.context.civil && (window as any).ethereum) {
-      const amount = this.context.civil.toBigNumber(this.props.amount);
+      const amount = this.context.civil.toBigNumber(this.props.etherToSpend);
 
       return this.context.civil.simplePayment(this.props.paymentAddr, amount);
     } else {

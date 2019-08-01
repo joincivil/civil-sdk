@@ -23,7 +23,7 @@ export interface BoostInternalProps {
 export type BoostProps = BoostInternalProps & BoostPermissionsInjectedProps;
 
 export interface BoostState {
-  amount: number;
+  usdToSpend: number;
   payment: boolean;
   paymentSuccess: boolean;
 }
@@ -32,7 +32,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
-      amount: 0,
+      usdToSpend: 0,
       payment: this.props.payment || false,
       paymentSuccess: false,
     };
@@ -41,7 +41,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
   public render(): JSX.Element {
     const id = this.props.boostId;
 
-    if (this.state.payment && this.state.amount === 0) {
+    if (this.state.payment && this.state.usdToSpend === 0) {
       this.handleBackToListing();
     }
 
@@ -104,7 +104,7 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
                     <BoostPayments
                       boostId={id}
                       title={boostData.title}
-                      amount={this.state.amount}
+                      usdToSpend={this.state.usdToSpend}
                       newsroomName={newsroomData.name}
                       paymentAddr={newsroomData.owner}
                       walletConnected={!!this.props.walletConnected}
@@ -156,12 +156,12 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
     );
   }
 
-  private startPayment = (amount: number) => {
-    this.setState({ amount, payment: true });
+  private startPayment = (usdToSpend: number) => {
+    this.setState({ usdToSpend, payment: true });
     // TODO(sruddy) temporarily removing history till updates on monorepo are made
     /*this.props.history.push({
       pathname: "/boosts/" + this.props.boostId + "/payment",
-      state: { amount, payment: true },
+      state: { usdToSpend, payment: true },
     });*/
   };
 

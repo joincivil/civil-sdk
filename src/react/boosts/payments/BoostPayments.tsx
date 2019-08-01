@@ -55,7 +55,7 @@ export interface BoostPaymentsProps {
   boostId: string;
   title: string;
   newsroomName: string;
-  amount: number;
+  usdToSpend: number;
   handleBackToListing(): void;
   handlePaymentSuccess(): void;
 }
@@ -71,7 +71,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
           <BoostPayNewsroom>{props.newsroomName}</BoostPayNewsroom>
-          <BoostAmount>{"$" + props.amount}</BoostAmount>
+          <BoostAmount>{"$" + props.usdToSpend}</BoostAmount>
           <BoostSmallPrint margin={"0 0 20px"}>
             All funds raised will go directly to the newsroom even if this goal is not met.
             <QuestionToolTip
@@ -83,7 +83,7 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         </BoostDetails>
       </BoostHeaderWrap>
       <BoostPayOptions
-        amount={props.amount}
+        usdToSpend={props.usdToSpend}
         paymentAddr={props.paymentAddr}
         newsroomName={props.newsroomName}
         boostId={props.boostId}

@@ -15,7 +15,7 @@ export enum PAYMENT_TYPE {
 
 export interface BoostPayOptionsProps {
   boostId: string;
-  amount: number;
+  usdToSpend: number;
   newsroomName: string;
   paymentAddr: EthAddress;
   walletConnected: boolean;
@@ -92,7 +92,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
       selectedEth: false,
       selectedStripe: false,
       etherToSpend: 0,
-      usdToSpend: 0,
+      usdToSpend: this.props.usdToSpend || 0,
     };
   }
 
@@ -124,15 +124,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
   }
 
   private getPaymentTypes = () => {
-    const {
-      isStripeConnected,
-      boostId,
-      amount,
-      newsroomName,
-      paymentAddr,
-      walletConnected,
-      handlePaymentSuccess,
-    } = this.props;
+    const { isStripeConnected, boostId, newsroomName, paymentAddr, walletConnected, handlePaymentSuccess } = this.props;
     const { selectedEth, selectedStripe, etherToSpend, usdToSpend } = this.state;
     let isEthSelected = false;
 
@@ -162,7 +154,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
         return (
           <BoostPayStripe
             boostId={boostId}
-            amount={amount}
+            usdToSpend={usdToSpend}
             selected={true}
             newsroomName={newsroomName}
             optionLabel={<PaymentLabelCardText />}
@@ -190,7 +182,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             {isStripeConnected && (
               <BoostPayStripe
                 boostId={boostId}
-                amount={amount}
+                usdToSpend={usdToSpend}
                 selected={selectedStripe}
                 newsroomName={newsroomName}
                 optionLabel={<PaymentLabelCardText />}

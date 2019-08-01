@@ -11,7 +11,7 @@ import { BoostPayOption } from "./BoostPayOption";
 export interface BoostPayStripeProps {
   boostId: string;
   newsroomName: string;
-  amount: number;
+  usdToSpend: number;
   selected: boolean;
   paymentType: string;
   optionLabel: string | JSX.Element;
@@ -71,6 +71,7 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
     const AsyncScriptLoader = makeAsyncScriptLoader("https://js.stripe.com/v3/")(LoadingMessage);
     if (this.state.stripeLoaded) {
       return (
+        // TODO(sruddy) remove test api key
         <StripeProvider apiKey={"pk_test_TYooMQauvdEDq54NiTphI7jx"}>
           <Elements>
             <Mutation mutation={boostPayStripeMutation}>
@@ -79,7 +80,7 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
                   <BoostPayFormStripe
                     boostId={this.props.boostId}
                     newsroomName={this.props.newsroomName}
-                    amount={this.props.amount}
+                    usdToSpend={this.props.usdToSpend}
                     paymentType={this.props.paymentType}
                     optionLabel={this.props.optionLabel}
                     selected={this.props.selected}

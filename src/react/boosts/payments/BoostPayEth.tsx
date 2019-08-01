@@ -157,7 +157,6 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
               <BoostPayFormEth
                 boostId={this.props.boostId}
                 paymentAddr={this.props.paymentAddr}
-                amount={this.state.etherToSpend}
                 savePayment={paymentsCreateEtherPayment}
                 etherToSpend={this.state.etherToSpend}
                 usdToSpend={this.state.usdToSpend}
