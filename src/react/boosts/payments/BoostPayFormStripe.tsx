@@ -1,6 +1,12 @@
 import * as React from "react";
 import { MutationFunc } from "react-apollo";
-import { injectStripe, CardNumberElement, CardExpiryElement, CardCvcElement } from "react-stripe-elements";
+import {
+  injectStripe,
+  ReactStripeElements,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCvcElement,
+} from "react-stripe-elements";
 import styled from "styled-components";
 import { colors, fonts } from "@joincivil/components";
 import {
@@ -62,7 +68,7 @@ const StripeUserInfoWrap = styled.div`
   }
 `;
 
-export interface BoostPayFormStripeProps {
+export interface BoostPayFormStripeProps extends ReactStripeElements.InjectedStripeProps {
   boostId: string;
   newsroomName: string;
   usdToSpend: number;
@@ -134,23 +140,18 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps> {
   }
 
   private async handleSubmit(): Promise<void> {
-    // @ts-ignore
     if (this.props.stripe) {
-      // @ts-ignore
-      this.props.stripe
-        .createToken()
-        // @ts-ignore
-        .then(({ token }) => {
-          this.props.savePayment({
-            variables: {
-              postID: this.props.boostId,
-              input: { paymentToken: token, amount: this.props.usdToSpend, currencyCode: "usd" },
-            },
-          });
-        })
-        .catch((err: any) => {
-          console.error(err)
+      try {
+        const token = await this.props.stripe.createToken();
+        await this.props.savePayment({
+          variables: {
+            postID: this.props.boostId,
+            input: { paymentToken: token, amount: this.props.usdToSpend, currencyCode: "usd" },
+          },
         });
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 }
