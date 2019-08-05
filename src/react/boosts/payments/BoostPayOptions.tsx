@@ -1,10 +1,10 @@
 import * as React from "react";
-import { RadioInput, colors, fonts, mediaQueries } from "@joincivil/components";
+import { colors, fonts, mediaQueries, FeatureFlag } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
-// import { BoostPayStripe } from "./BoostPayStripe";
+import { BoostPayStripe } from "./BoostPayStripe";
 import styled from "styled-components";
 import { BoostFlexCenter, BoostTextButton } from "../BoostStyledComponents";
-import { PaymentInfoText, PaymentFAQText } from "../BoostTextComponents";
+import { PaymentInfoText, PaymentFAQText, PaymentLabelCardText, PaymentLabelEthText } from "../BoostTextComponents";
 import { EthAddress } from "@joincivil/core";
 
 export enum PAYMENT_TYPE {
@@ -15,12 +15,11 @@ export enum PAYMENT_TYPE {
 
 export interface BoostPayOptionsProps {
   boostId: string;
+  usdToSpend: number;
   newsroomName: string;
-  onChange?: any;
-  value?: any;
-  name?: string;
   paymentAddr: EthAddress;
   walletConnected: boolean;
+  isStripeConnected: boolean;
   handlePaymentSuccess(): void;
 }
 
@@ -81,6 +80,8 @@ export interface BoostPayOptionsStates {
   paymentType: string;
   etherToSpend: number;
   usdToSpend: number;
+  selectedEth: boolean;
+  selectedStripe: boolean;
 }
 
 export class BoostPayOptions extends React.Component<BoostPayOptionsProps, BoostPayOptionsStates> {
@@ -88,8 +89,10 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
     super(props);
     this.state = {
       paymentType: PAYMENT_TYPE.DEFAULT,
+      selectedEth: false,
+      selectedStripe: false,
       etherToSpend: 0,
-      usdToSpend: 0,
+      usdToSpend: this.props.usdToSpend || 0,
     };
   }
 
@@ -105,9 +108,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
             </BoostFlexCenter>
           </BoostInstructions>
         )}
-        <RadioInput name={"BoostPayments"} label={""}>
-          {this.getPaymentTypes()}
-        </RadioInput>
+        {this.getPaymentTypes()}
         {this.state.paymentType === PAYMENT_TYPE.DEFAULT && (
           <BoostPayFooter>
             <BoostPayFooterSection>
@@ -123,50 +124,96 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
   }
 
   private getPaymentTypes = () => {
+    const { isStripeConnected, boostId, newsroomName, paymentAddr, walletConnected, handlePaymentSuccess } = this.props;
+    const { selectedEth, selectedStripe, etherToSpend, usdToSpend } = this.state;
+    let isEthSelected = false;
+
+    if (!isStripeConnected || selectedEth) {
+      isEthSelected = true;
+    }
+
     switch (this.state.paymentType) {
       case PAYMENT_TYPE.ETH:
         return (
           <BoostPayEth
-            boostId={this.props.boostId}
-            newsroomName={this.props.newsroomName}
-            value={PAYMENT_TYPE.ETH}
-            handleNext={() => this.handleEthNext(this.state.etherToSpend, this.state.usdToSpend)}
-            defaultChecked={true}
+            selected={true}
+            boostId={boostId}
+            newsroomName={newsroomName}
+            paymentType={PAYMENT_TYPE.ETH}
+            optionLabel={<PaymentLabelEthText />}
+            handleNext={() => this.handleEthNext(etherToSpend, usdToSpend)}
             paymentStarted={true}
-            etherToSpend={this.state.etherToSpend}
-            usdToSpend={this.state.usdToSpend}
-            paymentAddr={this.props.paymentAddr}
-            walletConnected={this.props.walletConnected}
-            handlePaymentSuccess={this.props.handlePaymentSuccess}
+            etherToSpend={etherToSpend}
+            usdToSpend={usdToSpend}
+            paymentAddr={paymentAddr}
+            walletConnected={walletConnected}
+            handlePaymentSuccess={handlePaymentSuccess}
           />
         );
-        {
-          /* case PAYMENT_TYPE.STRIPE:
+      case PAYMENT_TYPE.STRIPE:
         return (
-          <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={true} />
-        );*/
-        }
+          <BoostPayStripe
+            boostId={boostId}
+            usdToSpend={usdToSpend}
+            selected={true}
+            newsroomName={newsroomName}
+            optionLabel={<PaymentLabelCardText />}
+            paymentType={PAYMENT_TYPE.STRIPE}
+            paymentStarted={true}
+            handleNext={this.handleStripeNext}
+            handlePaymentSuccess={handlePaymentSuccess}
+          />
+        );
       default:
         return (
           <>
             <BoostPayEth
-              boostId={this.props.boostId}
-              newsroomName={this.props.newsroomName}
-              value={PAYMENT_TYPE.ETH}
+              selected={isEthSelected}
+              optionLabel={<PaymentLabelEthText />}
+              boostId={boostId}
+              newsroomName={newsroomName}
+              paymentType={PAYMENT_TYPE.ETH}
+              usdToSpend={usdToSpend}
               handleNext={this.handleEthNext}
-              defaultChecked={true}
-              paymentAddr={this.props.paymentAddr}
-              walletConnected={this.props.walletConnected}
-              handlePaymentSuccess={this.props.handlePaymentSuccess}
+              paymentAddr={paymentAddr}
+              walletConnected={walletConnected}
+              handlePaymentSuccess={handlePaymentSuccess}
+              handlePaymentSelected={this.handlePaymentSelected}
             />
-            {/* <BoostPayStripe value={PAYMENT_TYPE.STRIPE} defaultChecked={false} /> */}
+            <FeatureFlag feature={"boost-stripe"}>
+              {isStripeConnected && (
+                <BoostPayStripe
+                  boostId={boostId}
+                  usdToSpend={usdToSpend}
+                  selected={selectedStripe}
+                  newsroomName={newsroomName}
+                  optionLabel={<PaymentLabelCardText />}
+                  paymentType={PAYMENT_TYPE.STRIPE}
+                  handleNext={this.handleStripeNext}
+                  handlePaymentSuccess={handlePaymentSuccess}
+                  handlePaymentSelected={this.handlePaymentSelected}
+                />
+              )}
+            </FeatureFlag>
           </>
         );
     }
   };
 
+  private handlePaymentSelected = (paymentType: string) => {
+    if (paymentType === PAYMENT_TYPE.ETH) {
+      this.setState({ selectedEth: true, selectedStripe: false });
+    } else if (paymentType === PAYMENT_TYPE.STRIPE) {
+      this.setState({ selectedEth: false, selectedStripe: true });
+    }
+  };
+
   private handleEthNext = (etherToSpend: number, usdToSpend: number) => {
     this.setState({ paymentType: PAYMENT_TYPE.ETH, etherToSpend, usdToSpend });
+  };
+
+  private handleStripeNext = () => {
+    this.setState({ paymentType: PAYMENT_TYPE.STRIPE });
   };
 
   private handleEdit = () => {

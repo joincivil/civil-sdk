@@ -39,22 +39,23 @@ const BoostDetails = styled.div`
   margin: 0 0 50px;
 `;
 
-/*const BoostAmount = styled.p`
+const BoostAmount = styled.p`
   color: ${colors.accent.CIVIL_GRAY_0};
   font-family: ${fonts.SANS_SERIF};
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
   margin-bottom: 20px;
-`;*/
+`;
 
 export interface BoostPaymentsProps {
+  isStripeConnected: boolean;
   walletConnected: boolean;
   paymentAddr: EthAddress;
   boostId: string;
   title: string;
   newsroomName: string;
-  amount: number;
+  usdToSpend: number;
   handleBackToListing(): void;
   handlePaymentSuccess(): void;
 }
@@ -64,13 +65,13 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
     <BoostWrapper open={true}>
       <BoostHeaderWrap>
         <BoostBack>
-          <BoostTextButton onClick={props.handleBackToListing}>&laquo; Back to Boost listing</BoostTextButton>
+          <BoostTextButton onClick={() => props.handleBackToListing()}>&laquo; Back to Boost listing</BoostTextButton>
         </BoostBack>
         <BoostHeader>Complete your Boost payment</BoostHeader>
         <BoostDetails>
           <BoostTitle>{props.title}</BoostTitle>
           <BoostPayNewsroom>{props.newsroomName}</BoostPayNewsroom>
-          {/* <BoostAmount>{"$" + props.amount}</BoostAmount> */}
+          <BoostAmount>{"$" + props.usdToSpend}</BoostAmount>
           <BoostSmallPrint margin={"0 0 20px"}>
             All funds raised will go directly to the newsroom even if this goal is not met.
             <QuestionToolTip
@@ -82,11 +83,13 @@ export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props 
         </BoostDetails>
       </BoostHeaderWrap>
       <BoostPayOptions
+        usdToSpend={props.usdToSpend}
         paymentAddr={props.paymentAddr}
         newsroomName={props.newsroomName}
         boostId={props.boostId}
         walletConnected={props.walletConnected}
-        handlePaymentSuccess={props.handlePaymentSuccess}
+        isStripeConnected={props.isStripeConnected}
+        handlePaymentSuccess={() => props.handlePaymentSuccess()}
       />
     </BoostWrapper>
   );

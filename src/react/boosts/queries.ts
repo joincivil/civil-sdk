@@ -33,6 +33,7 @@ export const boostQuery = gql`
         channel {
           id
           channelType
+          isStripeConnected
           newsroom {
             contractAddress
           }
@@ -91,6 +92,18 @@ export const boostPayEthMutation = gql`
       reaction
       comment
       transactionID
+    }
+  }
+`;
+
+export const boostPayStripeMutation = gql`
+  mutation($postID: String!, $input: PaymentsCreateStripePaymentInput!) {
+    PaymentsCreateStripePayment(postID: $postID, input: $input) {
+      reaction
+      comment
+      currencyCode
+      amount
+      paymentToken
     }
   }
 `;

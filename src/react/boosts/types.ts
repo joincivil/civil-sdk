@@ -10,6 +10,7 @@ export interface BoostData {
   channel: {
     id: string;
     channelType: string;
+    isStripeConnected: boolean;
     newsroom: {
       contractAddress: string;
     };

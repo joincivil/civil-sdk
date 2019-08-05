@@ -1,9 +1,10 @@
 import * as React from "react";
+import { debounce } from "lodash";
 import { BoostProgress } from "./BoostProgress";
 import { BoostData, BoostNewsroomData } from "./types";
 import {
   BoostButton,
-  BoostFlexStart,
+  BoostFlexCenter,
   BoostWrapper,
   BoostTitle,
   BoostDescription,
@@ -12,11 +13,13 @@ import {
   BoostProgressCol,
   BoostNotice,
   BoostNotificationContain,
+  BoostAmountInputWrap,
+  BoostAmountInput,
 } from "./BoostStyledComponents";
 import { BoostPaymentSuccess } from "./BoostTextComponents";
 import { BoostNewsroom } from "./BoostNewsroom";
 import { BoostCompleted } from "./BoostCompleted";
-import { QuestionToolTip, HelmetHelper } from "@joincivil/components";
+import { QuestionToolTip, HelmetHelper, CurrencyInput } from "@joincivil/components";
 import * as boostCardImage from "../../images/boost-card.png";
 import { urlConstants } from "../urlConstants";
 import { renderPTagsFromLineBreaks } from "@joincivil/utils";
@@ -29,10 +32,22 @@ export interface BoostCardProps {
   paymentSuccess: boolean;
   boostOwner?: boolean;
   disableHelmet?: boolean;
-  handlePayments(): void;
+  handlePayments(amount: number): void;
 }
 
-export class BoostCard extends React.Component<BoostCardProps> {
+export interface BoostCardStates {
+  amount: number;
+}
+
+export class BoostCard extends React.Component<BoostCardProps, BoostCardStates> {
+  public constructor(props: any) {
+    super(props);
+    this.state = {
+      amount: 0,
+    };
+
+    this.handleAmount = debounce(this.handleAmount.bind(this), 300);
+  }
   public render(): JSX.Element {
     const timeRemaining = this.timeRemaining(this.props.boostData.dateEnd);
     const timeEnded = timeRemaining === "Boost Ended";
@@ -42,7 +57,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
     if (timeEnded) {
       btnText = "Boost Ended";
     }
-    const btnDisabled = timeEnded || !this.props.newsroomData.whitelisted;
+    const btnDisabled = timeEnded || !this.props.newsroomData.whitelisted || this.state.amount === 0;
 
     return (
       <>
@@ -89,7 +104,7 @@ export class BoostCard extends React.Component<BoostCardProps> {
             disableHelmet={this.props.disableHelmet}
           />
 
-          <BoostFlexStart>
+          <BoostFlexCenter>
             <BoostProgressCol open={this.props.open}>
               <BoostProgress
                 open={this.props.open}
@@ -99,11 +114,16 @@ export class BoostCard extends React.Component<BoostCardProps> {
               />
             </BoostProgressCol>
             {this.props.open && (
-              <BoostButton disabled={btnDisabled} onClick={() => this.props.handlePayments()}>
-                {btnText}
-              </BoostButton>
+              <BoostAmountInputWrap>
+                <BoostAmountInput>
+                  <CurrencyInput label={""} placeholder={"0"} name={"BoostAmount"} onChange={this.handleAmount} />
+                </BoostAmountInput>
+                <BoostButton disabled={btnDisabled} onClick={() => this.props.handlePayments(this.state.amount)}>
+                  {btnText}
+                </BoostButton>
+              </BoostAmountInputWrap>
             )}
-          </BoostFlexStart>
+          </BoostFlexCenter>
           {this.props.open && !this.props.newsroomData.whitelisted && (
             <>
               <BoostNotice>
@@ -164,6 +184,14 @@ export class BoostCard extends React.Component<BoostCardProps> {
       </>
     );
   }
+
+  private handleAmount = (name: string, value: any) => {
+    let amount = Number.parseFloat(value);
+    if (isNaN(amount)) {
+      amount = 0;
+    }
+    this.setState({ amount });
+  };
 
   // TODO(sruddy) add to util
   private timeRemaining = (dateEnd: string) => {

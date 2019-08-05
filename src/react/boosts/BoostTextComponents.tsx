@@ -19,6 +19,10 @@ export const NoBoostsText: React.FunctionComponent = props => (
   <NoBoostsTextStyled>There are no Boosts at this time.</NoBoostsTextStyled>
 );
 
+export const PaymentLabelCardText: React.FunctionComponent = props => <>Pay with card</>;
+
+export const PaymentLabelEthText: React.FunctionComponent = props => <>Pay using ETH</>;
+
 export const WhyEthModalText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Why ETH?</ModalHeading>
@@ -122,8 +126,8 @@ export const PaymentInfoText: React.FunctionComponent = props => (
   <>
     <h3>Payment Information</h3>
     <p>
-      All Boosts proceeded will be funded using ETH. Civil does not collect any fees on Boosts and your support goes
-      directly to the Newsroom.
+      If the project does not meet its goals, your payment method will be still charged when the Boost ends. All
+      procceds of the Boost go directly to the newsroom.
     </p>
   </>
 );

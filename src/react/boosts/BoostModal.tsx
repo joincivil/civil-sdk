@@ -13,7 +13,7 @@ export const BoostModal: React.FunctionComponent<BoostModalProps> = props => {
     <>
       <FullScreenModal open={props.open}>
         <BoostModalContain>
-          <BoostModalCloseBtn onClick={props.handleClose}>
+          <BoostModalCloseBtn onClick={() => props.handleClose()}>
             <CloseXIcon color={colors.accent.CIVIL_GRAY_2} />
           </BoostModalCloseBtn>
           {props.children}
