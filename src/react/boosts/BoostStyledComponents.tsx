@@ -37,7 +37,7 @@ export const BoostWrapperLink = styled.a`
   margin: 0 auto 45px;
   padding: 30px 30px 30px 110px;
   position: relative;
-  transition: border .25s ease;
+  transition: border 0.25s ease;
 
   &:hover {
     border: 1px solid ${colors.accent.CIVIL_BLUE};
