@@ -65,7 +65,6 @@ export const BoostFeed: React.FunctionComponent<BoostFeedProps> = props => {
                     boostOwner={false}
                     open={false}
                     boostId={boostData.id}
-                    disableHelmet={true}
                     handlePayments={() => null}
                     paymentSuccess={false}
                   />

@@ -19,6 +19,7 @@ export const boostFeedQuery = gql`
           paymentsTotal(currencyCode: "USD")
           title
           dateEnd
+          why
         }
       }
     }

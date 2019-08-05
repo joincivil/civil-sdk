@@ -31,6 +31,28 @@ export const BoostWrapper = styled.div`
   }
 `;
 
+export const BoostWrapperLink = styled.a`
+  border: 1px solid ${colors.accent.CIVIL_GRAY_4};
+  display: block;
+  font-family: ${fonts.SANS_SERIF};
+  margin: 0 auto 45px;
+  padding: 30px 30px 30px 110px;
+  position: relative;
+  transition: border 0.25s ease;
+
+  &:hover {
+    border: 1px solid ${colors.accent.CIVIL_BLUE};
+  }
+
+  ${mediaQueries.MOBILE} {
+    border-color: transparent;
+    border-bottom: 1px solid ${colors.accent.CIVIL_GRAY_4};
+    border-top: 1px solid ${colors.accent.CIVIL_GRAY_3};
+    margin: 0 auto 30px;
+    padding: 20px 15px;
+  }
+`;
+
 export const BoostWrapperFullWidthHr = styled.hr`
   background-color: ${colors.accent.CIVIL_GRAY_4};
   border: none;
@@ -109,15 +131,6 @@ export const BoostTitle = styled.h2`
     font-size: 16px;
     line-height: 22px;
     margin: 0 0 12px;
-  }
-
-  a {
-    color: ${colors.accent.CIVIL_GRAY_0};
-    transition: color 200ms ease;
-
-    &:hover {
-      color: ${colors.accent.CIVIL_BLUE};
-    }
   }
 `;
 
