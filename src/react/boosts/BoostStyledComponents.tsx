@@ -23,6 +23,7 @@ export const BoostWrapper = styled.div`
   position: relative;
 
   ${mediaQueries.MOBILE} {
+    border-color: transparent;
     border-bottom: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_4)};
     border-top: ${(props: BoostStyleProps) => (props.open ? "none" : "1px solid " + colors.accent.CIVIL_GRAY_3)};
     margin: 0 auto 30px;
