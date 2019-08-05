@@ -68,7 +68,7 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
   };
 
   private renderPaymentForm = (): JSX.Element => {
-    // TODO(sruddy) TEST API KEY >> add util for test key, prod keys and js
+    // TODO(sruddy) TEST API KEY >> get from CivilContext config
     const AsyncScriptLoader = makeAsyncScriptLoader("https://js.stripe.com/v3/")(LoadingMessage);
     if (this.state.stripeLoaded) {
       return (

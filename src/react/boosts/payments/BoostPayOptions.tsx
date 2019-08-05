@@ -173,6 +173,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               boostId={boostId}
               newsroomName={newsroomName}
               paymentType={PAYMENT_TYPE.ETH}
+              usdToSpend={usdToSpend}
               handleNext={this.handleEthNext}
               paymentAddr={paymentAddr}
               walletConnected={walletConnected}
@@ -180,7 +181,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               handlePaymentSelected={this.handlePaymentSelected}
             />
             <FeatureFlag feature={"boost-stripe"}>
-              {!isStripeConnected && (
+              {isStripeConnected && (
                 <BoostPayStripe
                   boostId={boostId}
                   usdToSpend={usdToSpend}

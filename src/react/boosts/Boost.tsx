@@ -22,13 +22,13 @@ export interface BoostInternalProps {
 
 export type BoostProps = BoostInternalProps & BoostPermissionsInjectedProps;
 
-export interface BoostState {
+export interface BoostStates {
   usdToSpend: number;
   payment: boolean;
   paymentSuccess: boolean;
 }
 
-class BoostComponent extends React.Component<BoostProps, BoostState> {
+class BoostComponent extends React.Component<BoostProps, BoostStates> {
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
@@ -40,10 +40,6 @@ class BoostComponent extends React.Component<BoostProps, BoostState> {
 
   public render(): JSX.Element {
     const id = this.props.boostId;
-
-    if (this.state.payment && this.state.usdToSpend === 0) {
-      this.handleBackToListing();
-    }
 
     return (
       <Query query={boostQuery} variables={{ id }}>
