@@ -1199,17 +1199,19 @@
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.2.tgz#63985d3d8b02530e0869962f4da09142ee8e200e"
 
-"@joincivil/artifacts@^1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@joincivil/artifacts/-/artifacts-1.1.8.tgz#60a967bc83746c5ad19eb05eb9bf04b6c3e38dde"
+"@joincivil/artifacts@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@joincivil/artifacts/-/artifacts-1.1.9.tgz#2b028f3c588fbc6cf50f7055f53232ee558e6f7c"
+  integrity sha512-6i0ILg+Z9TjtvvTPZMCpyk731MTweMpq3TIizNB01rw5TWs5doxpYY8fDoIzs+8A+5PQm3Cf8J3N+1J9T48kRg==
 
-"@joincivil/components@^1.9.7":
-  version "1.9.7"
-  resolved "https://registry.yarnpkg.com/@joincivil/components/-/components-1.9.7.tgz#f7a2a0bcdb3da08009520a1120e36cfc19f1b218"
+"@joincivil/components@^1.9.9":
+  version "1.9.9"
+  resolved "https://registry.yarnpkg.com/@joincivil/components/-/components-1.9.9.tgz#f7d3213ebc2a22c7de476bc36f5207866d671679"
+  integrity sha512-wK0izti/VX197VybUBUQyoQUMQbucFXRsatZZZ08PEafz0mCXSA6V9GhUW42SPACNHtji9qDSyG7HZxmysNrSw==
   dependencies:
-    "@joincivil/core" "^4.8.8"
-    "@joincivil/ethapi" "^0.4.8"
-    "@joincivil/utils" "^1.9.8"
+    "@joincivil/core" "^4.8.10"
+    "@joincivil/ethapi" "^0.4.9"
+    "@joincivil/utils" "^1.9.9"
     apollo-storybook-react "^0.1.8"
     classnames "^2.2.5"
     graphql-tag "^2.10.0"
@@ -1226,13 +1228,14 @@
     rxjs "^5.5.6"
     styled-components "^3.2.5"
 
-"@joincivil/core@^4.8.8":
-  version "4.8.8"
-  resolved "https://registry.yarnpkg.com/@joincivil/core/-/core-4.8.8.tgz#f584a547f7a48ac2f8156bf0927844c713a6dabf"
+"@joincivil/core@^4.8.10", "@joincivil/core@^4.8.9":
+  version "4.8.10"
+  resolved "https://registry.yarnpkg.com/@joincivil/core/-/core-4.8.10.tgz#2c007dc4f11937648e6380d653135d5c93af18ed"
+  integrity sha512-pAYA6LaCq46qMpz2UPVRofdmDBxaUacncssLoOTgd5VZroYY9Rb3RyYzLbd3X3qMjHdq8jti0hP+iunBk5qAMQ==
   dependencies:
-    "@joincivil/artifacts" "^1.1.8"
-    "@joincivil/ethapi" "^0.4.8"
-    "@joincivil/utils" "^1.9.8"
+    "@joincivil/artifacts" "^1.1.9"
+    "@joincivil/ethapi" "^0.4.9"
+    "@joincivil/utils" "^1.9.9"
     bignumber.js "~5.0.0"
     debug "^4.1.0"
     ethereumjs-util "^5.2.0"
@@ -1242,12 +1245,13 @@
     rxjs "^5.5.6"
     web3 "^0.20.3"
 
-"@joincivil/ethapi@^0.4.8":
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/@joincivil/ethapi/-/ethapi-0.4.8.tgz#fe9f50fc52f8f196a0402d546baaded5e674d186"
+"@joincivil/ethapi@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/@joincivil/ethapi/-/ethapi-0.4.9.tgz#1ba30f6649ac304c662966149f50fa670ac19672"
+  integrity sha512-zNHtkAi4X0z5BdvX4FL2mPoVr21gIpLd0Eb07KGTLu/pchkAH8TvlmZoMZW4DTMQ6Iv0HSxJypQPziiXvTm8/g==
   dependencies:
-    "@joincivil/typescript-types" "^1.4.8"
-    "@joincivil/utils" "^1.9.8"
+    "@joincivil/typescript-types" "^1.4.9"
+    "@joincivil/utils" "^1.9.9"
     bignumber.js "^5.0.0"
     debug "^4.1.0"
     ethereumjs-util "^5.2.0"
@@ -1259,15 +1263,38 @@
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/@joincivil/tslint-rules/-/tslint-rules-2.7.1.tgz#786832e0cc4f914c5c1b9854ecf1e961a8d70827"
 
-"@joincivil/typescript-types@^1.4.8":
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/@joincivil/typescript-types/-/typescript-types-1.4.8.tgz#ed3fcb4a247822423d18803f8597a8ae90d8270e"
+"@joincivil/typescript-types@^1.4.9":
+  version "1.4.9"
+  resolved "https://registry.yarnpkg.com/@joincivil/typescript-types/-/typescript-types-1.4.9.tgz#802f3275bfa0cd9fad9136e53b2956267149715b"
+  integrity sha512-vOt0/G2Tq9kh7TyCtBTGSLwPrmUi7X7+kECshaf2pwglyNZ3HrUByQ0/HhsMSoMuKf5vUPiMHWAsXZXfO4z//Q==
   dependencies:
     bignumber.js "^5.0.0"
 
 "@joincivil/utils@^1.9.8":
   version "1.9.8"
   resolved "https://registry.yarnpkg.com/@joincivil/utils/-/utils-1.9.8.tgz#748881ff6612b39857ffa74c9ef04cd47a1cc361"
+  dependencies:
+    apollo-boost "^0.1.16"
+    apollo-cache-inmemory "^1.3.12"
+    apollo-client "^2.4.8"
+    apollo-link "^1.2.6"
+    apollo-link-context "^1.0.12"
+    apollo-link-error "^1.1.5"
+    apollo-link-http "^1.5.9"
+    bignumber.js "~5.0.0"
+    detect-browser "^4.1.0"
+    eth-sig-util "^1.4.2"
+    ethereumjs-abi "^0.6.5"
+    ethereumjs-util "^5.2.0"
+    graphql "^14.0.2"
+    graphql-tag "^2.9.2"
+    rxjs "^5.5.6"
+    sanitize-html "^1.20.0"
+
+"@joincivil/utils@^1.9.9":
+  version "1.9.9"
+  resolved "https://registry.yarnpkg.com/@joincivil/utils/-/utils-1.9.9.tgz#313ab40c4ec405734b1284e987351dad67998465"
+  integrity sha512-DwKtGEFgZV5kp46v+oaFSDSsye+uVhzTBUL3eb/lCey7Hc2xn0cjpeOEGexJBprnMs8DrBYfMrc7NJPmZEnqdw==
   dependencies:
     apollo-boost "^0.1.16"
     apollo-cache-inmemory "^1.3.12"
