@@ -55,6 +55,11 @@ const StripeInput = styled.input`
     props.valid ? "1px solid " + colors.accent.CIVIL_GRAY_3 : "1px solid " + colors.accent.CIVIL_RED};
   border-radius: 2px;
   padding: 10px 12px;
+
+  &:focus {
+    border-color: ${colors.accent.CIVIL_BLUE};
+    outline: none;
+  }
 `;
 
 const StripeCardInfoWrap = styled.div`
@@ -134,11 +139,11 @@ const StripeSelect = styled.div`
     }
 
     &:hover {
-      border-color: ${colors.accent.CIVIL_BLUE};
+      cursor: pointer;
     }
 
     &:focus {
-      box-shadow: 0 0 1px 1px ${colors.accent.CIVIL_BLUE};
+      border-color: ${colors.accent.CIVIL_BLUE};
       outline: none;
     }
   }
@@ -198,10 +203,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
       complete: false,
     };
 
-    this.handleChangeEmail = debounce(this.handleChangeEmail.bind(this), 500);
-    this.handleChangeName = debounce(this.handleChangeName.bind(this), 500);
-    this.handleChangeCountry = debounce(this.handleChangeCountry.bind(this), 500);
-    this.handleChangePostal = debounce(this.handleChangePostal.bind(this), 500);
+    this.handleOnChange = debounce(this.handleOnChange.bind(this), 500);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -211,6 +213,8 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
     if (this.state.country === "USA" || this.state.country === "CAN" || this.state.country === "GBR") {
       postalCodeVisible = true;
     }
+
+    console.log("email: " + this.state.email);
 
     return (
       <form>
@@ -228,7 +232,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
                 name="email"
                 type="email"
                 maxLength={254}
-                onChange={() => this.handleChangeEmail(event)}
+                onChange={() => this.handleOnChange(event)}
                 required
               />
             </StripeCardEmailWrap>
@@ -246,14 +250,14 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
                 valid={this.state.validName}
                 id="name"
                 name="name"
-                onChange={() => this.handleChangeName(event)}
+                onChange={() => this.handleOnChange(event)}
                 required
               />
               <StripeUserInfoFlex>
                 <div>
                   <label>Country or region</label>
                   <StripeSelect valid={this.state.validCountry} id="country">
-                    <select name="country" onChange={() => this.handleChangeCountry(event)}>
+                    <select name="country" onChange={() => this.handleOnChange(event)}>
                       <option value=""></option>
                       {Countries.map((country: any, i: number) => {
                         return (
@@ -274,7 +278,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
                         id="zip"
                         name="zip"
                         maxLength={12}
-                        onChange={() => this.handleChangePostal(event)}
+                        onChange={() => this.handleOnChange(event)}
                       />
                     </>
                   )}
@@ -282,8 +286,12 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
               </StripeUserInfoFlex>
             </StripeUserInfoWrap>
             <StripePolicy>
-              <a href="https://stripe.com/" target="_blank">Powered by Stripe</a>
-              <a href="https://stripe.com/privacy" target="_blank">Privacy and Terms</a>
+              <a href="https://stripe.com/" target="_blank">
+                Powered by Stripe
+              </a>
+              <a href="https://stripe.com/privacy" target="_blank">
+                Privacy and Terms
+              </a>
             </StripePolicy>
           </StripeWrapper>
         </BoostPayOption>
@@ -310,20 +318,26 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
     );
   }
 
-  private handleChangeEmail = (event: any) => {
-    this.setState({ email: event.target.value });
-  };
+  private handleOnChange = (event: any) => {
+    const state = event.target.id;
+    const value = event.target.value;
 
-  private handleChangeName = (event: any) => {
-    this.setState({ name: event.target.value });
-  };
-
-  private handleChangeCountry = (event: any) => {
-    this.setState({ country: event.target.value });
-  };
-
-  private handleChangePostal = (event: any) => {
-    this.setState({ postalCode: event.target.value });
+    switch (state) {
+      case "email":
+        this.setState({ email: value });
+        break;
+      case "name":
+        this.setState({ name: value });
+        break;
+      case "country":
+        this.setState({ country: value });
+        break;
+      case "postalCode":
+        this.setState({ postalCode: value });
+        break;
+      default:
+        break;
+    }
   };
 
   private isValidPostalCode = () => {
@@ -355,15 +369,11 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
     } else {
       if (this.props.stripe) {
         try {
-          const token = await this.props.stripe
-            .createToken({
-              name: this.state.name,
-              address_country: this.state.country,
-              address_zip: this.state.postalCode,
-            })
-            .then(({ token }) => {
-              console.log(token);
-            });
+          const token = await this.props.stripe.createToken({
+            name: this.state.name,
+            address_country: this.state.country,
+            address_zip: this.state.postalCode,
+          });
           await this.props.savePayment({
             variables: {
               postID: this.props.boostId,

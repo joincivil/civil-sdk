@@ -183,6 +183,14 @@ export const PaymentEthConfirmationText: React.FunctionComponent<BoostPaymentTex
   </>
 );
 
+export const PaymentCardConfirmationText: React.FunctionComponent<BoostPaymentTextProps> = props => (
+  <>
+    <p>
+      Thank you! {props.newsroomName} has received your Boost of ${props.usdToSpend} USD
+    </p>
+  </>
+);
+
 export const PaymentShareText: React.FunctionComponent<BoostPaymentTextProps> = props => (
   <>
     <p>
@@ -224,6 +232,16 @@ export const PaymentErrorModalText: React.FunctionComponent<BoostPaymentTextProp
     <>
       <PaymentErrorText />
       <BoostButton onClick={handleOnClick}>Dismiss</BoostButton>
+    </>
+  );
+};
+
+export const PaymentSuccessCardModalText: React.FunctionComponent<BoostPaymentTextProps> = props => {
+  return (
+    <>
+      <PaymentSuccessText />
+      <PaymentCardConfirmationText newsroomName={props.newsroomName} usdToSpend={props.usdToSpend} />
+      <BoostButton onClick={props.handlePaymentSuccess}>Done</BoostButton>
     </>
   );
 };
