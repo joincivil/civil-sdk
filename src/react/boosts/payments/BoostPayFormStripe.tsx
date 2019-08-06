@@ -31,7 +31,7 @@ const StripeWrapper = styled.div`
   font-family: ${fonts.SANS_SERIF};
   font-size: 16px;
   line-height: 22px;
-  margin: 20px 0;
+  margin: 20px 0 0;
   max-width: 575px;
   width: 100%;
 
@@ -42,19 +42,19 @@ const StripeWrapper = styled.div`
   }
 `;
 
-const StripeCardInput = styled.input`
-  \border: ${(props: BoostPayFormStripeStyleStates) =>
-    props.valid ? "1px solid " + colors.accent.CIVIL_GRAY_3 : "1px solid " + colors.accent.CIVIL_RED};
-  border-radius: 2px;
-  padding: 10px;
-`;
-
 const StripeCardEmailWrap = styled.div`
   margin-bottom: 20px;
 
   input {
     width: 100%;
   }
+`;
+
+const StripeInput = styled.input`
+  border: ${(props: BoostPayFormStripeStyleStates) =>
+    props.valid ? "1px solid " + colors.accent.CIVIL_GRAY_3 : "1px solid " + colors.accent.CIVIL_RED};
+  border-radius: 2px;
+  padding: 10px 12px;
 `;
 
 const StripeCardInfoWrap = styled.div`
@@ -64,12 +64,26 @@ const StripeCardInfoWrap = styled.div`
     border: 1px solid ${colors.accent.CIVIL_GRAY_3};
     border-radius: 2px;
     margin-bottom: 10px;
-    padding: 10px;
+    padding: 12px;
+  }
+`;
+
+const StripeCardInfoFlex = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+
+  div {
+    width: 130px;
+
+    &:first-of-type {
+      margin-right: 15px;
+      width: 170px;
+    }
   }
 `;
 
 const StripeUserInfoWrap = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   width: 100%;
 
   input {
@@ -78,16 +92,21 @@ const StripeUserInfoWrap = styled.div`
   }
 `;
 
-const StripeFlex = styled.div`
+const StripeUserInfoFlex = styled.div`
   display: flex;
   margin-bottom: 10px;
 
-  div {
-    width: 260px;
-
+  & > div {
     &:first-of-type {
       margin-right: 15px;
-      width: 170px;
+    }
+
+    &:last-of-type {
+      width: 130px;
+
+      ${StripeInput} {
+        width: 100%;
+      }
     }
   }
 `;
@@ -107,7 +126,7 @@ const StripeSelect = styled.div`
     font-family: ${fonts.SANS_SERIF};
     line-height: 16px;
     margin: 0;
-    padding: 10px;
+    padding: 11px 12px 12px;
     width: 300px;
 
     &::-ms-expand {
@@ -121,6 +140,22 @@ const StripeSelect = styled.div`
     &:focus {
       box-shadow: 0 0 1px 1px ${colors.accent.CIVIL_BLUE};
       outline: none;
+    }
+  }
+`;
+
+const StripePolicy = styled.div`
+  a {
+    color: ${colors.accent.CIVIL_GRAY_1};
+    font-size: 14px;
+    line-height: 19px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:first-of-type {
+      margin-right: 15px;
     }
   }
 `;
@@ -187,11 +222,12 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
           <StripeWrapper>
             <StripeCardEmailWrap>
               <label>Email</label>
-              <StripeCardInput
+              <StripeInput
                 valid={this.state.validEmail}
                 id="email"
                 name="email"
                 type="email"
+                maxLength={254}
                 onChange={() => this.handleChangeEmail(event)}
                 required
               />
@@ -199,46 +235,56 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             <StripeCardInfoWrap>
               <label>Card information</label>
               <CardNumberElement />
-              <StripeFlex>
+              <StripeCardInfoFlex>
                 <CardExpiryElement />
                 <CardCvcElement />
-              </StripeFlex>
+              </StripeCardInfoFlex>
             </StripeCardInfoWrap>
             <StripeUserInfoWrap>
               <label>Name on card</label>
-              <StripeCardInput
+              <StripeInput
                 valid={this.state.validName}
                 id="name"
                 name="name"
                 onChange={() => this.handleChangeName(event)}
                 required
               />
-              <label>Country or region</label>
-              <StripeSelect valid={this.state.validCountry} id="country">
-                <select name="country" onChange={() => this.handleChangeCountry(event)}>
-                  <option value=""></option>
-                  {Countries.map((country: any, i: number) => {
-                    return (
-                      <option key={i} value={country.value}>
-                        {country.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </StripeSelect>
-
-              {postalCodeVisible && (
-                <>
-                  <label>Zip/Postal Code</label>
-                  <StripeCardInput
-                    valid={this.state.validPostalCode}
-                    id="zip"
-                    name="zip"
-                    onChange={() => this.handleChangePostal(event)}
-                  />
-                </>
-              )}
+              <StripeUserInfoFlex>
+                <div>
+                  <label>Country or region</label>
+                  <StripeSelect valid={this.state.validCountry} id="country">
+                    <select name="country" onChange={() => this.handleChangeCountry(event)}>
+                      <option value=""></option>
+                      {Countries.map((country: any, i: number) => {
+                        return (
+                          <option key={i} value={country.value}>
+                            {country.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </StripeSelect>
+                </div>
+                <div>
+                  {postalCodeVisible && (
+                    <>
+                      <label>Zip/Postal Code</label>
+                      <StripeInput
+                        valid={this.state.validPostalCode}
+                        id="zip"
+                        name="zip"
+                        maxLength={12}
+                        onChange={() => this.handleChangePostal(event)}
+                      />
+                    </>
+                  )}
+                </div>
+              </StripeUserInfoFlex>
             </StripeUserInfoWrap>
+            <StripePolicy>
+              <a href="https://stripe.com/" target="_blank">Powered by Stripe</a>
+              <a href="https://stripe.com/privacy" target="_blank">Privacy and Terms</a>
+            </StripePolicy>
           </StripeWrapper>
         </BoostPayOption>
 
