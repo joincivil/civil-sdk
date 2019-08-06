@@ -157,7 +157,6 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
 
   private startPayment = (usdToSpend: number) => {
     this.setState({ usdToSpend, payment: true });
-    console.log("start support");
     this.context.fireAnalyticsEvent("boosts", "start support", this.props.boostId, usdToSpend);
     // TODO(sruddy) temporarily removing history till updates on monorepo are made
     /*this.props.history.push({
