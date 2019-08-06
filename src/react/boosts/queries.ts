@@ -99,7 +99,7 @@ export const boostPayEthMutation = gql`
 
 export const boostPayStripeMutation = gql`
   mutation($postID: String!, $input: PaymentsCreateStripePaymentInput!) {
-    PaymentsCreateStripePayment(postID: $postID, input: $input) {
+    paymentsCreateStripePayment(postID: $postID, input: $input) {
       reaction
       comment
       currencyCode

@@ -214,8 +214,6 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
       postalCodeVisible = true;
     }
 
-    console.log("email: " + this.state.email);
-
     return (
       <form>
         <BoostPayOption
@@ -256,8 +254,8 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
               <StripeUserInfoFlex>
                 <div>
                   <label>Country or region</label>
-                  <StripeSelect valid={this.state.validCountry} id="country">
-                    <select name="country" onChange={() => this.handleOnChange(event)}>
+                  <StripeSelect valid={this.state.validCountry}>
+                    <select id="country" name="country" onChange={() => this.handleOnChange(event)}>
                       <option value=""></option>
                       {Countries.map((country: any, i: number) => {
                         return (
@@ -332,7 +330,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
       case "country":
         this.setState({ country: value });
         break;
-      case "postalCode":
+      case "zip":
         this.setState({ postalCode: value });
         break;
       default:
