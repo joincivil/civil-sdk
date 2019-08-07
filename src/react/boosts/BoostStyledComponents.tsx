@@ -471,6 +471,7 @@ export const BoostModalContain = styled.div`
   overflow: scroll;
   padding: 10px 30px 20px 30px;
   position: relative;
+  text-align: ${(props: BoostStyleProps) => (props.textAlign ? props.textAlign : "left")};
   width: 500px;
 
   ${mediaQueries.MOBILE} {

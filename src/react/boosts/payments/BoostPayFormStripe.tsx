@@ -9,7 +9,7 @@ import {
   CardCvcElement,
 } from "react-stripe-elements";
 import styled from "styled-components";
-import { colors, fonts } from "@joincivil/components";
+import { colors, fonts, FullScreenModal } from "@joincivil/components";
 import { isValidEmail } from "@joincivil/utils";
 import {
   BoostFlexStart,
@@ -17,7 +17,9 @@ import {
   SubmitInstructions,
   SubmitWarning,
   BoostButton,
+  BoostModalContain,
 } from "../BoostStyledComponents";
+import { PaymentSuccessCardModalText, PaymentErrorModalText } from "../BoostTextComponents";
 import { BoostPayOption } from "./BoostPayOption";
 import { Countries } from "./BoostPayCountriesList";
 import { urlConstants } from "../../urlConstants";
@@ -185,7 +187,9 @@ export interface BoostPayFormStripeStates {
   validCountry: boolean;
   postalCode: string;
   validPostalCode: boolean;
-  complete: boolean;
+  isSuccessModalOpen: boolean;
+  isErrorModalOpen: boolean;
+  supportDisabled: boolean;
 }
 
 class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostPayFormStripeStates> {
@@ -200,7 +204,9 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
       validCountry: true,
       postalCode: "",
       validPostalCode: true,
-      complete: false,
+      isSuccessModalOpen: false,
+      isErrorModalOpen: false,
+      supportDisabled: false,
     };
 
     this.handleOnChange = debounce(this.handleOnChange.bind(this), 500);
@@ -301,7 +307,9 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
               met, the proceeds will still go to fund the selected newsroom.
             </SubmitInstructions>
             <div>
-              <BoostButton onClick={() => this.handleSubmit()}>Support this Boost</BoostButton>
+              <BoostButton onClick={() => this.handleSubmit()} disabled={this.state.supportDisabled}>
+                {this.state.supportDisabled ? "Payment processing..." : "Support this Boost"}
+              </BoostButton>
               <SubmitWarning>
                 Refunds are not possible. Civil does not charge any fees for this transaction. There are small fees
                 charged by Stripe. By sending a Boost, you agree to Civil’s{" "}
@@ -312,9 +320,27 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             </div>
           </BoostFlexStart>
         </BoostPayFormWrapper>
+        <FullScreenModal open={this.state.isErrorModalOpen}>
+          <BoostModalContain textAlign={"center"}>
+            <PaymentErrorModalText hideModal={this.hideModal} />
+          </BoostModalContain>
+        </FullScreenModal>
+        <FullScreenModal open={this.state.isSuccessModalOpen}>
+          <BoostModalContain>
+            <PaymentSuccessCardModalText
+              newsroomName={this.props.newsroomName}
+              usdToSpend={this.props.usdToSpend}
+              handlePaymentSuccess={this.props.handlePaymentSuccess}
+            />
+          </BoostModalContain>
+        </FullScreenModal>
       </form>
     );
   }
+
+  private hideModal = () => {
+    this.setState({ isErrorModalOpen: false, supportDisabled: false });
+  };
 
   private handleOnChange = (event: any) => {
     const state = event.target.id;
@@ -365,6 +391,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
     if (!validEmail || !validName || !validCountry || !validPostalCode) {
       this.setState({ validEmail, validName, validCountry, validPostalCode });
     } else {
+      this.setState({ supportDisabled: true });
       if (this.props.stripe) {
         try {
           const token = await this.props.stripe.createToken({
@@ -372,14 +399,19 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             address_country: this.state.country,
             address_zip: this.state.postalCode,
           });
-          await this.props.savePayment({
-            variables: {
-              postID: this.props.boostId,
-              input: { paymentToken: token, amount: this.props.usdToSpend, currencyCode: "usd" },
-            },
-          });
+          await this.props
+            .savePayment({
+              variables: {
+                postID: this.props.boostId,
+                input: { paymentToken: token, amount: this.props.usdToSpend, currencyCode: "usd" },
+              },
+            })
+            .then(() => {
+              this.setState({ isSuccessModalOpen: true });
+            });
         } catch (err) {
           console.error(err);
+          this.setState({ isErrorModalOpen: true });
         }
       }
     }

@@ -3,10 +3,9 @@ import { Mutation, MutationFunc } from "react-apollo";
 import { boostPayStripeMutation } from "../queries";
 import makeAsyncScriptLoader from "react-async-script";
 import { BoostPayCardDetails, BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
-import { PaymentSuccessCardModalText } from "../BoostTextComponents";
 import { StripeProvider, Elements } from "react-stripe-elements";
 import BoostPayFormStripe from "./BoostPayFormStripe";
-import { LoadingMessage, FullScreenModal } from "@joincivil/components";
+import { LoadingMessage } from "@joincivil/components";
 import { BoostPayOption } from "./BoostPayOption";
 
 export interface BoostPayStripeProps {
@@ -25,7 +24,6 @@ export interface BoostPayStripeProps {
 export interface BoostPayStripeStates {
   stripeLoaded: boolean;
   stripe: any;
-  isSuccessModalOpen: boolean;
 }
 
 export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPayStripeStates> {
@@ -34,7 +32,6 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
     this.state = {
       stripeLoaded: false,
       stripe: null,
-      isSuccessModalOpen: false,
     };
   }
 
@@ -68,19 +65,8 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
             </BoostFlexCenter>
           </BoostPayCardDetails>
         </BoostPayOption>
-        <FullScreenModal open={this.state.isSuccessModalOpen}>
-          <PaymentSuccessCardModalText
-            newsroomName={this.props.newsroomName}
-            usdToSpend={this.props.usdToSpend}
-            handlePaymentSuccess={this.props.handlePaymentSuccess}
-          />
-        </FullScreenModal>
       </>
     );
-  };
-
-  private handlePaymentSuccessModal = () => {
-    this.setState({ isSuccessModalOpen: true });
   };
 
   private renderPaymentForm = (): JSX.Element => {
@@ -90,7 +76,7 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
       return (
         <StripeProvider apiKey={"pk_test_3a5qmy1MuBEcooDr5wL8bRz9"}>
           <Elements>
-            <Mutation mutation={boostPayStripeMutation} onCompleted={this.handlePaymentSuccessModal}>
+            <Mutation mutation={boostPayStripeMutation}>
               {(paymentsCreateStripePayment: MutationFunc) => {
                 return (
                   <BoostPayFormStripe

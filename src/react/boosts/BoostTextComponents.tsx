@@ -171,7 +171,7 @@ export const PaymentSuccessText: React.FunctionComponent = props => <ModalHeadin
 export const PaymentErrorText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Payment Failed</ModalHeading>
-    <BoostModalContent>Your transaction failed. Please try again.</BoostModalContent>
+    <BoostModalContent textAlign={"center"}>Your transaction failed. Please try again.</BoostModalContent>
   </>
 );
 
