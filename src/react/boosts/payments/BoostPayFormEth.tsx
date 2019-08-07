@@ -96,6 +96,8 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
                   {
                     transaction: this.sendPayment,
                     handleTransactionHash: this.handleTransactionHash,
+                    onTransactionError: this.onTransactionError,
+                    postTransaction: this.postTransaction,
                   },
                 ]}
                 modalContentComponents={PAY_MODAL_COMPONENTS}
@@ -129,6 +131,7 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
   };
 
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
+    this.context.fireAnalyticsEvent("boosts", "start submit ETH support", this.props.boostId, this.props.usdToSpend);
     // @TODO/loginV2 migrate away from window.ethereum
     if (this.context.civil && (window as any).ethereum) {
       const amount = this.context.civil.toBigNumber(this.props.etherToSpend);
@@ -140,6 +143,7 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
   };
 
   private handleTransactionHash = async (txHash: TxHash) => {
+    this.context.fireAnalyticsEvent("boosts", "ETH support submitted", this.props.boostId, this.props.usdToSpend);
     await this.props.savePayment({
       variables: {
         postID: this.props.boostId,
@@ -153,5 +157,13 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
         },
       },
     });
+  };
+
+  private onTransactionError = (err: string) => {
+    this.context.fireAnalyticsEvent("boosts", "ETH support rejected", this.props.boostId, this.props.usdToSpend);
+  };
+
+  private postTransaction = () => {
+    this.context.fireAnalyticsEvent("boosts", "ETH support confirmed", this.props.boostId, this.props.usdToSpend);
   };
 }
