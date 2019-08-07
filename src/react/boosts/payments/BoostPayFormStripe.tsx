@@ -399,16 +399,13 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             address_country: this.state.country,
             address_zip: this.state.postalCode,
           });
-          await this.props
-            .savePayment({
-              variables: {
-                postID: this.props.boostId,
-                input: { paymentToken: token, amount: this.props.usdToSpend, currencyCode: "usd" },
-              },
-            })
-            .then(() => {
-              this.setState({ isSuccessModalOpen: true });
-            });
+          await this.props.savePayment({
+            variables: {
+              postID: this.props.boostId,
+              input: { paymentToken: token, amount: this.props.usdToSpend, currencyCode: "usd" },
+            },
+          });
+          this.setState({ isSuccessModalOpen: true });
         } catch (err) {
           console.error(err);
           this.setState({ isErrorModalOpen: true });
