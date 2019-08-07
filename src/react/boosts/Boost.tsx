@@ -8,7 +8,7 @@ import { BoostPayments } from "./payments/BoostPayments";
 import { BoostWrapper } from "./BoostStyledComponents";
 import { NewsroomWithdraw } from "../NewsroomWithdraw";
 import { withBoostPermissions, BoostPermissionsInjectedProps } from "./BoostPermissionsHOC";
-import { LoadingMessage } from "@joincivil/components";
+import { LoadingMessage, CivilContext, ICivilContext } from "@joincivil/components";
 
 export interface BoostInternalProps {
   history?: any;
@@ -29,6 +29,9 @@ export interface BoostStates {
 }
 
 class BoostComponent extends React.Component<BoostProps, BoostStates> {
+  public static contextType: React.Context<ICivilContext> = CivilContext;
+  public context!: React.ContextType<typeof CivilContext>;
+
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
@@ -154,6 +157,7 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
 
   private startPayment = (usdToSpend: number) => {
     this.setState({ usdToSpend, payment: true });
+    this.context.fireAnalyticsEvent("boosts", "start support", this.props.boostId, usdToSpend);
     // TODO(sruddy) temporarily removing history till updates on monorepo are made
     /*this.props.history.push({
       pathname: "/boosts/" + this.props.boostId + "/payment",

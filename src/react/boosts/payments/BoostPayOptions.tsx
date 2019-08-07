@@ -1,5 +1,5 @@
 import * as React from "react";
-import { colors, fonts, mediaQueries, FeatureFlag } from "@joincivil/components";
+import { colors, fonts, mediaQueries, FeatureFlag, CivilContext, ICivilContext } from "@joincivil/components";
 import { BoostPayEth } from "./BoostPayEth";
 import { BoostPayStripe } from "./BoostPayStripe";
 import styled from "styled-components";
@@ -85,6 +85,8 @@ export interface BoostPayOptionsStates {
 }
 
 export class BoostPayOptions extends React.Component<BoostPayOptionsProps, BoostPayOptionsStates> {
+  public static contextType: React.Context<ICivilContext> = CivilContext;
+  public context!: React.ContextType<typeof CivilContext>;
   public constructor(props: BoostPayOptionsProps) {
     super(props);
     this.state = {
@@ -209,6 +211,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
   };
 
   private handleEthNext = (etherToSpend: number, usdToSpend: number) => {
+    this.context.fireAnalyticsEvent("boosts", "continue eth support", this.props.boostId, usdToSpend);
     this.setState({ paymentType: PAYMENT_TYPE.ETH, etherToSpend, usdToSpend });
   };
 
