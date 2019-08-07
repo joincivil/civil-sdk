@@ -411,9 +411,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
                 },
               },
             })
-            .then(() => {
-              this.setState({ isSuccessModalOpen: true });
-            });
+          this.setState({ isSuccessModalOpen: true });
         } catch (err) {
           console.error(err);
           this.setState({ isErrorModalOpen: true });
