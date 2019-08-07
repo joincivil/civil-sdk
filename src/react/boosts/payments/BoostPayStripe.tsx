@@ -45,25 +45,27 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
 
   private renderDefaultOption = (): JSX.Element => {
     return (
-      <BoostPayOption
-        paymentType={this.props.paymentType}
-        optionLabel={this.props.optionLabel}
-        selected={this.props.selected}
-        handlePaymentSelected={this.props.handlePaymentSelected}
-      >
-        <BoostPayCardDetails>
-          <BoostFlexCenter>
-            <p>
-              Continue with adding your payment information. Your payment information will be processed through{" "}
-              <a href="https://stripe.com/" target="_blank">
-                Stripe
-              </a>
-              .
-            </p>
-            {this.props.selected && <BoostButton onClick={() => this.props.handleNext()}>Next</BoostButton>}
-          </BoostFlexCenter>
-        </BoostPayCardDetails>
-      </BoostPayOption>
+      <>
+        <BoostPayOption
+          paymentType={this.props.paymentType}
+          optionLabel={this.props.optionLabel}
+          selected={this.props.selected}
+          handlePaymentSelected={this.props.handlePaymentSelected}
+        >
+          <BoostPayCardDetails>
+            <BoostFlexCenter>
+              <p>
+                Continue with adding your payment information. Your payment information will be processed through{" "}
+                <a href="https://stripe.com/" target="_blank">
+                  Stripe
+                </a>
+                .
+              </p>
+              {this.props.selected && <BoostButton onClick={() => this.props.handleNext()}>Next</BoostButton>}
+            </BoostFlexCenter>
+          </BoostPayCardDetails>
+        </BoostPayOption>
+      </>
     );
   };
 

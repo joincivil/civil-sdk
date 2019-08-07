@@ -171,7 +171,7 @@ export const PaymentSuccessText: React.FunctionComponent = props => <ModalHeadin
 export const PaymentErrorText: React.FunctionComponent = props => (
   <>
     <ModalHeading>Payment Failed</ModalHeading>
-    <BoostModalContent>Your transaction failed. Please try again.</BoostModalContent>
+    <BoostModalContent textAlign={"center"}>Your transaction failed. Please try again.</BoostModalContent>
   </>
 );
 
@@ -179,6 +179,14 @@ export const PaymentEthConfirmationText: React.FunctionComponent<BoostPaymentTex
   <>
     <p>
       Thank you! {props.newsroomName} has received your Boost of {props.etherToSpend} ETH (${props.usdToSpend} USD)
+    </p>
+  </>
+);
+
+export const PaymentCardConfirmationText: React.FunctionComponent<BoostPaymentTextProps> = props => (
+  <>
+    <p>
+      Thank you! {props.newsroomName} has received your Boost of ${props.usdToSpend} USD
     </p>
   </>
 );
@@ -224,6 +232,16 @@ export const PaymentErrorModalText: React.FunctionComponent<BoostPaymentTextProp
     <>
       <PaymentErrorText />
       <BoostButton onClick={handleOnClick}>Dismiss</BoostButton>
+    </>
+  );
+};
+
+export const PaymentSuccessCardModalText: React.FunctionComponent<BoostPaymentTextProps> = props => {
+  return (
+    <>
+      <PaymentSuccessText />
+      <PaymentCardConfirmationText newsroomName={props.newsroomName} usdToSpend={props.usdToSpend} />
+      <BoostButton onClick={props.handlePaymentSuccess}>Done</BoostButton>
     </>
   );
 };

@@ -31,6 +31,22 @@ export const BoostWrapper = styled.div`
   }
 `;
 
+export const BoostTitle = styled.h2`
+  color: ${colors.accent.CIVIL_GRAY_0};
+  font-size: 20px;
+  font-family: ${fonts.SANS_SERIF};
+  line-height: 27px;
+  font-weight: bold;
+  margin: 0 0 8px;
+  transition: color 0.25s ease;
+
+  ${mediaQueries.MOBILE} {
+    font-size: 16px;
+    line-height: 22px;
+    margin: 0 0 12px;
+  }
+`;
+
 export const BoostWrapperLink = styled.a`
   border: 1px solid ${colors.accent.CIVIL_GRAY_4};
   display: block;
@@ -41,7 +57,9 @@ export const BoostWrapperLink = styled.a`
   transition: border 0.25s ease;
 
   &:hover {
-    border: 1px solid ${colors.accent.CIVIL_BLUE};
+    ${BoostTitle} {
+      color: ${colors.accent.CIVIL_BLUE};
+    }
   }
 
   ${mediaQueries.MOBILE} {
@@ -117,21 +135,6 @@ export const BoostLinkBtn = styled.a`
 
 export const BoostBack = styled.div`
   margin: 0 0 30px;
-`;
-
-export const BoostTitle = styled.h2`
-  color: ${colors.accent.CIVIL_GRAY_0};
-  font-size: 20px;
-  font-family: ${fonts.SANS_SERIF};
-  line-height: 27px;
-  font-weight: bold;
-  margin: 0 0 8px;
-
-  ${mediaQueries.MOBILE} {
-    font-size: 16px;
-    line-height: 22px;
-    margin: 0 0 12px;
-  }
 `;
 
 export const BoostImgDiv = styled.div`
@@ -468,6 +471,7 @@ export const BoostModalContain = styled.div`
   overflow: scroll;
   padding: 10px 30px 20px 30px;
   position: relative;
+  text-align: ${(props: BoostStyleProps) => (props.textAlign ? props.textAlign : "left")};
   width: 500px;
 
   ${mediaQueries.MOBILE} {
