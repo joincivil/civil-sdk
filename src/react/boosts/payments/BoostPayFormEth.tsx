@@ -52,7 +52,7 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
     const civil = this.context.civil;
     if (civil) {
       const account = await civil.accountStream.first().toPromise();
-      this.setState({fromAddr: account});
+      this.setState({ fromAddr: account });
     }
   }
 
