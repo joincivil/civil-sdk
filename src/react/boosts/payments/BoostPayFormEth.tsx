@@ -1,6 +1,13 @@
 import * as React from "react";
-// import { TextInput, Checkbox } from "@joincivil/components";
-import { BoostFlexStart, BoostPayFormWrapper, SubmitInstructions, SubmitWarning } from "../BoostStyledComponents";
+import { isValidEmail } from "@joincivil/utils";
+import {
+  BoostFlexStart,
+  BoostPayFormWrapper,
+  SubmitInstructions,
+  SubmitWarning,
+  BoostUserInfoForm,
+  BoostInput,
+} from "../BoostStyledComponents";
 import {
   TransactionButton,
   TransactionButtonModalContentComponentsProps,
@@ -24,10 +31,8 @@ export interface BoostPayFormEthProps {
 }
 
 export interface BoostPayFormEthState {
-  name?: string;
-  comment?: string;
-  checked: boolean;
-  error?: string;
+  email: string;
+  validEmail: boolean;
 }
 
 export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, BoostPayFormEthState> {
@@ -37,9 +42,8 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
   constructor(props: BoostPayFormEthProps) {
     super(props);
     this.state = {
-      name: "",
-      comment: "",
-      checked: false,
+      email: "",
+      validEmail: true,
     };
   }
 
@@ -60,14 +64,18 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
     return (
       <BoostPayFormWrapper>
         <form>
-          {/*<BoostPayFormContain>
-            <BoostPayFormTitle>Your name (optional)</BoostPayFormTitle>
-            <TextInput name="userName" />
-            <BoostPayFormTitle>Include a comment (optional)</BoostPayFormTitle>
-            <TextInput name="userComment" />
-            <Checkbox onClick={this.onClick} checked={this.state.checked} id={""} />
-            <CheckboxLabel>Email me about progress of this Boost</CheckboxLabel>
-          </BoostPayFormContain>*/}
+          <BoostUserInfoForm>
+            <label>Email (optional)</label>
+            <BoostInput
+              valid={this.state.validEmail}
+              id="email"
+              name="email"
+              type="email"
+              maxLength={254}
+              onChange={() => this.handleOnChange(event)}
+              required
+            />
+          </BoostUserInfoForm>
           <BoostFlexStart>
             <SubmitInstructions>
               All proceeds of the Boost go directly to the newsroom. If a Boost goal is not met, the proceeds will still
@@ -97,6 +105,20 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
     );
   }
 
+  private handleOnChange = (event: any) => {
+    const state = event.target.id;
+    const value = event.target.value;
+
+    switch (state) {
+      case "email":
+        const validEmail = isValidEmail(event.target.value);
+        this.setState({ email: value, validEmail });
+        break;
+      default:
+        break;
+    }
+  };
+
   private sendPayment = async (): Promise<TwoStepEthTransaction<any> | void> => {
     // @TODO/loginV2 migrate away from window.ethereum
     if (this.context.civil && (window as any).ethereum) {
@@ -112,12 +134,15 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
     await this.props.savePayment({
       variables: {
         postID: this.props.boostId,
-        input: { transactionID: txHash },
+        input: {
+          transactionID: txHash,
+          paymentAddress: this.props.paymentAddr,
+          fromAddress: "",
+          ethAmount: this.props.etherToSpend,
+          usdAmount: this.props.usdToSpend,
+          emailAddress: this.state.email,
+        },
       },
     });
   };
-
-  /*private onClick = (): void => {
-    this.setState({ checked: !this.state.checked });
-  };*/
 }
