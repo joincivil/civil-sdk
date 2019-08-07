@@ -33,6 +33,7 @@ export interface BoostPayFormEthProps {
 export interface BoostPayFormEthState {
   email: string;
   validEmail: boolean;
+  fromAddr?: EthAddress;
 }
 
 export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, BoostPayFormEthState> {
@@ -45,6 +46,14 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
       email: "",
       validEmail: true,
     };
+  }
+
+  public async componentDidMount(): Promise<void> {
+    const civil = this.context.civil;
+    if (civil) {
+      const account = await civil.accountStream.first().toPromise();
+      this.setState({fromAddr: account});
+    }
   }
 
   public render(): JSX.Element {
@@ -137,9 +146,9 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
         input: {
           transactionID: txHash,
           paymentAddress: this.props.paymentAddr,
-          fromAddress: "",
-          ethAmount: this.props.etherToSpend,
-          usdAmount: this.props.usdToSpend,
+          fromAddress: this.state.fromAddr,
+          amount: this.props.etherToSpend,
+          usdAmount: this.props.usdToSpend.toString(),
           emailAddress: this.state.email,
         },
       },
