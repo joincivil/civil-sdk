@@ -115,9 +115,8 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
         </LearnMore>
         <h3>Boost Amount</h3>
         <BoostFlexEth>
-          {/* TODO(sruddy) bump monorepo for fromValue */}
           <UsdEthConverter
-            // fromValue={this.state.usdToSpend.toString()}
+            fromValue={this.state.usdToSpend.toString()}
             onNotEnoughEthError={(error: boolean) => this.notEnoughEthError(error)}
             onConversion={(usd: number, eth: number) => this.setConvertedAmount(usd, eth)}
           />
