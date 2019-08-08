@@ -713,6 +713,10 @@ export const BoostAmountInputWrap = styled.div`
   display: flex;
   margin-bottom: 22px;
   padding-left: 20px;
+
+  ${mediaQueries.MOBILE} {
+    padding-left: 0;
+  }
 `;
 
 export const BoostAmountInput = styled.div`
@@ -739,6 +743,10 @@ export const BoostAmountInput = styled.div`
   label,
   span {
     display: none;
+  }
+
+  ${mediaQueries.MOBILE} {
+    width: 150px;
   }
 `;
 

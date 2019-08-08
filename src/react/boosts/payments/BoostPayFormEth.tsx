@@ -81,7 +81,7 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
               name="email"
               type="email"
               maxLength={254}
-              onChange={() => this.handleOnChange(event)}
+              onBlur={() => this.handleOnBlur(event)}
               required
             />
           </BoostUserInfoForm>
@@ -116,7 +116,7 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
     );
   }
 
-  private handleOnChange = (event: any) => {
+  private handleOnBlur = (event: any) => {
     const state = event.target.id;
     const value = event.target.value;
 

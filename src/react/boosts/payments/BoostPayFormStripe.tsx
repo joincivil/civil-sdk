@@ -9,7 +9,7 @@ import {
   CardCvcElement,
 } from "react-stripe-elements";
 import styled from "styled-components";
-import { colors, fonts, FullScreenModal } from "@joincivil/components";
+import { colors, fonts, mediaQueries, FullScreenModal } from "@joincivil/components";
 import { isValidEmail } from "@joincivil/utils";
 import {
   BoostFlexStart,
@@ -62,6 +62,10 @@ const StripeInput = styled.input`
     border-color: ${colors.accent.CIVIL_BLUE};
     outline: none;
   }
+
+  ${mediaQueries.MOBILE} {
+    width: 100%;
+  }
 `;
 
 const StripeCardInfoWrap = styled.div`
@@ -83,8 +87,18 @@ const StripeCardInfoFlex = styled.div`
     width: 130px;
 
     &:first-of-type {
-      margin-right: 15px;
+      margin-right: 10px;
       width: 170px;
+    }
+  }
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+
+    div {
+      &:first-of-type {
+        margin: 0 0 10px;
+      }
     }
   }
 `;
@@ -95,7 +109,11 @@ const StripeUserInfoWrap = styled.div`
 
   input {
     margin-bottom: 20px;
-    width: 300px;
+    width: 310px;
+
+    ${mediaQueries.MOBILE} {
+      width: 100%;
+    }
   }
 `;
 
@@ -105,7 +123,7 @@ const StripeUserInfoFlex = styled.div`
 
   & > div {
     &:first-of-type {
-      margin-right: 15px;
+      margin-right: 10px;
     }
 
     &:last-of-type {
@@ -113,6 +131,16 @@ const StripeUserInfoFlex = styled.div`
 
       ${StripeInput} {
         width: 100%;
+      }
+    }
+  }
+
+  ${mediaQueries.MOBILE} {
+    display: block;
+
+    div {
+      &:first-of-type {
+        margin: 0 0 10px;
       }
     }
   }
@@ -147,6 +175,10 @@ const StripeSelect = styled.div`
     &:focus {
       border-color: ${colors.accent.CIVIL_BLUE};
       outline: none;
+    }
+
+    ${mediaQueries.MOBILE} {
+      width: 100%;
     }
   }
 `;
@@ -403,7 +435,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             variables: {
               postID: this.props.boostId,
               input: {
-                paymentToken: token,
+                paymentToken: JSON.stringify(token),
                 amount: this.props.usdToSpend,
                 currencyCode: "usd",
                 emailAddress: this.state.email,
