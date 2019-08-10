@@ -15,6 +15,7 @@ import {
   CivilContext,
   ICivilContext,
 } from "@joincivil/components";
+import { InputValidationUI, InputValidationStyleProps, INPUT_STATE } from "./InputValidationUI";
 import { EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
 import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalText } from "../BoostTextComponents";
 import { MutationFunc } from "react-apollo";
@@ -32,7 +33,7 @@ export interface BoostPayFormEthProps {
 
 export interface BoostPayFormEthState {
   email: string;
-  validEmail: boolean;
+  emailState: string;
   fromAddr?: EthAddress;
 }
 
@@ -44,7 +45,7 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
     super(props);
     this.state = {
       email: "",
-      validEmail: true,
+      emailState: INPUT_STATE.EMPTY,
     };
   }
 
@@ -75,15 +76,9 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
         <form>
           <BoostUserInfoForm>
             <label>Email (optional)</label>
-            <BoostInput
-              valid={this.state.validEmail}
-              id="email"
-              name="email"
-              type="email"
-              maxLength={254}
-              onBlur={() => this.handleOnBlur(event)}
-              required
-            />
+            <InputValidationUI inputState={this.state.emailState} width={"500px"}>
+              <input id="email" name="email" type="email" maxLength={254} onBlur={() => this.handleOnBlur(event)} />
+            </InputValidationUI>
           </BoostUserInfoForm>
           <BoostFlexStart>
             <SubmitInstructions>
@@ -123,7 +118,9 @@ export class BoostPayFormEth extends React.Component<BoostPayFormEthProps, Boost
     switch (state) {
       case "email":
         const validEmail = isValidEmail(event.target.value);
-        this.setState({ email: value, validEmail });
+        validEmail || value === ""
+          ? this.setState({ email: value, emailState: INPUT_STATE.VALID })
+          : this.setState({ emailState: INPUT_STATE.INVALID });
         break;
       default:
         break;

@@ -2,8 +2,14 @@ import * as React from "react";
 import { colors, fonts, mediaQueries, ErrorIcon } from "@joincivil/components";
 import styled from "styled-components";
 
+export enum INPUT_STATE {
+  EMPTY = "empty",
+  VALID = "valid",
+  INVALID = "invalid",
+}
+
 export interface InputValidationStyleProps {
-  valid?: boolean;
+  inputState?: string;
   width?: string;
 }
 
@@ -17,8 +23,9 @@ const InputWrapper = styled.div`
   }
 
   input {
-    border: ${(props: InputValidationStyleProps) =>
-      props.valid ? "1px solid " + colors.accent.CIVIL_GRAY_3 : "1px solid " + colors.accent.CIVIL_RED};
+    border: 1px solid
+      ${(props: InputValidationStyleProps) =>
+        props.inputState === INPUT_STATE.INVALID ? colors.accent.CIVIL_RED : colors.accent.CIVIL_GRAY_3};
     border-radius: 2px;
     padding: 10px 35px 10px 12px;
     width: 100%;
@@ -38,8 +45,9 @@ const InputWrapper = styled.div`
     -webkit-appearance: none;
     appearance: none;
     background-color: ${colors.basic.WHITE};
-    border: ${(props: InputValidationStyleProps) =>
-      props.valid ? "1px solid " + colors.accent.CIVIL_GRAY_3 : "1px solid " + colors.accent.CIVIL_RED};
+    border: 1px solid
+      ${(props: InputValidationStyleProps) =>
+        props.inputState === INPUT_STATE.INVALID ? colors.accent.CIVIL_RED : colors.accent.CIVIL_GRAY_3};
     border-radius: 2px;
     display: block;
     font-family: ${fonts.SANS_SERIF};
@@ -68,7 +76,7 @@ const InputWrapper = styled.div`
 `;
 
 const InputErrorIcon = styled.div`
-  display: ${(props: InputValidationStyleProps) => (props.valid ? "none" : "block")};
+  display: ${(props: InputValidationStyleProps) => (props.inputState === INPUT_STATE.INVALID ? "block" : "none")};
   position: absolute;
   right: 5px;
   top: calc(50% - 10px);
@@ -76,16 +84,16 @@ const InputErrorIcon = styled.div`
 
 export interface BoostModalProps {
   children: any;
-  valid: boolean;
+  inputState: string;
   width?: string;
 }
 
 export const InputValidationUI: React.FunctionComponent<BoostModalProps> = props => {
   return (
     <>
-      <InputWrapper valid={props.valid} width={props.width}>
+      <InputWrapper inputState={props.inputState} width={props.width}>
         {props.children}
-        <InputErrorIcon valid={props.valid}>
+        <InputErrorIcon inputState={props.inputState}>
           <ErrorIcon width={20} height={20} />
         </InputErrorIcon>
       </InputWrapper>

@@ -22,7 +22,7 @@ import { PaymentSuccessCardModalText, PaymentErrorModalText } from "../BoostText
 import { BoostPayOption } from "./BoostPayOption";
 import { Countries } from "./BoostPayCountriesList";
 import { urlConstants } from "../../urlConstants";
-import { InputValidationUI, InputValidationStyleProps } from "./InputValidationUI";
+import { InputValidationUI, InputValidationStyleProps, INPUT_STATE } from "./InputValidationUI";
 
 const StripeWrapper = styled.div`
   color: ${colors.accent.CIVIL_GRAY_1};
@@ -57,8 +57,9 @@ const StripeCardInfoWrap = styled.div`
 `;
 
 const StripeElement = styled.div`
-  border: ${(props: InputValidationStyleProps) =>
-    props.valid ? "1px solid " + colors.accent.CIVIL_GRAY_3 : "1px solid " + colors.accent.CIVIL_RED};
+  border: 1px solid
+    ${(props: InputValidationStyleProps) =>
+      props.inputState === INPUT_STATE.INVALID ? colors.accent.CIVIL_RED : colors.accent.CIVIL_GRAY_3};
   border-radius: 2px;
   padding: 12px;
 `;
@@ -153,19 +154,18 @@ export interface BoostPayFormStripeProps extends ReactStripeElements.InjectedStr
 
 export interface BoostPayFormStripeStates {
   email: string;
-  validEmail: boolean;
+  emailState: string;
   name: string;
-  validName: boolean;
+  nameState: string;
   country: string;
-  validCountry: boolean;
+  countryState: string;
   postalCode: string;
-  validPostalCode: boolean;
-  validCardNumber: boolean;
-  validCardExpiry: boolean;
-  validCardCVC: boolean;
+  postalCodeState: string;
+  cardNumberState: string;
+  cardExpiryState: string;
+  cardCVCState: string;
   isSuccessModalOpen: boolean;
   isErrorModalOpen: boolean;
-  supportDisabled: boolean;
   paymentProcessing: boolean;
 }
 
@@ -174,19 +174,18 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
     super(props);
     this.state = {
       email: "",
-      validEmail: true,
+      emailState: INPUT_STATE.EMPTY,
       name: "",
-      validName: true,
+      nameState: INPUT_STATE.EMPTY,
       country: "",
-      validCountry: true,
+      countryState: INPUT_STATE.EMPTY,
       postalCode: "",
-      validPostalCode: true,
+      postalCodeState: INPUT_STATE.VALID,
+      cardNumberState: INPUT_STATE.EMPTY,
+      cardExpiryState: INPUT_STATE.EMPTY,
+      cardCVCState: INPUT_STATE.EMPTY,
       isSuccessModalOpen: false,
       isErrorModalOpen: false,
-      validCardNumber: true,
-      validCardExpiry: true,
-      validCardCVC: true,
-      supportDisabled: true,
       paymentProcessing: false,
     };
 
@@ -210,7 +209,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
           <StripeWrapper>
             <StripeCardEmailWrap>
               <label>Email</label>
-              <InputValidationUI valid={this.state.validEmail}>
+              <InputValidationUI inputState={this.state.emailState}>
                 <input
                   id="email"
                   name="email"
@@ -223,19 +222,19 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             </StripeCardEmailWrap>
             <StripeCardInfoWrap>
               <label>Card information</label>
-              <InputValidationUI valid={this.state.validCardNumber} width={"500px"}>
-                <StripeElement valid={this.state.validCardNumber}>
+              <InputValidationUI inputState={this.state.cardNumberState} width={"500px"}>
+                <StripeElement inputState={this.state.cardNumberState}>
                   <CardNumberElement id="card-number" onBlur={() => this.handleOnBlurStripe()} />
                 </StripeElement>
               </InputValidationUI>
               <StripeCardInfoFlex>
-                <InputValidationUI valid={this.state.validCardExpiry} width={"170px"}>
-                  <StripeElement valid={this.state.validCardExpiry}>
+                <InputValidationUI inputState={this.state.cardExpiryState} width={"170px"}>
+                  <StripeElement inputState={this.state.cardExpiryState}>
                     <CardExpiryElement id="card-expiry" onBlur={() => this.handleOnBlurStripe()} />
                   </StripeElement>
                 </InputValidationUI>
-                <InputValidationUI valid={this.state.validCardCVC} width={"130px"}>
-                  <StripeElement valid={this.state.validCardCVC}>
+                <InputValidationUI inputState={this.state.cardCVCState} width={"130px"}>
+                  <StripeElement inputState={this.state.cardCVCState}>
                     <CardCvcElement id="card-cvc" onBlur={() => this.handleOnBlurStripe()} />
                   </StripeElement>
                 </InputValidationUI>
@@ -243,14 +242,14 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             </StripeCardInfoWrap>
             <StripeUserInfoWrap>
               <label>Name on card</label>
-              <InputValidationUI valid={this.state.validName} width={"300px"}>
+              <InputValidationUI inputState={this.state.nameState} width={"300px"}>
                 <input id="name" name="name" onBlur={() => this.handleOnBlur(event)} required />
               </InputValidationUI>
               <StripeUserInfoFlex>
                 <div>
                   <label>Country or region</label>
-                  <InputValidationUI valid={this.state.validCountry} width={"300px"}>
-                    <select id="country" name="country" onBlur={() => this.handleOnBlur(event)}>
+                  <InputValidationUI inputState={this.state.countryState} width={"300px"}>
+                    <select id="country" name="country" onChange={() => this.handleOnBlur(event)}>
                       <option value=""></option>
                       {Countries.map((country: any, i: number) => {
                         return (
@@ -266,7 +265,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
                   {postalCodeVisible && (
                     <>
                       <label>Zip/Postal Code</label>
-                      <InputValidationUI valid={this.state.validPostalCode} width={"150px"}>
+                      <InputValidationUI inputState={this.state.postalCodeState} width={"150px"}>
                         <input id="zip" name="zip" maxLength={12} onBlur={() => this.handleOnBlur(event)} />
                       </InputValidationUI>
                     </>
@@ -292,7 +291,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
               met, the proceeds will still go to fund the selected newsroom.
             </SubmitInstructions>
             <div>
-              <BoostButton onClick={() => this.handleSubmit()} disabled={this.state.supportDisabled}>
+              <BoostButton onClick={() => this.handleSubmit()} disabled={this.state.paymentProcessing}>
                 {this.state.paymentProcessing ? "Payment processing..." : "Support this Boost"}
               </BoostButton>
               <SubmitWarning>
@@ -324,7 +323,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
   }
 
   private hideModal = () => {
-    this.setState({ isErrorModalOpen: false, supportDisabled: false, paymentProcessing: false });
+    this.setState({ isErrorModalOpen: false, paymentProcessing: false });
   };
 
   private handleOnBlur = (event: any) => {
@@ -334,25 +333,31 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
     switch (state) {
       case "email":
         const validEmail = isValidEmail(value);
-        this.setState({ email: value, validEmail });
+        validEmail
+          ? this.setState({ email: value, emailState: INPUT_STATE.VALID })
+          : this.setState({ emailState: INPUT_STATE.INVALID });
         break;
       case "name":
         const validName = value !== "";
-        this.setState({ name: value, validName });
+        validName
+          ? this.setState({ name: value, nameState: INPUT_STATE.VALID })
+          : this.setState({ nameState: INPUT_STATE.INVALID });
         break;
       case "country":
         const validCountry = value !== "";
-        this.setState({ country: value, validCountry });
+        validCountry
+          ? this.setState({ country: value, countryState: INPUT_STATE.VALID })
+          : this.setState({ countryState: INPUT_STATE.INVALID });
         break;
       case "zip":
         const validPostalCode = this.isValidPostalCode(value);
-        this.setState({ postalCode: value, validPostalCode });
+        validPostalCode
+          ? this.setState({ postalCode: value, postalCodeState: INPUT_STATE.VALID })
+          : this.setState({ postalCodeState: INPUT_STATE.INVALID });
         break;
       default:
         break;
     }
-
-    this.handleEnableSubmit();
   };
 
   private isValidPostalCode = (inputPostalCode: string) => {
@@ -380,71 +385,65 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
       const id = element.id;
       const classList = element.classList;
       if (classList.contains("StripeElement--invalid")) {
-        this.isStripeElementValid(id, false);
+        this.isStripeElementValid(id, INPUT_STATE.INVALID);
+      } else if (classList.contains("StripeElement--empty")) {
+        this.isStripeElementValid(id, INPUT_STATE.EMPTY);
       } else {
-        this.isStripeElementValid(id, true);
+        this.isStripeElementValid(id, INPUT_STATE.VALID);
       }
     });
   };
 
-  private isStripeElementValid = (element: string, valid: boolean) => {
+  private isStripeElementValid = (element: string, state: string) => {
     switch (element) {
       case "card-number":
-        this.setState({ validCardNumber: valid });
+        this.setState({ cardNumberState: state });
         break;
       case "card-expiry":
-        this.setState({ validCardExpiry: valid });
+        this.setState({ cardExpiryState: state });
         break;
       case "card-cvc":
-        this.setState({ validCardCVC: valid });
+        this.setState({ cardCVCState: state });
         break;
       default:
         break;
     }
-
-    this.handleEnableSubmit();
-  };
-
-  private handleEnableSubmit = () => {
-    if (
-      !this.state.validEmail ||
-      !this.state.validName ||
-      !this.state.validCountry ||
-      !this.state.validPostalCode ||
-      !this.state.validCardNumber ||
-      !this.state.validCardExpiry ||
-      !this.state.validCardCVC
-    ) {
-      this.setState({ supportDisabled: true });
-    } else {
-      this.setState({ supportDisabled: false });
-    }
   };
 
   private async handleSubmit(): Promise<void> {
-    this.setState({ paymentProcessing: true });
-    if (this.props.stripe) {
-      try {
-        const token = await this.props.stripe.createToken({
-          name: this.state.name,
-          address_country: this.state.country,
-          address_zip: this.state.postalCode,
-        });
-        await this.props.savePayment({
-          variables: {
-            postID: this.props.boostId,
-            input: {
-              paymentToken: JSON.stringify(token),
-              amount: this.props.usdToSpend,
-              currencyCode: "usd",
-              emailAddress: this.state.email,
+    if (
+      this.state.emailState === INPUT_STATE.VALID &&
+      this.state.nameState === INPUT_STATE.VALID &&
+      this.state.countryState === INPUT_STATE.VALID &&
+      this.state.postalCodeState === INPUT_STATE.VALID &&
+      this.state.cardNumberState === INPUT_STATE.VALID &&
+      this.state.cardExpiryState === INPUT_STATE.VALID &&
+      this.state.cardCVCState === INPUT_STATE.VALID
+    ) {
+      this.setState({ paymentProcessing: true });
+      if (this.props.stripe) {
+        try {
+          const token = await this.props.stripe.createToken({
+            name: this.state.name,
+            address_country: this.state.country,
+            address_zip: this.state.postalCode,
+          });
+          await this.props.savePayment({
+            variables: {
+              postID: this.props.boostId,
+              input: {
+                paymentToken: JSON.stringify(token),
+                amount: this.props.usdToSpend,
+                currencyCode: "usd",
+                emailAddress: this.state.email,
+              },
             },
-          },
-        });
-        this.setState({ isSuccessModalOpen: true });
-      } catch (err) {
-        console.error(err);
-        this.setState({ isErrorModalOpen: true });
+          });
+          this.setState({ isSuccessModalOpen: true });
+        } catch (err) {
+          console.error(err);
+          this.setState({ isErrorModalOpen: true });
+        }
       }
     }
   }
