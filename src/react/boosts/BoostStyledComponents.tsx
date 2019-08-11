@@ -5,7 +5,6 @@ export interface BoostStyleProps {
   open?: boolean;
   margin?: string;
   textAlign?: string;
-  valid?: boolean;
 }
 
 export const MobileStyle = styled.span`
@@ -765,17 +764,5 @@ export const BoostUserInfoForm = styled.div`
 
   input {
     width: 100%;
-  }
-`;
-
-export const BoostInput = styled.input`
-  border: ${(props: BoostStyleProps) =>
-    props.valid ? "1px solid " + colors.accent.CIVIL_GRAY_3 : "1px solid " + colors.accent.CIVIL_RED};
-  border-radius: 2px;
-  padding: 10px 12px;
-
-  &:focus {
-    border-color: ${colors.accent.CIVIL_BLUE};
-    outline: none;
   }
 `;

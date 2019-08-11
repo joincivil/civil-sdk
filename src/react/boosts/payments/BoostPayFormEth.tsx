@@ -6,7 +6,6 @@ import {
   SubmitInstructions,
   SubmitWarning,
   BoostUserInfoForm,
-  BoostInput,
 } from "../BoostStyledComponents";
 import {
   TransactionButton,
@@ -15,7 +14,7 @@ import {
   CivilContext,
   ICivilContext,
 } from "@joincivil/components";
-import { InputValidationUI, InputValidationStyleProps, INPUT_STATE } from "./InputValidationUI";
+import { InputValidationUI, INPUT_STATE } from "./InputValidationUI";
 import { EthAddress, TwoStepEthTransaction, TxHash } from "@joincivil/core";
 import { PaymentInProgressModalText, PaymentSuccessModalText, PaymentErrorModalText } from "../BoostTextComponents";
 import { MutationFunc } from "react-apollo";
