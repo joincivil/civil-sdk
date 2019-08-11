@@ -48,7 +48,6 @@ export class BoostCardListView extends React.Component<BoostCardListViewProps> {
           newsroomData={newsroomData}
           disableHelmet={disableHelmet}
         />
-        <BoostDescriptionWhy>{this.truncateDescription(boostData.why)}</BoostDescriptionWhy>
         <BoostFlexCenter>
           <BoostProgressCol open={open}>
             <BoostProgress
@@ -59,6 +58,7 @@ export class BoostCardListView extends React.Component<BoostCardListViewProps> {
             />
           </BoostProgressCol>
         </BoostFlexCenter>
+        <BoostDescriptionWhy>{this.truncateDescription(boostData.why)}</BoostDescriptionWhy>
       </BoostWrapperLink>
     );
   }
