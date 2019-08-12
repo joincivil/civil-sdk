@@ -5,7 +5,7 @@ import makeAsyncScriptLoader from "react-async-script";
 import { BoostPayCardDetails, BoostFlexCenter, BoostButton } from "../BoostStyledComponents";
 import { StripeProvider, Elements } from "react-stripe-elements";
 import BoostPayFormStripe from "./BoostPayFormStripe";
-import { LoadingMessage } from "@joincivil/components";
+import { CivilContext, ICivilContext, LoadingMessage } from "@joincivil/components";
 import { BoostPayOption } from "./BoostPayOption";
 
 export interface BoostPayStripeProps {
@@ -27,6 +27,8 @@ export interface BoostPayStripeStates {
 }
 
 export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPayStripeStates> {
+  public static contextType: React.Context<ICivilContext> = CivilContext;
+  public context!: React.ContextType<typeof CivilContext>;
   constructor(props: BoostPayStripeProps) {
     super(props);
     this.state = {
@@ -70,11 +72,10 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
   };
 
   private renderPaymentForm = (): JSX.Element => {
-    // TODO(sruddy) TEST API KEY >> get from CivilContext config
     const AsyncScriptLoader = makeAsyncScriptLoader("https://js.stripe.com/v3/")(LoadingMessage);
     if (this.state.stripeLoaded) {
       return (
-        <StripeProvider apiKey={"pk_test_3a5qmy1MuBEcooDr5wL8bRz9"}>
+        <StripeProvider apiKey={this.context.config.STRIPE_API_KEY}>
           <Elements>
             <Mutation mutation={boostPayStripeMutation}>
               {(paymentsCreateStripePayment: MutationFunc) => {
