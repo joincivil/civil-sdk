@@ -163,6 +163,14 @@ const LaunchButton = styled(Button)`
   width: 190px;
 `;
 
+const ConnectStripeNotice = styled.div`
+  background-color: rgb(208, 237, 237);
+  display: block;
+  font-size: 14px;
+  margin: 30px 0 10px;
+  padding: 20px;
+`;
+
 export interface BoostFormInnerProps {
   channelID: string;
   newsroomData: BoostNewsroomData;
@@ -173,6 +181,7 @@ export interface BoostFormInnerProps {
   initialBoostData?: BoostData;
   editMode?: boolean;
   boostId?: string;
+  isStripeConnected: boolean;
 }
 export type BoostFormProps = BoostFormInnerProps & BoostPermissionsInjectedProps;
 
@@ -340,7 +349,6 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                     <BoostImg charterUri={this.props.newsroomData.charter && this.props.newsroomData.charter.uri} />
                   )}
                 </BoostImgDiv>
-
                 <NewsroomDetailRow>
                   <NewsroomDetailCell>
                     <BoostFormTitle>
@@ -358,7 +366,6 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                     <TextInput name="newsroomListingUrl" value={this.props.newsroomListingUrl} disabled />
                   </NewsroomDetailCell>
                 </NewsroomDetailRow>
-
                 <BoostFormTitle>
                   Newsroom Wallet
                   <QuestionToolTip explainerText="This is your newsroom wallet address where you will receive the funds from your Boost." />
@@ -371,36 +378,29 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                     Learn&nbsp;more
                   </a>
                 </p>
-
                 <BoostWrapperFullWidthHr />
-
                 <BoostFormTitle>Give your Boost a title</BoostFormTitle>
                 <p>
                   What do you need? Start with an action verb to tell people how they can help. For example: “Help
                   [newsroom] do [thing].”
                 </p>
                 <TextareaInput name="title" value={this.state.boost.title} onChange={this.onInputChange} />
-
                 <BoostFormTitle>Describe your Boost</BoostFormTitle>
                 <p>
                   What are you raising funds to do, and why you need help. Tell people why they should be excited to
                   support your Boost.
                 </p>
                 <TextareaInput name="why" value={this.state.boost.why} onChange={this.onInputChange} />
-
                 <BoostFormTitle>Describe what the outcome will be</BoostFormTitle>
                 <p>
                   Tell the community what to expect at the end of the fundraising time. You can be specific, but be
                   clear and brief.
                 </p>
                 <TextareaInput name="what" value={this.state.boost.what} onChange={this.onInputChange} />
-
                 <BoostFormTitle>Describe your Newsroom</BoostFormTitle>
                 <p>What is your Newsroom’s mission? Tell the community who you are.</p>
                 <TextareaInput name="about" value={this.state.boost.about} onChange={this.onInputChange} />
-
                 {this.renderItems()}
-
                 <BoostFormTitle>
                   End date
                   <QuestionToolTip explainerText="All proceeds go directly to the Newsroom. There are small fees charged by the Ethereum network." />
@@ -413,6 +413,15 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                   disabled={this.props.editMode}
                 />
                 <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
+                {!this.props.isStripeConnected && (
+                  <ConnectStripeNotice>
+                    We noticed you don't have a stripe account set up. If you'd like to connect one, you can do that{" "}
+                    <a href="/dashboard/newsrooms" target="_target">
+                      here
+                    </a>
+                    .
+                  </ConnectStripeNotice>
+                )}
               </BoostWrapper>
 
               <LaunchDisclaimer>
