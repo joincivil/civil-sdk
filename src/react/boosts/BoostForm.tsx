@@ -415,7 +415,7 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                 <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
                 {!this.props.isStripeConnected && (
                   <ConnectStripeNotice>
-                    We noticed you don't have a stripe account set up. If you'd like to connect one, you can do that{" "}
+                    We noticed you don't have a Stripe account set up. If you'd like to connect one, you can do that{" "}
                     <a href="/dashboard/newsrooms" target="_target">
                       here
                     </a>
