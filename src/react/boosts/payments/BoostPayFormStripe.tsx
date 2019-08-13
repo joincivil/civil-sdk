@@ -432,7 +432,8 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
             variables: {
               postID: this.props.boostId,
               input: {
-                paymentToken: JSON.stringify(token),
+                // @ts-ignore
+                paymentToken: token.token.id,
                 amount: this.props.usdToSpend,
                 currencyCode: "usd",
                 emailAddress: this.state.email,
