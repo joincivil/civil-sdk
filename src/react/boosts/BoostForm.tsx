@@ -169,6 +169,12 @@ const ConnectStripeNotice = styled.div`
   font-size: 14px;
   margin: 30px 0 10px;
   padding: 20px;
+
+  span {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
 `;
 
 export interface BoostFormInnerProps {
@@ -415,11 +421,13 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                 <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
                 {!this.props.isStripeConnected && (
                   <ConnectStripeNotice>
-                    We noticed you don't have a Stripe account set up. If you'd like to connect one, you can do that{" "}
-                    <a href="/dashboard/newsrooms" target="_target">
-                      here
+                    <span>No Stripe account connected</span> Your Boost will be able to accept contributions in ETH, but
+                    if you connect a Stripe account you will also be able to accept credit card payments. If you'd like
+                    to connect Stripe you can do so from{" "}
+                    <a href="/dashboard/newsrooms" target="_blank">
+                      your newsroom dashboard
                     </a>
-                    .
+                    . You will be prompted to create a new account if you don't have one already.
                   </ConnectStripeNotice>
                 )}
               </BoostWrapper>
