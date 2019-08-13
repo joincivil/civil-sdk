@@ -73,11 +73,14 @@ const BalanceAndButton = styled.div`
   }
 `;
 
+// Component requires either instance or newsroom address:
 export interface NewsroomWithdrawProps {
-  newsroom: NewsroomInstance;
+  newsroom?: NewsroomInstance;
+  newsroomAddress?: EthAddress;
 }
 
 export interface NewsroomWithdrawState {
+  newsroom?: NewsroomInstance;
   userAccount?: EthAddress;
   multisigBalance?: number;
 }
@@ -88,13 +91,22 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
 
   public constructor(props: NewsroomWithdrawProps) {
     super(props);
-    this.state = {};
+    if (!props.newsroom && !props.newsroomAddress) {
+      throw Error("NewsroomWithdraw: Must supply either newsroom instance or newsroom address");
+    }
+    this.state = {
+      newsroom: props.newsroom,
+    };
   }
 
   public async componentDidMount(): Promise<void> {
     const userAccount = await this.context.civil!.accountStream.first().toPromise();
-    const multisigAddress = await this.props.newsroom.getMultisigAddress();
+    let newsroom = this.props.newsroom;
+    if (!newsroom) {
+      newsroom = await this.context.civil!.newsroomAtUntrusted(this.props.newsroomAddress!);
+    }
 
+    const multisigAddress = await newsroom.getMultisigAddress();
     if (!multisigAddress) {
       // This can only happen if user created contract manually.
       alert(
@@ -107,6 +119,7 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
       // @TODO Would be nice if this auto updated
       multisigBalance: await this.context.civil!.accountBalance(multisigAddress),
       userAccount,
+      newsroom,
     });
   }
 
@@ -139,36 +152,51 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
             <br />
             {typeof this.state.multisigBalance !== "undefined" && <>({this.state.multisigBalance.toFixed(4)} ETH)</>}
           </p>
-          <TransactionButton
-            Button={props => (
-              <BoostButton disabled={props.disabled} onClick={props.onClick}>
-                Withdraw
-              </BoostButton>
-            )}
-            disabled={!this.state.multisigBalance || !this.state.userAccount}
-            transactions={[
-              {
-                transaction: this.withdrawTx,
-                postTransaction: this.postTransaction,
-              },
-            ]}
-          >
-            Withdraw
-          </TransactionButton>
+          {this.renderButton()}
         </BalanceAndButton>
       </Wrapper>
     );
   }
 
+  private renderButton = (): JSX.Element => {
+    if (!this.state.newsroom) {
+      return <LoadingIndicator />;
+    }
+    return (
+      <TransactionButton
+        Button={props => (
+          <BoostButton disabled={props.disabled} onClick={props.onClick}>
+            Withdraw
+          </BoostButton>
+        )}
+        disabled={!this.state.multisigBalance || !this.state.userAccount}
+        transactions={[
+          {
+            transaction: this.withdrawTx,
+            postTransaction: this.postTransaction,
+          },
+        ]}
+      >
+        Withdraw
+      </TransactionButton>
+    );
+  };
+
   private withdrawTx = async (): Promise<TwoStepEthTransaction<any> | void> => {
-    if (!this.state.multisigBalance || !this.state.userAccount || !this.context.civil || !(window as any).ethereum) {
+    if (
+      !this.state.multisigBalance ||
+      !this.state.userAccount ||
+      !this.context.civil ||
+      !(window as any).ethereum ||
+      !this.state.newsroom
+    ) {
       // @TODO/loginV2 migrate away from window.ethereum
       // Currently, everywhere we might use this component already checks and prompts user to connect web3, so we don't need any special handling in this case at the moment.
       return;
     }
 
     const eth = this.context.civil!.toBigNumber(this.state.multisigBalance);
-    return this.props.newsroom.transferEthFromMultisig(eth, this.state.userAccount);
+    return this.state.newsroom.transferEthFromMultisig(eth, this.state.userAccount);
   };
 
   private postTransaction = (): void => {
