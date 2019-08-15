@@ -23,7 +23,6 @@ export interface BoostInternalProps {
 export type BoostProps = BoostInternalProps & BoostPermissionsInjectedProps;
 
 export interface BoostStates {
-  usdToSpend: number;
   payment: boolean;
   paymentSuccess: boolean;
 }
@@ -35,10 +34,16 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
   public constructor(props: BoostProps) {
     super(props);
     this.state = {
-      usdToSpend: 0,
       payment: this.props.payment || false,
       paymentSuccess: false,
     };
+  }
+
+  public componentDidMount(): void {
+    const { history } = this.props;
+    if (history && history.location && history.location.state && history.location.state.paymentSuccess) {
+      this.setState({ paymentSuccess: history.location.state.paymentSuccess });
+    }
   }
 
   public render(): JSX.Element {
@@ -103,13 +108,13 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
                     <BoostPayments
                       boostId={id}
                       title={boostData.title}
-                      usdToSpend={this.state.usdToSpend}
                       newsroomName={newsroomData.name}
                       paymentAddr={newsroomData.owner}
                       walletConnected={!!this.props.walletConnected}
                       handleBackToListing={this.handleBackToListing}
                       handlePaymentSuccess={this.handlePaymentSuccess}
                       isStripeConnected={boostData.channel.isStripeConnected}
+                      history={this.props.history}
                     />
                   );
                 }
@@ -157,27 +162,22 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
   }
 
   private startPayment = (usdToSpend: number) => {
-    this.setState({ usdToSpend, payment: true });
-    this.context.fireAnalyticsEvent("boosts", "start support", this.props.boostId, usdToSpend);
-    // TODO(sruddy) temporarily removing history till updates on monorepo are made
-    /*this.props.history.push({
+    this.props.history.push({
       pathname: "/boosts/" + this.props.boostId + "/payment",
-      state: { usdToSpend, payment: true },
-    });*/
+      state: { usdToSpend },
+    });
+    this.context.fireAnalyticsEvent("boosts", "start support", this.props.boostId, usdToSpend);
   };
 
   private handlePaymentSuccess = () => {
     this.props.history.push({
       pathname: "/boosts/" + this.props.boostId,
-      state: { payment: false, paymentSuccess: true },
+      state: { paymentSuccess: true },
     });
   };
 
   private handleBackToListing = () => {
-    this.props.history.push({
-      pathname: "/boosts/" + this.props.boostId,
-      state: { payment: false },
-    });
+    this.props.history.push("/boosts/" + this.props.boostId);
   };
 }
 

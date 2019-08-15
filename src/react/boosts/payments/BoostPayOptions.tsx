@@ -94,7 +94,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
       selectedEth: false,
       selectedStripe: false,
       etherToSpend: 0,
-      usdToSpend: this.props.usdToSpend || 0,
+      usdToSpend: this.props.usdToSpend,
     };
   }
 
@@ -175,6 +175,7 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
               boostId={boostId}
               newsroomName={newsroomName}
               paymentType={PAYMENT_TYPE.ETH}
+              etherToSpend={etherToSpend}
               usdToSpend={usdToSpend}
               handleNext={this.handleEthNext}
               paymentAddr={paymentAddr}
