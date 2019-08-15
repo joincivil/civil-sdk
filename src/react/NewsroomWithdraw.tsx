@@ -77,6 +77,7 @@ const BalanceAndButton = styled.div`
 export interface NewsroomWithdrawProps {
   newsroom?: NewsroomInstance;
   newsroomAddress?: EthAddress;
+  isStripeConnected: boolean;
 }
 
 export interface NewsroomWithdrawState {
@@ -132,6 +133,15 @@ export class NewsroomWithdraw extends React.Component<NewsroomWithdrawProps, New
             Transfer or withdraw funds from your Newsroom Wallet to collect proceeds from Boosts. You’ll be able to
             exchange ETH for fiat currency. Reminder: only Newsroom Officers can access the Newsroom Wallet.
           </p>
+          {this.props.isStripeConnected && (
+            <p>
+              You may have additional funds in your{" "}
+              <a href="https://dashboard.stripe.com" target="_blank">
+                Stripe account
+              </a>
+              .
+            </p>
+          )}
           <p>
             <a target="_blank" href={urlConstants.FAQ_BOOST_WITHDRAWL}>
               Learn&nbsp;More&nbsp;&gt;
