@@ -160,6 +160,7 @@ export const withBoostPermissions = <TOriginalProps extends {}>(
 
       let user;
       if (this.context.civil) {
+        // @TODO This promise never resolves with a user account in the standalone boost embed
         user = await this.context.civil.accountStream.first().toPromise();
 
         if (user) {

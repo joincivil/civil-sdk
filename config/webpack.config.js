@@ -523,7 +523,7 @@ module.exports = function(webpackEnv) {
           {
             inject: true,
             template: paths.boostTestHtml,
-            filename: "boost-test.html",
+            filename: "boost-embed.html",
             chunks: ["boost"],
           },
           htmlWebpackPluginConfig,
