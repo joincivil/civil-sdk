@@ -156,7 +156,6 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
         newsroomData={newsroomData}
         newsroomContractAddress={boostData.channel.newsroom.contractAddress}
         newsroomListingUrl={listingUrl}
-        isStripeConnected={boostData.channel.isStripeConnected}
       />
     );
   }
