@@ -123,7 +123,10 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
                   <>
                     {/*@TODO/tobek Move to Newsroom Boosts page when we have that.*/}
                     {this.props.open && this.props.newsroom && this.props.boostOwner && (
-                      <NewsroomWithdraw newsroom={this.props.newsroom} />
+                      <NewsroomWithdraw
+                        newsroom={this.props.newsroom}
+                        isStripeConnected={boostData.channel.isStripeConnected}
+                      />
                     )}
                     <BoostCard
                       boostData={boostData}
