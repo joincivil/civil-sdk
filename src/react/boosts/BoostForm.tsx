@@ -15,6 +15,8 @@ import {
   LoadingMessage,
   HelmetHelper,
   LoadUser,
+  withNewsroomChannel,
+  NewsroomChannelInjectedProps,
 } from "@joincivil/components";
 import { Query, Mutation, MutationFunc } from "react-apollo";
 import { boostNewsroomQuery, createBoostMutation, editBoostMutation } from "./queries";
@@ -187,9 +189,8 @@ export interface BoostFormInnerProps {
   initialBoostData?: BoostData;
   editMode?: boolean;
   boostId?: string;
-  isStripeConnected: boolean;
 }
-export type BoostFormProps = BoostFormInnerProps & BoostPermissionsInjectedProps;
+export type BoostFormProps = BoostFormInnerProps & BoostPermissionsInjectedProps & NewsroomChannelInjectedProps;
 
 export interface BoostFormState {
   boost: Partial<BoostData>;
@@ -419,7 +420,7 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
                   disabled={this.props.editMode}
                 />
                 <EndDateNotice>Your Boost will end at 11:59PM on the date selected.</EndDateNotice>
-                {!this.props.isStripeConnected && (
+                {!this.props.channelData.isStripeConnected && (
                   <ConnectStripeNotice>
                     <span>No Stripe account connected</span> Your Boost will be able to accept contributions in ETH, but
                     if you connect a Stripe account you will also be able to accept credit card payments. If you'd like
@@ -671,4 +672,4 @@ class BoostFormComponent extends React.Component<BoostFormProps, BoostFormState>
   };
 }
 
-export const BoostForm = withBoostPermissions(BoostFormComponent, true);
+export const BoostForm = withBoostPermissions(withNewsroomChannel(BoostFormComponent), true);

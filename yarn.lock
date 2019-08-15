@@ -1204,12 +1204,12 @@
   resolved "https://registry.yarnpkg.com/@joincivil/artifacts/-/artifacts-1.1.9.tgz#2b028f3c588fbc6cf50f7055f53232ee558e6f7c"
   integrity sha512-6i0ILg+Z9TjtvvTPZMCpyk731MTweMpq3TIizNB01rw5TWs5doxpYY8fDoIzs+8A+5PQm3Cf8J3N+1J9T48kRg==
 
-"@joincivil/components@^1.9.9":
-  version "1.9.9"
-  resolved "https://registry.yarnpkg.com/@joincivil/components/-/components-1.9.9.tgz#f7d3213ebc2a22c7de476bc36f5207866d671679"
-  integrity sha512-wK0izti/VX197VybUBUQyoQUMQbucFXRsatZZZ08PEafz0mCXSA6V9GhUW42SPACNHtji9qDSyG7HZxmysNrSw==
+"@joincivil/components@^1.9.10":
+  version "1.9.10"
+  resolved "https://registry.yarnpkg.com/@joincivil/components/-/components-1.9.10.tgz#c75aa51c1a163d055a4871b768acce270ff00b5e"
+  integrity sha512-88eOO3aPwzdgCuobxbXlty3uEP6MpbhMHy8YvULuEKwHCkoUAW+pf95ckJAZFOJ9hv6RgrKSxjRziqyU5ZYq5g==
   dependencies:
-    "@joincivil/core" "^4.8.10"
+    "@joincivil/core" "^4.8.11"
     "@joincivil/ethapi" "^0.4.9"
     "@joincivil/utils" "^1.9.9"
     apollo-storybook-react "^0.1.8"
@@ -1228,10 +1228,10 @@
     rxjs "^5.5.6"
     styled-components "^3.2.5"
 
-"@joincivil/core@^4.8.10", "@joincivil/core@^4.8.9":
-  version "4.8.10"
-  resolved "https://registry.yarnpkg.com/@joincivil/core/-/core-4.8.10.tgz#2c007dc4f11937648e6380d653135d5c93af18ed"
-  integrity sha512-pAYA6LaCq46qMpz2UPVRofdmDBxaUacncssLoOTgd5VZroYY9Rb3RyYzLbd3X3qMjHdq8jti0hP+iunBk5qAMQ==
+"@joincivil/core@^4.8.11":
+  version "4.8.11"
+  resolved "https://registry.yarnpkg.com/@joincivil/core/-/core-4.8.11.tgz#c10c7b9713ea8e5dfa520d823e0c64a0c9580cc1"
+  integrity sha512-4qfCbXTpV9amRhHW9tjZoN+TZRvzUJDZs5LlkZmpbGn0CHLoCDgp3/SnfElJ0vYrKUXPtVGCiWzOZ147W2m9mA==
   dependencies:
     "@joincivil/artifacts" "^1.1.9"
     "@joincivil/ethapi" "^0.4.9"
