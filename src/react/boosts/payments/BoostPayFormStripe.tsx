@@ -310,7 +310,7 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
           </BoostModalContain>
         </FullScreenModal>
         <FullScreenModal open={this.state.isSuccessModalOpen}>
-          <BoostModalContain>
+          <BoostModalContain textAlign={"center"}>
             <PaymentSuccessCardModalText
               newsroomName={this.props.newsroomName}
               usdToSpend={this.props.usdToSpend}
