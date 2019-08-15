@@ -37,8 +37,8 @@ export interface BoostPayEthProps {
   paymentStarted?: boolean;
   optionLabel: string | JSX.Element;
   paymentType: string;
-  etherToSpend?: number;
-  usdToSpend?: number;
+  etherToSpend: number;
+  usdToSpend: number;
   walletConnected: boolean;
   handlePaymentSelected?(paymentType: string): void;
   handleNext(etherToSpend: number, usdToSpend: number): void;
@@ -62,7 +62,7 @@ export class BoostPayEth extends React.Component<BoostPayEthProps, BoostPayEthSt
       isInfoModalOpen: false,
       modalContent: "",
       etherToSpend: this.props.etherToSpend || 0,
-      usdToSpend: this.props.usdToSpend || 0,
+      usdToSpend: this.props.usdToSpend,
       notEnoughEthError: false,
     };
   }

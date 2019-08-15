@@ -40,11 +40,9 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
   }
 
   public componentDidMount(): void {
-    const params = new URLSearchParams(window.location.search);
-    const paymentSuccess = params.get("paymentSuccess");
-
-    if (paymentSuccess) {
-      this.setState({ paymentSuccess: true });
+    const { history } = this.props;
+    if (history && history.location && history.location.state && history.location.state.paymentSuccess) {
+      this.setState({ paymentSuccess: history.location.state.paymentSuccess });
     }
   }
 
@@ -116,6 +114,7 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
                       handleBackToListing={this.handleBackToListing}
                       handlePaymentSuccess={this.handlePaymentSuccess}
                       isStripeConnected={boostData.channel.isStripeConnected}
+                      history={this.props.history}
                     />
                   );
                 }
@@ -163,12 +162,18 @@ class BoostComponent extends React.Component<BoostProps, BoostStates> {
   }
 
   private startPayment = (usdToSpend: number) => {
-    this.props.history.push("/boosts/" + this.props.boostId + "/payment?amount=" + usdToSpend);
+    this.props.history.push({
+      pathname: "/boosts/" + this.props.boostId + "/payment",
+      state: { usdToSpend },
+    });
     this.context.fireAnalyticsEvent("boosts", "start support", this.props.boostId, usdToSpend);
   };
 
   private handlePaymentSuccess = () => {
-    this.props.history.push("/boosts/" + this.props.boostId + "?paymentSuccess=true");
+    this.props.history.push({
+      pathname: "/boosts/" + this.props.boostId,
+      state: { paymentSuccess: true },
+    });
   };
 
   private handleBackToListing = () => {

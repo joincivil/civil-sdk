@@ -55,17 +55,16 @@ export interface BoostPaymentsProps {
   boostId: string;
   title: string;
   newsroomName: string;
+  history: any;
   handleBackToListing(): void;
   handlePaymentSuccess(): void;
 }
 
 export const BoostPayments: React.FunctionComponent<BoostPaymentsProps> = props => {
-  const params = new URLSearchParams(window.location.search);
-  const amount = params.get("amount");
+  const { history } = props;
   let usdToSpend = 0;
-
-  if (amount) {
-    usdToSpend = parseFloat(amount);
+  if (history && history.location && history.location.state && history.location.state.usdToSpend) {
+    usdToSpend = history.location.state.usdToSpend;
   }
 
   return (
