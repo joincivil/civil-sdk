@@ -16,7 +16,7 @@ export interface BoostPayStripeProps {
   paymentType: string;
   optionLabel: string | JSX.Element;
   paymentStarted?: boolean;
-  handleNext(): void;
+  handleNext(usdToSpend: number): void;
   handlePaymentSelected?(paymentType: string): void;
   handlePaymentSuccess(): void;
 }
@@ -63,7 +63,9 @@ export class BoostPayStripe extends React.Component<BoostPayStripeProps, BoostPa
                 </a>
                 .
               </p>
-              {this.props.selected && <BoostButton onClick={() => this.props.handleNext()}>Next</BoostButton>}
+              {this.props.selected && (
+                <BoostButton onClick={() => this.props.handleNext(this.props.usdToSpend)}>Next</BoostButton>
+              )}
             </BoostFlexCenter>
           </BoostPayCardDetails>
         </BoostPayOption>
