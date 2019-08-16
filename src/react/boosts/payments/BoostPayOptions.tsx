@@ -216,7 +216,8 @@ export class BoostPayOptions extends React.Component<BoostPayOptionsProps, Boost
     this.setState({ paymentType: PAYMENT_TYPE.ETH, etherToSpend, usdToSpend });
   };
 
-  private handleStripeNext = () => {
+  private handleStripeNext = (usdToSpend: number) => {
+    this.context.fireAnalyticsEvent("boosts", "continue CC support", this.props.boostId, usdToSpend);
     this.setState({ paymentType: PAYMENT_TYPE.STRIPE });
   };
 
