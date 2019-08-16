@@ -8,7 +8,7 @@ import {
   CardCvcElement,
 } from "react-stripe-elements";
 import styled from "styled-components";
-import { colors, fonts, mediaQueries, FullScreenModal } from "@joincivil/components";
+import { colors, fonts, mediaQueries, FullScreenModal, CivilContext, ICivilContext } from "@joincivil/components";
 import { isValidEmail } from "@joincivil/utils";
 import {
   BoostFlexStart,
@@ -170,6 +170,8 @@ export interface BoostPayFormStripeStates {
 }
 
 class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostPayFormStripeStates> {
+  public static contextType: React.Context<ICivilContext> = CivilContext;
+  public context!: React.ContextType<typeof CivilContext>;
   constructor(props: any) {
     super(props);
     this.state = {
@@ -423,6 +425,12 @@ class BoostPayFormStripe extends React.Component<BoostPayFormStripeProps, BoostP
       this.setState({ paymentProcessing: true });
       if (this.props.stripe) {
         try {
+          this.context.fireAnalyticsEvent(
+            "boosts",
+            "start submit CC support",
+            this.props.boostId,
+            this.props.usdToSpend,
+          );
           const token = await this.props.stripe.createToken({
             name: this.state.name,
             address_country: this.state.country,
