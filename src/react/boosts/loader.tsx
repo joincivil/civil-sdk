@@ -11,6 +11,7 @@ import { Boost } from "./Boost";
 const apolloClient = getApolloClient();
 
 const { provider }: EthersProviderResult = makeEthersProvider("1");
+// @ts-ignore: @TODO this is failing with an error that we need to look into after web3 update
 const civil = new Civil({ web3Provider: provider });
 // @ts-ignore: Getting "Argument of type ... is not assignable to parameter of type ... Types have separate declarations of private property `ethApi`" because `buildCivilContext` is getting `Civil` from its copy of `@joincivil/core` and we're passing in from our copy. In practice, these `ethApi`s will be identical or matching interface.
 const civilContext = buildCivilContext(civil);
